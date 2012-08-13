@@ -55,9 +55,9 @@ public class StockIchart2DB implements Job {
 		mmStr = (Integer.parseInt(mmStr) - 1) + "";
 		String ddStr = sdfDD.format(thisDate);
 		String lastYear = (Integer.parseInt(yyyyStr) - 1) + "";
-		//呼叫dao
+		// 呼叫dao
 		StockDao dao = new StockDao();
-		StockHistoryDao hisdao = new StockHistoryDao();
+		// StockHistoryDao hisdao = new StockHistoryDao();
 		loger.info("StockIchart2DB start -----------" + startDateString);
 		String financeUrl = "";
 		int totalStock = 0;
@@ -114,8 +114,6 @@ public class StockIchart2DB implements Job {
 				}
 			}
 
-			String sql = "SELECT * FROM STOCK WHERE ( " + sqlStr + ") ";
-			
 			allList = dao.FindStockFindGood2DBAll(sqlStr);
 			System.out.println("allList.size():" + allList.size());
 		} else {
@@ -152,9 +150,8 @@ public class StockIchart2DB implements Job {
 					// g - 時間週期。Example: g=w, 表示週期是'週'。d->'日'(day),
 					// w->'週'(week)，m->'月'(mouth)，v->'dividends only'
 					// 一定注意月份參數，其值比真實數據-1。如需要9月數據，則寫為08。
-					financeUrl = "http://ichart.yahoo.com/table.csv?s=" + stockBean.getStockCode()
-							+ "&a=" + mmStr + "&b=" + ddStr + "&c=" + lastYear + "&d=" + mmStr
-							+ "&e=" + ddStr + "&f=" + yyyyStr + "&g=d";
+					financeUrl = "http://ichart.yahoo.com/table.csv?s=" + stockBean.getStockCode() + "&a=" + mmStr + "&b=" + ddStr + "&c=" + lastYear
+							+ "&d=" + mmStr + "&e=" + ddStr + "&f=" + yyyyStr + "&g=d";
 					// System.out.println("financeUrl:" + financeUrl);
 					httpget = new HttpGet(financeUrl);
 
@@ -182,8 +179,8 @@ public class StockIchart2DB implements Job {
 								StockHistory hisvo = new StockHistory();
 								hisvo.setStockCode(stockBean.getStockCode());
 								hisvo.setCreateDate(lastDate);
-								//刪除資料
-								hisdao.delete(hisvo);
+								// 刪除資料
+								// hisdao.delete(hisvo);
 								for (int i = 2; i < allArray.length; i++) {
 									valueStr = "";
 									valueStr = allArray[i];
@@ -211,8 +208,7 @@ public class StockIchart2DB implements Job {
 										adjCloseStr = valueArray[6];
 
 										stockHistory = new StockHistory();
-										stockHistory.setId(dateString + "_"
-												+ stockBean.getStockCode());
+										stockHistory.setId(dateString + "_" + stockBean.getStockCode());
 										stockHistory.setStockCode(stockBean.getStockCode());
 										stockHistory.setCreateDate(dateStr);
 										stockHistory.setOpen(openStr);
@@ -222,8 +218,8 @@ public class StockIchart2DB implements Job {
 										stockHistory.setVolume(volumeStr);
 										stockHistory.setAdjClose(adjCloseStr);
 										// System.out.println("dateStr:" + dateStr);
-										//新增資料
-										hisdao.insert(stockHistory);
+										// 新增資料
+										// hisdao.insert(stockHistory);
 									}
 								}
 							}

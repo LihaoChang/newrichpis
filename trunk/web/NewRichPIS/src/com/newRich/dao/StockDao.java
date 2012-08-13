@@ -262,7 +262,7 @@ public class StockDao extends BaseDao {
 	public List<Stock> FindStockFindGood2DBAll(String where) {
 		SELECT_StockFindGood2DB_SQL += where + " ) ";
 		log.info("StockFindGood2DBFindAll SQL:" + SELECT_StockFindGood2DB_SQL);
-		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper()));
+		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper2()));
 	}
 
 	/**

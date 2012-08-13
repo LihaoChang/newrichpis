@@ -1,0 +1,24 @@
+
+.stylered {color: #FF0000}
+
+.stylegreen {color: #006600}
+
+table { 
+  border: 0; 
+  font-family: arial; 
+  font-size:14px; 
+} 
+th { 
+  background-color:#E5E5E5; 
+} 
+td { 
+  border-bottom:1 solid #000000; 
+}
+.changeTr { 
+  background:   #CCFFCC;
+
+
+}
+.fail { 
+  color:#FF0000; 
+}

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job-scheduling-data
+	xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_1_8.xsd"
+	version="1.8">
+
+	<pre-processing-commands>
+		<delete-jobs-in-group>*</delete-jobs-in-group>  <!-- clear all jobs in scheduler -->
+		<delete-triggers-in-group>*</delete-triggers-in-group> <!-- clear all triggers in scheduler -->
+	</pre-processing-commands>
+
+	<processing-directives>
+		<!-- if there are any jobs/trigger in scheduler of same name (as in this 
+			file), overwrite them -->
+		<overwrite-existing-data>true</overwrite-existing-data>
+		<!-- if there are any jobs/trigger in scheduler of same name (as in this 
+			file), and over-write is false, ignore them rather then generating an error -->
+		<ignore-duplicates>false</ignore-duplicates>
+	</processing-directives>
+
+	<schedule>
+	<!--
+		<job>
+			<name>JobDemo</name>
+			<job-class>com.newRich.quartz.JobDemo</job-class>
+		</job>
+    -->
+    
+		<job>
+			<name>StockCode2DB</name>
+			<job-class>com.newRich.quartz.StockCode2DB</job-class>
+		</job>    
+		<job>
+			<name>StockSector2DB</name>
+			<job-class>com.newRich.quartz.StockSector2DB</job-class>
+		</job>  
+		<job>
+			<name>StockValue2DB</name>
+			<job-class>com.newRich.quartz.StockValue2DB</job-class>
+		</job> 			
+		<job>
+			<name>StockFindGood2DB</name>
+			<job-class>com.newRich.quartz.StockFindGood2DB</job-class>
+		</job> 		
+		<job>
+			<name>StockIchart2DB</name>
+			<job-class>com.newRich.quartz.StockIchart2DB</job-class>
+		</job> 					
+	<!--
+		<trigger>
+			<cron>
+				<name>Trigger_JobDemo</name>
+				<job-name>JobDemo</job-name>
+				<cron-expression>0 0/5 * * * ?</cron-expression>
+			</cron>
+		</trigger>
+    -->
+        <!-- 抓取所有字母對應的股票代碼到DB,每個月的1日7:5執行-->
+		<trigger>
+			<cron>
+				<name>Trigger_StockCode2DB</name>
+				<job-name>StockCode2DB</job-name>
+				<!--<cron-expression>0 0/5 * * * ?</cron-expression>-->
+				<cron-expression>0 5 7 8 * ?</cron-expression>
+			</cron>
+		</trigger>   
+		
+		<!-- 抓取所有股票的資產類別到DB,每個月的1日9:5執行-->
+		<trigger>
+			<cron>
+				<name>Trigger_StockSector2DB</name>
+				<job-name>StockSector2DB</job-name>
+				<cron-expression>0 5 9 8 * ?</cron-expression>
+			</cron>
+		</trigger> 	
+		
+		<!-- 抓取所有股票的成交量和股價到DB,每個月的1日10:5執行-->
+		<trigger>
+			<cron>
+				<name>Trigger_StockValue2DB</name>
+				<job-name>StockValue2DB</job-name>
+				<cron-expression>0 5 10 8 * ?</cron-expression>
+			</cron>
+		</trigger> 			
+		
+		<!-- 抓取所有股票的find good到DB,每個月的2日每一小時執行-->
+		<trigger>
+			<cron>
+				<name>Trigger_StockFindGood2DB</name>
+				<job-name>StockFindGood2DB</job-name>
+				<cron-expression>0 1 0/1 8 * ?</cron-expression>
+			</cron>
+		</trigger> 	
+		
+		<!-- 抓取所有股票的歷史K線到DB,每個月的2日每一小時執行-->
+		<trigger>
+			<cron>
+				<name>Trigger_StockIchart2DB</name>
+				<job-name>StockIchart2DB</job-name>
+				<cron-expression>0 1 0/1 8 * ?</cron-expression>
+			</cron>
+		</trigger> 						 
+	</schedule>
+</job-scheduling-data>
+<!-- Cron 的小小說明表示方式意義 -->
+<!-- "0 0 9 * * ?" 1 time /daily at 09:00 -->
+<!-- "0 0 0 * * ?" 1 time /daily at 0000 -->
+<!-- "0 0 12 * * ?" Fire at 12pm (noon) every day -->
+<!-- "0 15 10 ? * *" Fire at 10:15am every day -->
+<!-- "0 15 10 * * ?" Fire at 10:15am every day -->
+<!-- "0 15 10 * * ? *" Fire at 10:15am every day -->
+<!-- "0 15 10 * * ? 2005" Fire at 10:15am every day during the year 2005 -->
+<!-- "0 * 14 * * ?" Fire every minute starting at 2pm and ending at 2:59pm, 
+	every day -->
+<!-- "0 0/5 14 * * ?" Fire every 5 minutes starting at 2pm and ending at 
+	2:55pm, every day -->
+<!-- "0 0/5 14,18 * * ?" Fire every 5 minutes starting at 2pm and ending 
+	at 2:55pm, AND fire every 5 minutes starting at 6pm and ending at 6:55pm, 
+	every day -->
+<!-- "0 0-5 14 * * ?" Fire every minute starting at 2pm and ending at 2:05pm, 
+	every day -->
+<!-- "0 10,44 14 ? 3 WED" Fire at 2:10pm and at 2:44pm every Wednesday in 
+	the month of March. -->
+<!-- "0 15 10 ? * MON-FRI" Fire at 10:15am every Monday, Tuesday, Wednesday, 
+	Thursday and Friday -->
+<!-- "0 15 10 15 * ?" Fire at 10:15am on the 15th day of every month -->
+<!-- "0 15 10 L * ?" Fire at 10:15am on the last day of every month -->
+<!-- "0 15 10 ? * 6L" Fire at 10:15am on the last Friday of every month -->
+<!-- "0 15 10 ? * 6L" Fire at 10:15am on the last Friday of every month -->
+<!-- "0 15 10 ? * 6L 2002-2005" Fire at 10:15am on every last friday of every 
+	month during the years 2002, 2003, 2004 and 2005 -->
+<!-- "0 15 10 ? * 6#3" Fire at 10:15am on the third Friday of every month -->

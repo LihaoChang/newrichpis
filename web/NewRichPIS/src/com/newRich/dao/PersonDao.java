@@ -95,13 +95,18 @@ public class PersonDao extends BaseDao {
      * @return List 
      */
 	public Person findById(String id) {
+		Person vo = new Person();
 		String SELECT_BY_ID_SQL = 
 		    "SELECT * FROM Person "
 			+ "where id = ? ";
 		final Object[] params = new Object[] {
 				id
     	};
-    	return (Person) jdbcTemplate.query(SELECT_BY_ID_SQL, params, new RowMapperResultSetExtractor(new PersonMapper()));
+		List list = (List) jdbcTemplate.query(SELECT_BY_ID_SQL, params, new RowMapperResultSetExtractor(new PersonMapper()));
+		if(null != list){
+			vo = (Person) list.get(0);
+		}
+    	return vo ;
     }
 	
 	/**
@@ -143,7 +148,7 @@ public class PersonDao extends BaseDao {
      */
     private static final String DELETE_SQL = 
     	" DELETE FROM Person " 
-    	+ " WHERE id = ?";
+    	+ " WHERE id = ? ";
     	
 	public int delete(String id) {
 		final Object[] params = new Object[] { id };

@@ -1,0 +1,107 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.convention.result.path" value="/pages" />
+	<constant name="struts.action.extension" value="action,htm,JobProcessServlet" />
+	<constant name="struts.convention.action.packages" value="com.newRich.action" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.convention.default.parent.package"
+		value="showcase" />
+	<package name="layout1-default" extends="struts-default,hibernate-default"
+		namespace="/">
+		<result-types>
+			<result-type name="layout" default="true"
+				class="com.newRich.util.MyTilesTemplateResult" />
+		</result-types>
+	</package>
+	<package name="showcase" extends="layout1-default" namespace="/">
+		<global-results>
+			<result name="error" type="dispatcher">/login_error.jsp</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+		</global-exception-mappings>
+		<action name="Login" class="com.newRich.action.LoginAction">
+			<result name="success">/login_ok.jsp</result>
+			<result name="error" type="dispatcher">/index.jsp</result>
+		</action>
+		<action name="home" class="com.newRich.action.HomeAction">
+			<result name="success">/login_ok.jsp</result>
+			<result name="error" type="dispatcher">/index.jsp</result>
+		</action>
+		<!--com.newRich.action.StockAction start-->
+		<action name="findGood" class="com.newRich.action.StockAction"
+			method="query">
+			<result name="success">/pages/findGood.jsp</result>
+			<result name="error" type="dispatcher">/index.jsp</result>
+		</action>
+ 		<!--com.newRich.action.StockAction end-->
+ 		
+		<!--com.newRich.action.PersonAction start -->
+		<action name="person" class="com.newRich.action.PersonAction"
+			method="query">
+			<result name="success">/pages/person.jsp</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="personSave" class="com.newRich.action.PersonAction"
+			method="save">
+			<result name="success" type="redirect">person.action</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="personDelete" class="com.newRich.action.PersonAction"
+			method="delete">
+			<result name="success" type="redirect">person.action</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="personModify" class="com.newRich.action.PersonAction"
+			method="modify">
+			<result name="success">/pages/person.jsp</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<!--com.newRich.action.PersonAction end -->
+
+		<!--com.newRich.action.StockToolAction start -->
+		<action name="stockTool" class="com.newRich.action.StockToolAction"
+			method="query">
+			<result name="success">/pages/stockTool.jsp</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="stockToolSave" class="com.newRich.action.StockToolAction"
+			method="save">
+			<result name="success" type="redirect">stockTool.action</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="stockToolDelete" class="com.newRich.action.StockToolAction"
+			method="delete">
+			<result name="success" type="redirect">stockTool.action</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="stockToolModify" class="com.newRich.action.StockToolAction"
+			method="modify">
+			<result name="success">/pages/stockTool.jsp</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<!--com.newRich.action.StockToolAction end -->
+		
+		<!-- Quartz排程相關 Start -->
+		<action name="queryQuartz" class="com.newRich.action.QuartzAction"
+			method="query">
+			<result name="success">/pages/quartzQuery.jsp</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="goEditQuartz" class="com.newRich.action.QuartzAction"
+			method="goEditQuartz">
+			<result name="success">/pages/quartzEdit.jsp</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<!-- Quartz排程相關 End -->
+	</package>
+
+
+</struts>

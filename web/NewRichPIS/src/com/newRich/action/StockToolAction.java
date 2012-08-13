@@ -27,11 +27,9 @@ public class StockToolAction extends DefaultAction {
 
 	private String modify_id;
 
-
 	public String query() throws Exception {
 
-		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord()
-				+ " Index Row :" + getSidx());
+		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() + " Index Row :" + getSidx());
 		log.debug("getThis_ogin_user_id :" + getThis_login_user_id());
 
 		// log2.debug("2Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() +
@@ -64,14 +62,14 @@ public class StockToolAction extends DefaultAction {
 			// Count StockTool
 			records = stockToolDao.findAll().size();
 
-			//System.out.println("..criteria.." + criteria);
+			// System.out.println("..criteria.." + criteria);
 			// Get StockTool by Criteria
 			gridModel = stockToolDao.findByFromEnd(formVO, from, rows);
 			// Set to = max rows
 			if (to > records) {
 				to = records;
 			}
-			//System.out.println("..gridModel.." + gridModel);
+			// System.out.println("..gridModel.." + gridModel);
 			// Calculate total Pages
 			total = (int) Math.ceil((double) records / (double) rows);
 		} catch (Exception e) {
@@ -151,27 +149,32 @@ public class StockToolAction extends DefaultAction {
 	}
 
 	public String modify() throws Exception {
+		try {
+			System.out.println("..modify.." + modify_id);
+			System.out.println("..userid.." + userid);
+			System.out.println("..name.." + name);
+			System.out.println("..url.." + url);
+			System.out.println("..remark.." + remark);
+			StockTool StockTool;
+			if (null != modify_id) {
+				log.debug("Delete StockTool " + modify_id);
+				StockTool = stockToolDao.findById(modify_id);
+				System.out.println("modify StockTool:" + StockTool);
+				if (null != StockTool) {
+					id = StockTool.getId();
+					userid = StockTool.getUserid();
+					name = StockTool.getName();
+					url = StockTool.getUrl();
+					remark = StockTool.getRemark();
 
-		System.out.println("..modify.." + modify_id);
-		System.out.println("..userid.." + userid);
-		System.out.println("..name.." + name);
-		System.out.println("..url.." + url);
-		System.out.println("..remark.." + remark);
-		StockTool StockTool;
-		if (null != modify_id) {
-			log.debug("Delete StockTool " + modify_id);
-			StockTool = stockToolDao.findById(modify_id);
-			if (null != StockTool) {
-				id = StockTool.getId();
-				userid = StockTool.getUserid();
-				name = StockTool.getName();
-				url = StockTool.getUrl();
-				remark = StockTool.getRemark();
-
+				}
 			}
+			query();
+			return SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
 		}
-		query();
-		return SUCCESS;
 
 	}
 

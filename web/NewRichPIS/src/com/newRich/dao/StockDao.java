@@ -204,7 +204,7 @@ public class StockDao extends BaseDao {
 			String SELECT_StockCode_SQL = "SELECT * FROM stock " + "where StockCode = ? ";
 			final Object[] params = new Object[] { StockCode };
 			ArrayList list = (ArrayList) jdbcTemplate.query(SELECT_StockCode_SQL, params, new RowMapperResultSetExtractor(new StockMapper2()));
-			if (null != list) {
+			if (null != list && list.size() >= 0) {
 				return (Stock) list.get(0);
 			} else {
 				return null;

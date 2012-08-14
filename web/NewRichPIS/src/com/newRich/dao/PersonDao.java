@@ -95,7 +95,7 @@ public class PersonDao extends BaseDao {
      * @return List 
      */
 	public Person findById(String id) {
-		Person vo = new Person();
+		Person vo = null;
 		String SELECT_BY_ID_SQL = 
 		    "SELECT * FROM Person "
 			+ "where id = ? ";
@@ -103,8 +103,10 @@ public class PersonDao extends BaseDao {
 				id
     	};
 		List list = (List) jdbcTemplate.query(SELECT_BY_ID_SQL, params, new RowMapperResultSetExtractor(new PersonMapper()));
-		if(null != list){
+		if (null != list && list.size() >= 0) {
 			vo = (Person) list.get(0);
+		} else {
+			return null;
 		}
     	return vo ;
     }

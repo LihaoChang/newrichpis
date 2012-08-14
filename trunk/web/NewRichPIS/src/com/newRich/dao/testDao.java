@@ -21,7 +21,30 @@ public class testDao {
 		dataSource = ds;
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-
+	
+	/**
+	 * 若只需傳回單一的javabean，寫法如下：
+	 * ...
+public User find(Integer id) {
+    final User user = new User();
+    jdbcTemplate.query(
+       "SELECT * FROM user WHERE id = ?",
+       new Object[] {id},
+         new RowCallbackHandler() {
+            public void processRow(ResultSet rs) 
+                                    throws SQLException {
+                user.setId(new Integer(rs.getInt("id")));
+                user.setName(rs.getString("name"));
+                user.setAge(new Integer(rs.getInt("age")));
+            }
+        });
+    
+    return user;
+}
+...
+	 */
+	
+	
 	/**
      * 讀取所有資料
      * @return List 

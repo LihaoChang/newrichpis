@@ -94,7 +94,7 @@ public class StockToolDao extends BaseDao {
 			String SELECT_BY_ID_SQL = "SELECT * FROM Stock_Tool " + "where id = ? ";
 			final Object[] params = new Object[] { id };
 			ArrayList list = (ArrayList) jdbcTemplate.query(SELECT_BY_ID_SQL, params, new RowMapperResultSetExtractor(new StockToolMapper()));
-			if (null != list) {
+			if (null != list && list.size() >= 0) {
 				return (StockTool) list.get(0);
 			} else {
 				return null;

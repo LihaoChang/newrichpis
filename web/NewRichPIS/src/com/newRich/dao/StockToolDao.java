@@ -78,6 +78,9 @@ public class StockToolDao extends BaseDao {
 		if (StringUtils.isNotBlank(formVO.getName())) {
 			SELECT_formVO_SQL += "and updateDate = '" + formVO.getUpdateDate() + "' ";
 		}
+		
+		SELECT_formVO_SQL += " order by name ";
+		
 		SELECT_formVO_SQL += " limit ?,? ";
 		final Object[] params = new Object[] { from, pageShowSize };
 

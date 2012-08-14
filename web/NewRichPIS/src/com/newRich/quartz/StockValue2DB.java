@@ -44,9 +44,9 @@ public class StockValue2DB implements Job {
 		String startDateString = sdf1.format(startDate);
 		loger.info("StockValue2DB start -----------" + startDateString);
 		try {
-			//呼叫dao
+			// 呼叫dao
 			StockDao dao = new StockDao();
-			
+
 			List<Stock> stockList = dao.findAllToStock();
 
 			loger.info("StockValue2DB stockList.size():" + stockList.size());
@@ -78,22 +78,41 @@ public class StockValue2DB implements Job {
 					// if (responseBody.indexOf("Volume:") > -1) {
 					if (responseBody.indexOf("Avg Vol <span class=\"small\">(3m)</span>:") > -1) {
 						valueStr = "";
-						// String firstString = responseBody.substring(responseBody.indexOf("Volume:"));
-						String firstString = responseBody.substring(responseBody.indexOf("Avg Vol <span class=\"small\">(3m)</span>:"));
-						String secendString = firstString.substring(0, firstString.indexOf("</td>"));
+						// String firstString =
+						// responseBody.substring(responseBody.indexOf("Volume:"));
+						String firstString = responseBody.substring(responseBody
+								.indexOf("Avg Vol <span class=\"small\">(3m)</span>:"));
+						String secendString = firstString
+								.substring(0, firstString.indexOf("</td>"));
 						secendString = secendString.replaceAll("</span>", "");
-						valueStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
+						valueStr = secendString.substring(secendString.lastIndexOf(">") + 1,
+								secendString.length());
 						valueStr = valueStr.replaceAll(",", "");
 						vo.setSharesTraded(!"N/A".equals(valueStr) ? Integer.parseInt(valueStr) : 0);
 					}
 					if (responseBody.indexOf("Prev Close:") > -1) {
 						nowPriceStr = "";
-						String firstString = responseBody.substring(responseBody.indexOf("Prev Close:"));
-						String secendString = firstString.substring(0, firstString.indexOf("</td>"));
-						nowPriceStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
+						String firstString = responseBody.substring(responseBody
+								.indexOf("Prev Close:"));
+						String secendString = firstString
+								.substring(0, firstString.indexOf("</td>"));
+						nowPriceStr = secendString.substring(secendString.lastIndexOf(">") + 1,
+								secendString.length());
 						nowPriceStr = nowPriceStr.replaceAll(",", "");
 
-						vo.setNowPrice(null != nowPriceStr ?  Double.parseDouble(nowPriceStr) : 0);
+						if (!nowPriceStr.equals("N/A")) {
+							if (sqlStr.length() > 0) {
+								sqlStr += " , nowPrice='" + nowPriceStr + "' ";
+							} else {
+								sqlStr += " nowPrice='" + nowPriceStr + "' ";
+							}
+						} else {
+							if (sqlStr.length() > 0) {
+								sqlStr += " , nowPrice='0' ";
+							} else {
+								sqlStr += " nowPrice='0' ";
+							}
+						}
 					}
 
 					if (sqlStr.length() > 0) {

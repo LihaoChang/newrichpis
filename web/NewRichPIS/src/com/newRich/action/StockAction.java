@@ -1,6 +1,7 @@
 package com.newRich.action;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class StockAction extends DefaultAction {
 	private static final long serialVersionUID = -3001143410723349703L;
 	private static Log log = LogFactory.getLog(StockAction.class);
 	private static Logger log2 = Logger.getLogger(StockAction.class);
+	private DecimalFormat fmt = new DecimalFormat("##,###,###,###,##0");
 	// Your result List
 	private static List<StockBean> gridModel;
 
@@ -51,7 +53,6 @@ public class StockAction extends DefaultAction {
 
 	private List<SelectVO> sectorList = new ArrayList<SelectVO>();// sector的下拉
 	private List<SelectVO> typeList = new ArrayList<SelectVO>();// 大於小於的下拉
-
 
 	public String query() throws Exception {
 
@@ -90,8 +91,8 @@ public class StockAction extends DefaultAction {
 			// add sector select
 			querySectorList();
 			queryTypeList();
-			
-			//set查詢的參數
+
+			// set查詢的參數
 			StockForm formVO = new StockForm();
 			if (null != stockCodeStr && !stockCodeStr.equals("") && !stockCodeStr.equals("null")) {
 				formVO.setStockCode(stockCodeStr);
@@ -248,6 +249,10 @@ public class StockAction extends DefaultAction {
 					Double daividendStrDouble = new Double(thisDividendStr);
 					stockBean.setDividend(re100B(daividendStrDouble));
 				}
+				if (null != stockBean.getSharesTraded()) {
+					stockBean.setSharesTraded(fmt.format(Double.parseDouble(stockBean
+							.getSharesTraded())));
+				}
 				gridModel.add(stockBean);
 			}
 			// Calculate total Pages
@@ -359,12 +364,12 @@ public class StockAction extends DefaultAction {
 		return types;
 	}
 
-	public String typeChange(String typeCode){
+	public String typeChange(String typeCode) {
 		String str = "";
-		if(null != typeCode && !"".equals(typeCode)){
-			if(typeCode.equals("ge")){
+		if (null != typeCode && !"".equals(typeCode)) {
+			if (typeCode.equals("ge")) {
 				str = ">=";
-			}else{
+			} else {
 				str = "<=";
 			}
 		}

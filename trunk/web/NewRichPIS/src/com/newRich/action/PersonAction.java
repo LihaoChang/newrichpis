@@ -62,7 +62,7 @@ public class PersonAction extends DefaultAction {
 			}
 
 			// Count Person
-			records = personDao.findAll().size();
+			records = personDao.findAllByForm(formVO).size();
 
 			// Get Person by Criteria
 			gridModel = personDao.findByUserPwd(formVO, from, rows);

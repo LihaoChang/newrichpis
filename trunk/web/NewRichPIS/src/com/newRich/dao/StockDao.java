@@ -55,14 +55,14 @@ public class StockDao extends BaseDao {
 	public List<StockVO> findAll() {
 		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper()));
 	}
-
+	
 	/**
-	 * 讀取所有資料，分頁 from ex: 使用者點選第二頁，傳入的參數就是10 pageShowSize 每頁要秀的筆數
+	 * 讀取所有資料By Query Form
 	 * 
 	 * @return List
 	 */
-	public List<StockVO> findAllByPage(StockForm formVO, int from, int pageShowSize) {
-		String SELECT_SQL = "SELECT * " + "FROM stock where 1=1 ";
+	public List<StockVO> findAllByForm(StockForm formVO) {
+		String SELECT_SQL = "SELECT * FROM stock where 1=1 ";
 		if (null != formVO) {
 			if (StringUtils.isNotEmpty(formVO.getStockCode())) {
 				SELECT_SQL += " and stockCode like '%" + formVO.getStockCode() + "%' ";
@@ -107,10 +107,70 @@ public class StockDao extends BaseDao {
 			if (null != formVO.getDividend()) {
 				SELECT_SQL += " and dividend " + formVO.getDividendType() + formVO.getDividend() + " ";
 			}
-
 		}
-		SELECT_SQL += " limit ?,? ";
-		final Object[] params = new Object[] { from, pageShowSize };
+		
+		
+		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper()));
+	}
+
+	/**
+	 * 讀取所有資料，分頁 from ex: 使用者點選第二頁，傳入的參數就是10 pageShowSize 每頁要秀的筆數
+	 * 
+	 * @return List
+	 */
+	public List<StockVO> findAllByPage(StockForm formVO, int from, int pageShowSize) {
+		String SELECT_SQL = "SELECT * FROM stock where 1=1 ";
+		Object[] params = new Object[] {};
+
+		if (null != formVO) {
+			if (StringUtils.isNotEmpty(formVO.getStockCode())) {
+				SELECT_SQL += " and stockCode like '%" + formVO.getStockCode() + "%' ";
+			}
+
+			if (StringUtils.isNotEmpty(formVO.getSector())) {
+				SELECT_SQL += " and sector like '%" + formVO.getSector() + "%' ";
+			}
+
+			if (null != formVO.getNetIncome()) {
+				SELECT_SQL += " and netIncome " + formVO.getNetIncomeType() + formVO.getNetIncome() + " ";
+			}
+
+			if (null != formVO.getNetIncomeGrowth()) {
+				SELECT_SQL += " and netIncomeGrowth " + formVO.getNetIncomeGrowthType() + formVO.getNetIncomeGrowth() + " ";
+			}
+
+			if (null != formVO.getNetMargin()) {
+				SELECT_SQL += " and netMargin " + formVO.getNetMarginType() + formVO.getNetMargin() + " ";
+			}
+
+			if (null != formVO.getDebtEquity()) {
+				SELECT_SQL += " and debtEquity " + formVO.getDebtEquityType() + formVO.getDebtEquity() + " ";
+			}
+
+			if (null != formVO.getBookValuePerShare()) {
+				SELECT_SQL += " and bookValuePerShare " + formVO.getBookValuePerShareType() + formVO.getBookValuePerShare() + " ";
+			}
+
+			if (null != formVO.getCashPerShare()) {
+				SELECT_SQL += " and cashPerShare " + formVO.getCashPerShareType() + formVO.getCashPerShare() + " ";
+			}
+
+			if (null != formVO.getRoe()) {
+				SELECT_SQL += " and roe " + formVO.getRoeType() + formVO.getRoe() + " ";
+			}
+
+			if (null != formVO.getRoa()) {
+				SELECT_SQL += " and roa " + formVO.getRoaType() + formVO.getRoa() + " ";
+			}
+
+			if (null != formVO.getDividend()) {
+				SELECT_SQL += " and dividend " + formVO.getDividendType() + formVO.getDividend() + " ";
+			}
+			SELECT_SQL += " limit ?,? ";
+			params = new Object[] { from, pageShowSize };
+		}
+		
+		
 		return (List) jdbcTemplate.query(SELECT_SQL, params, new RowMapperResultSetExtractor(new StockMapper()));
 	}
 

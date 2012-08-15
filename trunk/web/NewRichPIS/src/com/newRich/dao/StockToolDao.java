@@ -54,12 +54,42 @@ public class StockToolDao extends BaseDao {
 	}
 
 	/**
+	 * 讀取資料By Query Form
+	 * 
+	 * @return List
+	 */
+	public List<StockTool> findAllByForm(StockToolForm formVO) {
+		String SELECT_formVO_SQL = "SELECT * FROM Stock_Tool where 1=1 ";
+		
+		if (StringUtils.isNotBlank(formVO.getId())) {
+			SELECT_formVO_SQL += "and id = '" + formVO.getId() + "' ";
+		}
+		if (StringUtils.isNotBlank(formVO.getName())) {
+			SELECT_formVO_SQL += "and userid = '" + formVO.getUserid() + "' ";
+		}
+		if (StringUtils.isNotBlank(formVO.getName())) {
+			SELECT_formVO_SQL += "and name = '" + formVO.getName() + "' ";
+		}
+		if (StringUtils.isNotBlank(formVO.getName())) {
+			SELECT_formVO_SQL += "and url = '" + formVO.getUrl() + "' ";
+		}
+		if (StringUtils.isNotBlank(formVO.getName())) {
+			SELECT_formVO_SQL += "and remark = '" + formVO.getRemark() + "' ";
+		}
+		if (StringUtils.isNotBlank(formVO.getName())) {
+			SELECT_formVO_SQL += "and updateDate = '" + formVO.getUpdateDate() + "' ";
+		}
+
+		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockToolMapper()));
+	}
+	
+	/**
 	 * 讀取資料BY user、pwd
 	 * 
 	 * @return List
 	 */
 	public List<StockTool> findByFromEnd(StockToolForm formVO, int from, int pageShowSize) {
-		String SELECT_formVO_SQL = "SELECT * FROM Stock_Tool " + "where 1=1 ";
+		String SELECT_formVO_SQL = "SELECT * FROM Stock_Tool where 1=1 ";
 		if (StringUtils.isNotBlank(formVO.getId())) {
 			SELECT_formVO_SQL += "and id = '" + formVO.getId() + "' ";
 		}

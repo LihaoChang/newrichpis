@@ -54,6 +54,22 @@ public class PersonDao extends BaseDao {
     }
 	
 	/**
+     * 讀取資料By Query Form
+     * @return List 
+     */
+	public List<Person> findAllByForm(PersonForm formVO) {
+		String SELECT_UserPwd_SQL = "SELECT * FROM Person where 1=1 ";
+		if(StringUtils.isNotBlank(formVO.getName())){
+			SELECT_UserPwd_SQL += "and name like '%" + formVO.getName() + "%' ";
+		}
+		if(StringUtils.isNotBlank(formVO.getPassword())){
+			SELECT_UserPwd_SQL += "and password = '" + formVO.getPassword() + "' ";
+		}
+
+    	return (List) jdbcTemplate.query(SELECT_UserPwd_SQL, new RowMapperResultSetExtractor(new PersonMapper()));
+    }
+	
+	/**
      * 讀取資料BY user、pwd
      * @return List 
      */

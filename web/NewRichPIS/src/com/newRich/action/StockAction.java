@@ -50,7 +50,6 @@ public class StockAction extends DefaultAction {
 	private String roaType;
 	private String dividendType;
 	private String sector;
-
 	private List<SelectVO> sectorList = new ArrayList<SelectVO>();// sector的下拉
 	private List<SelectVO> typeList = new ArrayList<SelectVO>();// 大於小於的下拉
 
@@ -199,7 +198,8 @@ public class StockAction extends DefaultAction {
 			}
 
 			// Count Stock
-			records = StockDao.findAll().size();
+			records = StockDao.findAllByForm(formVO).size();
+			
 
 			// Get Stock by Criteria
 			List<StockVO> gridModel0 = StockDao.findAllByPage(formVO, from, rows);

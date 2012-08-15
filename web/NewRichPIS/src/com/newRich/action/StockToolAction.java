@@ -60,7 +60,7 @@ public class StockToolAction extends DefaultAction {
 			}
 
 			// Count StockTool
-			records = stockToolDao.findAll().size();
+			records = stockToolDao.findAllByForm(formVO).size();
 
 			// System.out.println("..criteria.." + criteria);
 			// Get StockTool by Criteria

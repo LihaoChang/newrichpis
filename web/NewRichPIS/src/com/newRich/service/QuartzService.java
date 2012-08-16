@@ -1,6 +1,8 @@
-package com.newRich.servlet;
+package com.newRich.service;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,8 @@ public class QuartzService implements Serializable{
 	
 	private static final long serialVersionUID = 122323233244334343L;
 	private static final Logger logger = LoggerFactory.getLogger(QuartzService.class);
-
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	
 	public void JobDemo(String triggerName, String group){
 		logger.info("QuartzService JobDemo():"+triggerName+"=="+group);
 		JobDemo.run();
@@ -50,7 +53,6 @@ public class QuartzService implements Serializable{
 	}
 	
 	public void testMethod2( String triggerName,String group){
-		//这里执行定时调度业务
 		logger.info("QuartzService BBBB:"+triggerName+"=="+group);
 	}
 }

@@ -4,7 +4,6 @@
 <%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/jsp/include/re.jsp"%>
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=urf-8">
@@ -46,9 +45,14 @@
                 }
             });
 		}
+
+		function toAdd() {
+			document.queryForm.action = "goEditQuartz.action";
+			document.queryForm.submit(); //送出表單中的資料
+		}
 		</script>
     </head>
-<body>
+<form name="queryForm" action="queryQuartz.action">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td VALIGN="TOP" width="75%">
@@ -67,7 +71,8 @@
 					</tr>
 				</table>
 				<p>
-		            <a href="${pageContext.request.contextPath}/goEditQuartz.action">新增排程</a>
+		            <!-- <a href="${pageContext.request.contextPath}/goEditQuartz.action"><s:text name="trigger_add" /></a> -->
+		            <input type="button" id="addTrigger" value="<s:text name="trigger_add" />" onclick="toAdd();">
 		        </p>
 				<%@ include file="/jsp/include/query_tag_end.jsp"%>
 				</td>
@@ -75,40 +80,80 @@
 			<tr>
 				<td><%@ include file="/jsp/include/in_tag_start.jsp"%>
         
-        <table width="100%" border="0" id="GridView1">
+        <table width="100%" border="0">
             <tr>
-                <th nowrap>Trigger 名稱</th>
-                <th nowrap>Trigger 分組</th>
-                <th nowrap>下次執行時間</th>
-                <th nowrap>上次執行時間</th>
-                <th nowrap>優先級</th>
-                <th nowrap>Trigger 狀態</th>
-                <th nowrap>Trigger 類型</th>
-                <th nowrap>開始時間</th>
-                <th nowrap>結束時間</th>
-                <th nowrap>動作命令</th>
+                <th><s:text name="trigger_name" /></th>
+                <th><s:text name="trigger_group" /></th>
+                <th><s:text name="trigger_next_time" /></th>
+                <th><s:text name="trigger_last_time" /></th>
+                <th><s:text name="trigger_priority" /></th>
+                <th><s:text name="trigger_status" /></th>
+                <th><s:text name="trigger_type" /></th>
+                <th><s:text name="trigger_start_time" /></th>
+                <th><s:text name="trigger_end_time" /></th>
+                <th><s:text name="trigger_action_command" /></th>
             </tr>
-            <c:forEach var="map" items="${list}">
-                <tr>
-                    <td nowrap>${map.display_name}</td>
-                    <td nowrap>${map.trigger_group}</td>
-                    <td nowrap>${map.next_fire_time}</td>
-                    <td nowrap>${map.prev_fire_time}</td>
-                    <td nowrap>${map.priority}</td>
-                    <td nowrap>${map.statu}</td>
-                    <td nowrap>${map.trigger_type}</td>
-                    <td nowrap>${map.start_time}</td>
-                    <td nowrap>${map.end_time}</td>
-                    <td nowrap>
-                    	<input type="button" id="pause" value="暫停" onclick="doCmd('pause','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">
-						<input type="button" id="resume" value="啟動" onclick="doCmd('resume','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">
-						<input type="button" id="remove" value="刪除" onclick="doCmd('remove','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">						
+            <s:iterator value="gridModel" status="status">
+                <s:if test="#status.even == true">
+					<tr class="changeTr">
+				</s:if>
+				<s:else>
+					<tr>
+				</s:else>
+                    <td><s:property value="triggerName" /></td>
+                    <td><s:property value="triggerGroup" /></td>
+                    <td><s:property value="nextFireTime" /></td>
+                    <td><s:property value="prevFireTime" /></td>
+                    <td><s:property value="priority" /></td>
+                    <td><s:property value="triggerState" /></td>
+                    <td><s:property value="triggerType" /></td>
+                    <td><s:property value="startTime" /></td>
+                    <td><s:property value="endTime" /></td>
+                    <td>
+	                   	<input type="button" id="pause" value="<s:text name="trigger_pause" />" onclick="doCmd('pause','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">
+						<input type="button" id="resume" value="<s:text name="trigger_resume" />" onclick="doCmd('resume','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">
+						<input type="button" id="remove" value="<s:text name="trigger_remove" />" onclick="doCmd('remove','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">						
                     </td>
                 </tr>
-            </c:forEach>
+            </s:iterator>
         </table>
+        <!-- 分頁 -->
+        <table width="100%" border="0">
+			<tr align="right">
+				<td align="right"><s:if test="%{page == 1}">
+					<input type="button" value="<s:text name="page_first" />" disabled=true />&nbsp;&nbsp;
+					<input type="button" value="<s:text name="page_up" />" disabled=true />
+				</s:if> <s:else>
+
+					<input type="button" value="<s:text name="page_first" />" onclick="searchGoPage('1');" />						
+					&nbsp;&nbsp;
+           				<input type="button" value="<s:text name="page_up" />"
+						onclick="searchGoPage('<s:property value="%{page-1}"/>');" />
+					</a>
+				</s:else> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Page <s:property
+					value="page" /> of <s:property value="total" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<s:if test="%{page < total}">
+
+					<input type="button" value="<s:text name="page_down" />"
+						onclick="searchGoPage('<s:property value="%{page+1}"/>');" />						
+					&nbsp;&nbsp;
+            				<input type="button" value="<s:text name="page_last" />"
+						onclick="searchGoPage('<s:property value="total"/>');" />
+				</s:if>
+				<s:else>
+					<input type="button" value="<s:text name="page_down" />" disabled=true />&nbsp;&nbsp;
+					<input type="button" value="<s:text name="page_last" />" disabled=true />
+				</s:else>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:text name="totalCount" />:<s:property value="records" />
+				</td>
+
+			</tr>
+		</table>
         <%@ include file="/jsp/include/in_tag_end.jsp"%></td>
 		</tr>
-	</table>
-    </body>
+		</table>
+		</td>
+	</tr>
+</table>
 </html>

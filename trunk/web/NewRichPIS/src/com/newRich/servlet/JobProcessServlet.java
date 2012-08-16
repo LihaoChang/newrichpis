@@ -52,9 +52,9 @@ public class JobProcessServlet extends HttpServlet {
 		String jobtype = request.getParameter("jobtype");
 		String action = request.getParameter("action");
 
-		if (jobtype.equals("0") && action.equals("add")) {
+		if (jobtype.equals("0") && action.equals("add")) {//simple
 			this.addSimpleTrigger(request, response);
-		} else if (jobtype.equals("1") && action.equals("add")) {
+		} else if (jobtype.equals("1") && action.equals("add")) {//cron
 			this.addCronTriggerByExpression(request, response);
 		} else if (jobtype.equals("2") && action.equals("add")) {
 			this.addCronTriggerBy(request, response);
@@ -102,12 +102,14 @@ public class JobProcessServlet extends HttpServlet {
 		//取得參數
 		String triggerName = request.getParameter("triggerName");
 		String cronExpression = request.getParameter("cronExpression");
+		String triggerGroup = request.getParameter("triggerGroup");
 		if (StringUtils.isEmpty(triggerName) || StringUtils.isEmpty(cronExpression)) {
 			response.getWriter().println(1);
 		}
 
 		//新增任務
-		schedulerService.schedule(triggerName, cronExpression);
+		//schedulerService.schedule(triggerName, cronExpression);
+		schedulerService.schedule(triggerName, cronExpression, triggerGroup);
 
 		// response.setContentType("text/xml;charset=utf-8");
 		response.getWriter().println(0);

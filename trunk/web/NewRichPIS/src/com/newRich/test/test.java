@@ -1,15 +1,36 @@
 package com.newRich.test;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
-import com.newRich.backRun.vo.StockVO;
-import com.newRich.dao.PersonDao;
-import com.newRich.dao.SpringStockDao;
-import com.newRich.model.Person;
+import com.newRich.backRun.vo.SelectVO;
+import com.newRich.util.SystemUtil;
 
 public class test {
 	public static void main(String[] args) {
 		try {
+			Set<Class<?>> set = SystemUtil.getClasses(SystemUtil.QUARTZ_PACKAGE);
+			Iterator<Class<?>> it = set.iterator();
+			String reClassName = "", lastName = "";
+			int count = 0;
+			while (it.hasNext()) {
+				SelectVO select = new SelectVO();
+				Class<?> classs = (Class<?>) it.next();
+				String className = classs.getName();
+				if(null != className)
+					className = className.replace(SystemUtil.QUARTZ_PACKAGE+".", "");
+				System.out.println("lastName:"+lastName+"  className:"+className);
+				System.out.println("className.indexOf('$'):"+className.indexOf('$'));
+				if(className.indexOf('$') == -1 && !className.equals(lastName)){
+					count++;
+					reClassName = className;
+					System.out.println("  className:"+className);
+				}
+				lastName = className;
+			}
+			System.out.println("count:"+count);
 			/**
 			protected static final AreaCountryVO AreaCountryVO = null;
 			private static Log logger = LogFactory.getLog(CustomerBO.class);
@@ -673,12 +694,12 @@ public class test {
 		    }
 			*/
 			
-			// DriverManagerDataSource dataSource = new
-			// DriverManagerDataSource();
-			// dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-			// dataSource.setUrl("jdbc:mysql://localhost/newrich");
-			// dataSource.setUsername("root");
-			// dataSource.setPassword("");
+			/*
+			DriverManagerDataSource dataSource = new DriverManagerDataSource();
+			dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+			dataSource.setUrl("jdbc:mysql://localhost/newrich");
+			dataSource.setUsername("root");
+			dataSource.setPassword("");
 
 			PersonDao dao = new PersonDao();
 			// dao.setDataSource(dataSource);
@@ -691,6 +712,7 @@ public class test {
 			List<StockVO> list1 = dao1.findAll();
 			list1 = dao1.findAll();
 			System.out.println("list1==" + list1.size());
+			*/
 		} catch (Exception d) {
 			d.printStackTrace();
 		}

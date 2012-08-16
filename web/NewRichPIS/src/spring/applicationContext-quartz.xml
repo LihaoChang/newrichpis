@@ -11,13 +11,16 @@
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
         <property name="jobClass">
             <value>
-                com.newRich.quartz.MyQuartzJobBean
+                com.newRich.service.MyQuartzJobBean
             </value>
         </property>
         <property name="jobDataAsMap">
             <map>
                 <entry key="simpleService">
                     <ref bean="simpleService"/>
+                </entry>
+                <entry key="quartzService">
+                    <ref bean="quartzService"/>
                 </entry>
             </map>
         </property>

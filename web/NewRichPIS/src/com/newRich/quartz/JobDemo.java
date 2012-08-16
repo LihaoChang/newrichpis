@@ -10,13 +10,21 @@ import org.quartz.JobExecutionException;
 
 public class JobDemo implements Job {
 	static Logger loger = Logger.getLogger(JobDemo.class.getName());
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
+	static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		String name = context.getJobDetail().getJobDataMap().getString("name");
+		run();
+	}
+
+	public static void main(String[] args) {
+		run();
+	}
+	
+	public static void run(){
+		///String name = context.getJobDetail().getJobDataMap().getString("name");
 		Date thisDate = new Date();
 		String dateString = sdf.format(thisDate);
-		System.out.println("run " + name + " at " + dateString);
+		System.out.println("run " + JobDemo.class.getName() + " at " + dateString);
 		loger.warn("Executing job: executing at " + dateString);
 
 		try {
@@ -25,7 +33,7 @@ public class JobDemo implements Job {
 
 			Date endDate = new Date();
 			String endDateString = sdf.format(endDate);
-			System.out.println("END " + name + " at " + endDateString);
+			System.out.println("END " + JobDemo.class.getName() + " at " + endDateString);
 			loger.warn("job END: END at " + endDateString);
 		} catch (Exception e) {
 			e.printStackTrace();

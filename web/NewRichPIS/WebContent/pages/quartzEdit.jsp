@@ -52,7 +52,11 @@
           <td nowrap>Trigger分組：</td>
           <td>
               <select name="p_triggerGroup">
-                  <option value="DEFAULT">default</option>
+              	<option value="DEFAULT">default</option>
+              	<s:iterator value="quartzTypeList" status="status">
+					<option value="<s:property value="value" />">
+					<s:property value="string" /></option>
+				</s:iterator>
               </select>
           </td>
           <td>（Trigger分组，Quartz默許為DEFAULT）</td>
@@ -131,11 +135,24 @@
             <td>（必填）</td>
         </tr>
         <tr>
+          <td nowrap>Trigger分組：</td>
+          <td>
+              <select name="triggerGroup">
+              	<option value="DEFAULT">default</option>
+              	<s:iterator value="quartzTypeList" status="status">
+					<option value="<s:property value="value" />">
+					<s:property value="string" /></option>
+				</s:iterator>
+              </select>
+          </td>
+          <td>（Trigger分组，Quartz默許為DEFAULT）</td>
+      	</tr>
+        <tr>
             <td nowrap>Cron：</td>
             <td>
                 <input type="text" name ="cronExpression" size="20">
             </td>
-            <td>（必填，Cron表示式(如"0/10 * * ? * * *"，每10秒中執行一次)，對使用者要求比較，要會寫Cron表示式，實際項目中不適用）
+            <td>（必填，Cron表示式(如"0/10 * * ? * * *"，每10秒中執行一次)
             </td>
         </tr>
         <tr>

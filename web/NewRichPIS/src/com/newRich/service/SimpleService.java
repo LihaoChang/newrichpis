@@ -1,4 +1,4 @@
-package com.newRich.quartz;
+package com.newRich.service;
 
 import java.io.Serializable;
 

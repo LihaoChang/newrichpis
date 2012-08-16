@@ -1,11 +1,13 @@
 package com.newRich.action;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.newRich.backRun.vo.QuartzTriggersForm;
+import com.newRich.backRun.vo.QuartzTriggersVO;
 import com.newRich.backRun.vo.SelectVO;
 import com.newRich.dao.QuartzTriggersDao;
 import com.newRich.util.SystemUtil;
@@ -13,17 +15,62 @@ import com.opensymphony.xwork2.Action;
 public class QuartzAction extends DefaultAction {
 
 	private static final long serialVersionUID = 1023517277357979214L;
+	private static Log log = LogFactory.getLog(QuartzAction.class);
 	
 	private String jobtype;
 	private String action;
 	private String quartzName;
-	private List<Map<String, Object>> list;
+	//private List<Map<String, Object>> list;
+	private List<QuartzTriggersVO> gridModel;
+	
 	private List<SelectVO> quartzTypeList = new ArrayList<SelectVO>();// quartzType的下拉
 	
 	public String query() throws Exception {
-		QuartzTriggersDao dao = new QuartzTriggersDao();
-		list = dao.getQrtzTriggers();
-		return Action.SUCCESS;
+		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() + " Index Row :" + getSidx());
+		log.debug("getThis_ogin_user_id :" + getThis_login_user_id());
+
+		// log2.debug("2Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() + " Index Row :" + getSidx());
+		// log2.debug("2Search :" + searchField + " " + searchOper + " " + searchString);
+		rows = 10;
+		if (page == 0) {
+			page = 1;
+		}
+
+		// Calcalate until rows ware selected
+		int to = (rows * page);
+
+		// Calculate the first row to read
+		int from = to - rows;
+		try {
+
+			// Handle Search
+			int countSearchKey = 0;
+			QuartzTriggersForm formVO = new QuartzTriggersForm();
+			if (null != quartzName && !quartzName.equals("") && !quartzName.equals("null")) {
+				formVO.setTriggerName(quartzName);
+				countSearchKey++;
+			}
+			
+			QuartzTriggersDao dao = new QuartzTriggersDao();
+			
+			// Count Person
+			records = dao.findAllByForm(formVO).size();
+			
+			// Get Person by Criteria
+			gridModel = dao.findByFromEnd(formVO, from, rows);
+			// Set to = max rows
+			if (to > records) {
+				to = records;
+			}
+			System.out.println("..gridModel.." + gridModel);
+			// Calculate total Pages
+			total = (int) Math.ceil((double) records / (double) rows);
+		} catch (Exception e) {
+			System.out.println("PersonAction query() Exception:  " + e);
+			addActionError("ERROR : " + e.getLocalizedMessage());
+			return "error";
+		}
+		return SUCCESS;
 	}
 	
 	public String goEditQuartz() throws Exception {
@@ -57,12 +104,12 @@ public class QuartzAction extends DefaultAction {
 		this.quartzName = quartzName;
 	}
 
-	public List<Map<String, Object>> getList() {
-		return list;
+	public List<QuartzTriggersVO> getGridModel() {
+		return gridModel;
 	}
 
-	public void setList(List<Map<String, Object>> list) {
-		this.list = list;
+	public void setGridModel(List<QuartzTriggersVO> gridModel) {
+		this.gridModel = gridModel;
 	}
 
 	public List<SelectVO> getQuartzTypeList() {

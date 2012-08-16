@@ -7,7 +7,6 @@ import org.quartz.Scheduler;
 import org.quartz.Trigger;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import com.newRich.servlet.QuartzService;
 import com.newRich.util.SystemUtil;
 
 public class MyQuartzJobBean extends QuartzJobBean {
@@ -31,19 +30,19 @@ public class MyQuartzJobBean extends QuartzJobBean {
 		
 		//根據Trigger組別調用不同的應用邏輯方法
 		if (StringUtils.equals(group, Scheduler.DEFAULT_GROUP)) {
-			simpleService.testMethod(triggerName, group);
+			simpleService.testMethod2(triggerName, group);
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_JobDemo)) {
-			quartzService.testMethod2(triggerName, group);
+			quartzService.JobDemo(triggerName, group);
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockCode2DB)) {
 			quartzService.StockCode2DB(triggerName, group);
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockFindGood2DB)) {
-			quartzService.testMethod2(triggerName, group);
+			quartzService.StockFindGood2DB(triggerName, group);
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockIchart2DB)) {
-			quartzService.testMethod2(triggerName, group);
+			quartzService.StockIchart2DB(triggerName, group);
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockSector2DB)) {
-			quartzService.testMethod2(triggerName, group);
+			quartzService.StockSector2DB(triggerName, group);
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockValue2DB)) {
-			quartzService.testMethod2(triggerName, group);
+			quartzService.StockValue2DB(triggerName, group);
 		}
 	}
 

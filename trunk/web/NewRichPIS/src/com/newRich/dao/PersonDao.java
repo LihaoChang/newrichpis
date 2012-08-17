@@ -119,7 +119,7 @@ public class PersonDao extends BaseDao {
 				id
     	};
 		List list = (List) jdbcTemplate.query(SELECT_BY_ID_SQL, params, new RowMapperResultSetExtractor(new PersonMapper()));
-		if (null != list && list.size() >= 0) {
+		if (null != list && list.size() > 0) {
 			vo = (Person) list.get(0);
 		} else {
 			return null;

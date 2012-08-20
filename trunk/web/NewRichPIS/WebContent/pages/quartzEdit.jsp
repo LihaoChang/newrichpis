@@ -4,27 +4,20 @@
 <%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/jsp/include/re.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=urf-8">
-        <title>增加排程任務</title>
-        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/home.css" />
-        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/theme.css" />
-        <script type="text/javascript" src='<%=request.getContextPath()%>/js/components/calendar/calendar.js'>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/home.css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/theme.css" />
+<script type="text/javascript" src='<%=request.getContextPath()%>/js/components/calendar/calendar.js'>
+</script>
+<script type="text/javascript" src='<%=request.getContextPath()%>/js/components/calendar/calendar-setup.js'>
+</script>
+<script type="text/javascript" src='<%=request.getContextPath()%>/js/components/calendar/lang/calendar-zh_CN.js'>
+</script>
+<script type="text/javascript" src='<%=request.getContextPath()%>/js/jquery-1.5.1.js'>
+</script>
+<script type="text/javascript" src='<%=request.getContextPath()%>/js/components/jquery/jquery.form.js'>
+</script>
+<script type="text/javascript" src='<%=request.getContextPath()%>/js/job.js'>
         </script>
-        <script type="text/javascript" src='<%=request.getContextPath()%>/js/components/calendar/calendar-setup.js'>
-        </script>
-        <script type="text/javascript" src='<%=request.getContextPath()%>/js/components/calendar/lang/calendar-zh_CN.js'>
-        </script>
-        <script type="text/javascript" src='<%=request.getContextPath()%>/js/jquery-1.5.1.js'>
-        </script>
-        <script type="text/javascript" src='<%=request.getContextPath()%>/js/components/jquery/jquery.form.js'>
-        </script>
-        <script type="text/javascript" src='<%=request.getContextPath()%>/js/job.js'>
-        </script>
-    </head>
-<body>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td VALIGN="TOP" width="75%">
@@ -35,21 +28,21 @@
 				<div class="mainSubTitle"><s:text name="quartz_edit" />
 				<%@ include file="/jsp/include/query_tag_start_p2.jsp"%>
 <form id="myForm1" action="${pageContext.request.contextPath}/JobProcessServlet?jobtype=0&action=add" method="post">
-  <table>
+  <table width="100%" border="0">
       <tr>
-          <th colspan="3" bgcolor="00ff00">
-              <b>Simple Trigger</b>
+          <th colspan="2" bgcolor="00ff00">
+              <b><s:text name="trigger_simple_trigger" /></b>
           </th>
       </tr>
       <tr>
-          <td nowrap>Trigger名稱： </td>
+          <td nowrap width="10%"><s:text name="trigger_name" />： </td>
           <td>
               <input type="text" name ="p_triggerName" size="20">
+              <span style="font:red">*</span>（必填） 
           </td>
-          <td>（必填） </td>
       </tr>
       <tr>
-          <td nowrap>Trigger分組：</td>
+          <td nowrap><s:text name="trigger_group" />：</td>
           <td>
               <select name="p_triggerGroup">
               	<option value="DEFAULT">default</option>
@@ -58,44 +51,40 @@
 					<s:property value="string" /></option>
 				</s:iterator>
               </select>
+              	（Trigger分组，Quartz默許為DEFAULT）
           </td>
-          <td>（Trigger分组，Quartz默許為DEFAULT）</td>
       </tr>
       <tr>
-          <td nowrap>開始時間：</td>
+          <td nowrap><s:text name="trigger_start_time" />：</td>
           <td>
               <input type="text" name="p_startTime" size="20">
-          </td>
-          <td>
-              <img id="calBegin" src="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/cal.gif" border="0" alt="開始時間" style="cursor:pointer">（Trigger執行開始時間，必填） 
+              <img id="calBegin" src="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/cal.gif" border="0" alt="開始時間" style="cursor:pointer">（Trigger執行開始時間，<span style="font:red">*</span>必填）
           </td>
       </tr>
       <tr>
-          <td nowrap>結束時間：</td>
+          <td nowrap><s:text name="trigger_end_time" />：</td>
           <td>
               <input type="text" name="p_endTime" size="20">
-          </td>
-          <td>
-              <img id="calEnd" src="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/cal.gif" border="0" alt="結束時間" style="cursor:pointer">（Trigger執行結束時間，可以不填寫） 
+              <img id="calEnd" src="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/cal.gif" border="0" alt="結束時間" style="cursor:pointer">（Trigger執行結束時間，可以不填寫）
           </td>
       </tr>
       <tr>
-          <td nowrap>執行次數：</td>
+          <td nowrap><s:text name="trigger_times" />：</td>
           <td>
               <input type="text" name="p_repeatCount" size="20">
+               	次（表示Trigger啟動後執行多少次結束，不填寫預設執行一次） 
           </td>
-          <td>  次（表示Trigger啟動後執行多少次結束，不填寫預設執行一次） </td>
       </tr>
       <tr>
-          <td nowrap>執行間隔：</td>
+          <td nowrap><s:text name="trigger_imp_time" />：</td>
           <td>
               <input type="text" name="p_repeatInterval" size="20">
+              	 秒（表示Trigger間隔多長時間執行一次，不填寫前後執行就沒的間隔時間，直到任務結束）
           </td>
-          <td>  秒（表示Trigger間隔多長時間執行一次，不填寫前後執行就沒的間隔時間，直到任務結束）</td>
       </tr>
       <tr>
-          <td colspan="3">
-              <input type="submit" value="新增Trigger">
+          <td colspan="2" align="center">
+              <input type="submit" value="<s:text name="action_new" />">
           </td>
       </tr>
   </table>
@@ -121,21 +110,21 @@
 <br>
 
 <form id="myForm2" action="${pageContext.request.contextPath}/JobProcessServlet?jobtype=1&action=add" method="post">
-    <table>
+    <table width="100%" border="0">
         <tr>
-            <th colspan="3" bgcolor="00ff00">
-                <b>Cron Trigger 1</b>
+            <th colspan="2" bgcolor="00ff00">
+                <b><s:text name="trigger_cron_trigger" /></b>
             </th>
         </tr>
         <tr>
-            <td nowrap>Trigger 名稱：</td>
+            <td nowrap width="10%"><s:text name="trigger_name" />：</td>
             <td>
                 <input type="text" name ="triggerName" size="20">
+                <span style="font-color:red;">*（必填）</span>
             </td>
-            <td>（必填）</td>
         </tr>
         <tr>
-          <td nowrap>Trigger分組：</td>
+          <td nowrap><s:text name="trigger_group" />：</td>
           <td>
               <select name="triggerGroup">
               	<option value="DEFAULT">default</option>
@@ -144,27 +133,26 @@
 					<s:property value="string" /></option>
 				</s:iterator>
               </select>
+              	（Trigger分组，Quartz默許為DEFAULT）
           </td>
-          <td>（Trigger分组，Quartz默許為DEFAULT）</td>
       	</tr>
         <tr>
-            <td nowrap>Cron：</td>
+            <td nowrap><s:text name="trigger_expressions" />：</td>
             <td>
                 <input type="text" name ="cronExpression" size="20">
-            </td>
-            <td>（必填，Cron表示式(如"0/10 * * ? * * *"，每10秒中執行一次)
+                	（<span style="font-color:red;">*必填</span>，Cron表示式(如"0/10 * * ? * * *"，每10秒中執行一次)
             </td>
         </tr>
         <tr>
-            <td colspan="3">
-                <input type="submit" value="新增Trigger">
+            <td colspan="3" align="center">
+                <input type="submit" value="<s:text name="action_new" />">
             </td>
         </tr>
     </table>
 </form>
 
 <br>
-
+<!-- 
 <form id="myForm3" action="${pageContext.request.contextPath}/JobProcessServlet?jobtype=2&action=add" method="post">
 	<table>
         <tr>
@@ -198,7 +186,7 @@
         </tr>
     </table>
 </form>
-
+ -->
 <br>
 <%@ include file="/jsp/include/findGood_yellow_tag_end.jsp"%>
 		</td>
@@ -208,5 +196,3 @@
 		</td>
 	</tr>
 </table>
-</body>
-</html>

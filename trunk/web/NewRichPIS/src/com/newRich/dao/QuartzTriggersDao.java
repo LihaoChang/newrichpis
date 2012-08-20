@@ -52,11 +52,12 @@ public class QuartzTriggersDao extends BaseDao{
 	 */
 	public List<QuartzTriggersVO> findAllByForm(QuartzTriggersForm formVO) {
 		String SELECT_formVO_SQL = "SELECT * FROM QRTZ_TRIGGERS where 1=1 ";
-		if (StringUtils.isNotBlank(formVO.getTriggerName())) {
-			SELECT_formVO_SQL += "and TRIGGER_NAME like '%" + formVO.getTriggerName() + "%' ";
+		System.out.println("findAllByForm formVO.getTriggerGroup():"+formVO.getTriggerGroup());
+		if (StringUtils.isNotBlank(formVO.getTriggerGroup())) {
+			SELECT_formVO_SQL += "and TRIGGER_GROUP like '%" + formVO.getTriggerGroup() + "%' ";
 		}
 		SELECT_formVO_SQL += " order by start_time ";
-		
+		System.out.println("findAllByForm SELECT_formVO_SQL:"+SELECT_formVO_SQL);
 
 		return (List) jdbcTemplate.query(SELECT_formVO_SQL, new RowMapperResultSetExtractor(new QuartzTriggersMapper()));
 	}
@@ -68,14 +69,15 @@ public class QuartzTriggersDao extends BaseDao{
 	 */
 	public List<QuartzTriggersVO> findByFromEnd(QuartzTriggersForm formVO, int from, int pageShowSize) {
 		String SELECT_formVO_SQL = "SELECT * FROM QRTZ_TRIGGERS where 1=1 ";
-		if (StringUtils.isNotBlank(formVO.getTriggerName())) {
-			SELECT_formVO_SQL += "and TRIGGER_NAME like '%" + formVO.getTriggerName() + "%' ";
+		System.out.println("findByFromEnd formVO.getTriggerGroup():"+formVO.getTriggerGroup());
+		if (StringUtils.isNotBlank(formVO.getTriggerGroup())) {
+			SELECT_formVO_SQL += "and TRIGGER_GROUP like '%" + formVO.getTriggerGroup() + "%' ";
 		}
 		SELECT_formVO_SQL += " order by start_time ";
 		
 		SELECT_formVO_SQL += " limit ?,? ";
 		final Object[] params = new Object[] { from, pageShowSize };
-
+		System.out.println("findByFromEnd SELECT_formVO_SQL:"+SELECT_formVO_SQL);
 		return (List) jdbcTemplate.query(SELECT_formVO_SQL, params, new RowMapperResultSetExtractor(new QuartzTriggersMapper()));
 	}
     

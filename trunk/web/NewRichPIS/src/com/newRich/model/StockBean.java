@@ -43,6 +43,7 @@ public class StockBean implements Serializable {
 	public String createDate;// 建立時間
 	public String updateDate;// 修改時間
 	public String sector;// 產業別
+	public String strategy;// 策略
 
 	public StockBean() {
 	}
@@ -51,11 +52,9 @@ public class StockBean implements Serializable {
 		this.stockCode = stockCode;
 	}
 
-	public StockBean(String stockCode, String title, String nowPrice, String url,
-			String sharesTraded, String prefixedTicker, String netIncome, String netIncomeGrowth,
-			String netMargin, String debtEquity, String bookValuePerShare, String cashPerShare,
-			String roe, String roa, String dividend, String reScheduleDate, String createDate,
-			String updateDate, String sector) {
+	public StockBean(String stockCode, String title, String nowPrice, String url, String sharesTraded, String prefixedTicker, String netIncome,
+			String netIncomeGrowth, String netMargin, String debtEquity, String bookValuePerShare, String cashPerShare, String roe, String roa,
+			String dividend, String reScheduleDate, String createDate, String updateDate, String sector,String strategy) {
 
 		this.stockCode = stockCode;
 		this.title = title;
@@ -76,6 +75,7 @@ public class StockBean implements Serializable {
 		this.createDate = createDate;
 		this.updateDate = updateDate;
 		this.sector = sector;
+		this.strategy = strategy;
 
 	}
 
@@ -222,13 +222,21 @@ public class StockBean implements Serializable {
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
-	
+
 	public String getSector() {
 		return sector;
 	}
 
 	public void setSector(String sector) {
 		this.sector = sector;
+	}
+
+	public String getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
 	}
 
 	public String toString() {
@@ -270,7 +278,9 @@ public class StockBean implements Serializable {
 		builder.append(updateDate);
 		builder.append(", sector=");
 		builder.append(sector);
-		
+		builder.append(", strategy=");
+		builder.append(strategy);
+
 		builder.append("]");
 
 		return builder.toString();

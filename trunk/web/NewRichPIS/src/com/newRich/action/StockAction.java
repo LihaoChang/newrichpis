@@ -55,8 +55,7 @@ public class StockAction extends DefaultAction {
 
 	public String query() throws Exception {
 
-		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord()
-				+ " Index Row :" + getSidx());
+		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() + " Index Row :" + getSidx());
 		log.debug("getThis_ogin_user_id :" + getThis_login_user_id());
 
 		// log2.debug("2Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() +
@@ -120,8 +119,7 @@ public class StockAction extends DefaultAction {
 			}
 
 			if (!StringUtils.isBlank(netIncomeGrowthStr) && !netIncomeGrowthStr.equals("null")) {
-				if (!StringUtils.isBlank(netIncomeGrowthType)
-						&& !netIncomeGrowthType.equals("null")) {
+				if (!StringUtils.isBlank(netIncomeGrowthType) && !netIncomeGrowthType.equals("null")) {
 					Double thisDouble = new Double(netIncomeGrowthStr);
 					thisDouble = thisDouble / 100;
 					formVO.setNetIncomeGrowth(thisDouble);
@@ -149,8 +147,7 @@ public class StockAction extends DefaultAction {
 				}
 			}
 			if (!StringUtils.isBlank(bookValuePerShareStr) && !bookValuePerShareStr.equals("null")) {
-				if (!StringUtils.isBlank(bookValuePerShareType)
-						&& !bookValuePerShareType.equals("null")) {
+				if (!StringUtils.isBlank(bookValuePerShareType) && !bookValuePerShareType.equals("null")) {
 					Double thisDouble = new Double(bookValuePerShareStr);
 					formVO.setBookValuePerShare(thisDouble);
 					formVO.setBookValuePerShareType(typeChange(bookValuePerShareType));
@@ -199,7 +196,6 @@ public class StockAction extends DefaultAction {
 
 			// Count Stock
 			records = StockDao.findAllByForm(formVO).size();
-			
 
 			// Get Stock by Criteria
 			List<StockVO> gridModel0 = StockDao.findAllByPage(formVO, from, rows);
@@ -250,8 +246,7 @@ public class StockAction extends DefaultAction {
 					stockBean.setDividend(re100B(daividendStrDouble));
 				}
 				if (null != stockBean.getSharesTraded()) {
-					stockBean.setSharesTraded(fmt.format(Double.parseDouble(stockBean
-							.getSharesTraded())));
+					stockBean.setSharesTraded(fmt.format(Double.parseDouble(stockBean.getSharesTraded())));
 				}
 				gridModel.add(stockBean);
 			}

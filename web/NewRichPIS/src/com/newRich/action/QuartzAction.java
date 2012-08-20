@@ -19,8 +19,7 @@ public class QuartzAction extends DefaultAction {
 	
 	private String jobtype;
 	private String action;
-	private String quartzName;
-	//private List<Map<String, Object>> list;
+	private String triggerGroup;
 	private List<QuartzTriggersVO> gridModel;
 	
 	private List<SelectVO> quartzTypeList = new ArrayList<SelectVO>();// quartzType的下拉
@@ -46,11 +45,12 @@ public class QuartzAction extends DefaultAction {
 			// Handle Search
 			int countSearchKey = 0;
 			QuartzTriggersForm formVO = new QuartzTriggersForm();
-			if (null != quartzName && !quartzName.equals("") && !quartzName.equals("null")) {
-				formVO.setTriggerName(quartzName);
+			if (null != triggerGroup && !triggerGroup.equals("") && !triggerGroup.equals("null")) {
+				formVO.setTriggerGroup(triggerGroup);
 				countSearchKey++;
 			}
-			
+			//取得package：com.newRich.quartz下所有的類別名稱
+			quartzTypeList = SystemUtil.getSelectClassName();
 			QuartzTriggersDao dao = new QuartzTriggersDao();
 			
 			// Count Person
@@ -95,13 +95,13 @@ public class QuartzAction extends DefaultAction {
 	public void setAction(String action) {
 		this.action = action;
 	}
-
-	public String getQuartzName() {
-		return quartzName;
+	
+	public String getTriggerGroup() {
+		return triggerGroup;
 	}
 
-	public void setQuartzName(String quartzName) {
-		this.quartzName = quartzName;
+	public void setTriggerGroup(String triggerGroup) {
+		this.triggerGroup = triggerGroup;
 	}
 
 	public List<QuartzTriggersVO> getGridModel() {

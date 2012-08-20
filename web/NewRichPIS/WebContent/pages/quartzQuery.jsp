@@ -4,13 +4,6 @@
 <%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/jsp/include/re.jsp"%>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=urf-8">
-        <title>排程任務列表</title>
-        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/home.css" />
-		<script type="text/javascript" src='<%=request.getContextPath()%>/js/jquery-1.5.1.js'>
-        </script>
 		<script type="text/javascript">
 		function doCmd(state,triggerName,group,triggerState){
 			
@@ -50,9 +43,13 @@
 			document.queryForm.action = "goEditQuartz.action";
 			document.queryForm.submit(); //送出表單中的資料
 		}
+
+		function searchGo() {
+			document.queryForm.action = "queryQuartz.action";
+			document.queryForm.submit(); //送出表單中的資料
+		}
 		</script>
-    </head>
-<form name="queryForm" action="queryQuartz.action">
+
 	<table width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td VALIGN="TOP" width="75%">
@@ -62,18 +59,34 @@
 				<td><%@ include file="/jsp/include/query_tag_start_p1.jsp"%>
 				<div class="mainSubTitle"><s:text name="Quartz" />
 				<%@ include file="/jsp/include/query_tag_start_p2.jsp"%>
+				<form name="queryForm" action="queryQuartz.action">
 				<table width="100%" border="0">
 					<tr>
-						<th width="20%"><s:text name="quartz_name" />:</th>
+						<th width="20%"><s:text name="trigger_group" />:</th>
 						<td width="40%">
-							<input type="text" id="quartzName" name="quartzName" value='<s:property value="quartzName" />'></td>
+							<select name="triggerGroup">
+								<option value=""></option>
+				              	<option value="DEFAULT">default</option>
+				              	<s:iterator value="quartzTypeList" status="status">
+									<option value="<s:property value="value" />">
+									<s:property value="string" /></option>
+								</s:iterator>
+				              </select>
+							<!-- <input type="text" id="triggerGroup" name="triggerGroup" value='<s:property value="triggerGroup" />'></td> -->
 						<td width="40%"></td>
 					</tr>
+					<tr>
+						<td width="20%"></th>
+						<td width="40%"></td>
+						<td width="40%">
+							<input type="button" value="<s:text name="action_search" />" onclick="searchGo();" />
+							<input type="button" id="addTrigger" value="<s:text name="trigger_add" />" onclick="toAdd();">
+						</td>
+					</tr>
 				</table>
-				<p>
-		            <!-- <a href="${pageContext.request.contextPath}/goEditQuartz.action"><s:text name="trigger_add" /></a> -->
-		            <input type="button" id="addTrigger" value="<s:text name="trigger_add" />" onclick="toAdd();">
-		        </p>
+				<input type="hidden" id="id" name="id" value='<s:property value="id" />'>
+				<input type="hidden" id="page" name="page" value='0'>
+				</form>
 				<%@ include file="/jsp/include/query_tag_end.jsp"%>
 				</td>
 			</tr>
@@ -82,16 +95,16 @@
         
         <table width="100%" border="0">
             <tr>
-                <th><s:text name="trigger_name" /></th>
-                <th><s:text name="trigger_group" /></th>
-                <th><s:text name="trigger_next_time" /></th>
-                <th><s:text name="trigger_last_time" /></th>
-                <th><s:text name="trigger_priority" /></th>
-                <th><s:text name="trigger_status" /></th>
-                <th><s:text name="trigger_type" /></th>
-                <th><s:text name="trigger_start_time" /></th>
-                <th><s:text name="trigger_end_time" /></th>
-                <th><s:text name="trigger_action_command" /></th>
+                <th align="center"><s:text name="trigger_name" /></th>
+                <th align="center"><s:text name="trigger_group" /></th>
+                <th align="center"><s:text name="trigger_next_time" /></th>
+                <th align="center"><s:text name="trigger_last_time" /></th>
+                <th align="center"><s:text name="trigger_priority" /></th>
+                <th align="center"><s:text name="trigger_status" /></th>
+                <th align="center"><s:text name="trigger_type" /></th>
+                <th align="center"><s:text name="trigger_start_time" /></th>
+                <th align="center"><s:text name="trigger_end_time" /></th>
+                <th align="center"><s:text name="trigger_action_command" /></th>
             </tr>
             <s:iterator value="gridModel" status="status">
                 <s:if test="#status.even == true">
@@ -100,16 +113,16 @@
 				<s:else>
 					<tr>
 				</s:else>
-                    <td><s:property value="triggerName" /></td>
-                    <td><s:property value="triggerGroup" /></td>
-                    <td><s:property value="nextFireTime" /></td>
-                    <td><s:property value="prevFireTime" /></td>
-                    <td><s:property value="priority" /></td>
-                    <td><s:property value="triggerState" /></td>
-                    <td><s:property value="triggerType" /></td>
-                    <td><s:property value="startTime" /></td>
-                    <td><s:property value="endTime" /></td>
-                    <td>
+                    <td align="center"><s:property value="triggerName" /></td>
+                    <td align="center"><s:property value="triggerGroup" /></td>
+                    <td align="center"><s:property value="nextFireTime" /></td>
+                    <td align="center"><s:property value="prevFireTime" /></td>
+                    <td align="center"><s:property value="priority" /></td>
+                    <td align="center"><s:property value="triggerState" /></td>
+                    <td align="center"><s:property value="triggerType" /></td>
+                    <td align="center"><s:property value="startTime" /></td>
+                    <td align="center"><s:property value="endTime" /></td>
+                    <td align="center">
 	                   	<input type="button" id="pause" value="<s:text name="trigger_pause" />" onclick="doCmd('pause','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">
 						<input type="button" id="resume" value="<s:text name="trigger_resume" />" onclick="doCmd('resume','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">
 						<input type="button" id="remove" value="<s:text name="trigger_remove" />" onclick="doCmd('remove','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">						
@@ -117,6 +130,8 @@
                 </tr>
             </s:iterator>
         </table>
+        <form name="modifyForm"><input type="hidden" id="modify_id"
+					name="modify_id" value=""></form>
         <!-- 分頁 -->
         <table width="100%" border="0">
 			<tr align="right">
@@ -156,4 +171,3 @@
 		</td>
 	</tr>
 </table>
-</html>

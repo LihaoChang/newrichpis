@@ -66,7 +66,9 @@ public class StockBeanCopy {
 		if (!StringUtils.isBlank(stock.getUpdateDate())) {
 			stockBean.setUpdateDate(stock.getUpdateDate());
 		}
-
+		if (!StringUtils.isBlank(stock.getStrategy())) {
+			stockBean.setStrategy(stock.getStrategy());
+		}
 		return stockBean;
 	}
 }

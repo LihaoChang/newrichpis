@@ -55,7 +55,7 @@ public class StockDao extends BaseDao {
 	public List<StockVO> findAll() {
 		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper()));
 	}
-	
+
 	/**
 	 * 讀取所有資料By Query Form
 	 * 
@@ -108,8 +108,7 @@ public class StockDao extends BaseDao {
 				SELECT_SQL += " and dividend " + formVO.getDividendType() + formVO.getDividend() + " ";
 			}
 		}
-		
-		
+
 		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper()));
 	}
 
@@ -169,8 +168,7 @@ public class StockDao extends BaseDao {
 			SELECT_SQL += " limit ?,? ";
 			params = new Object[] { from, pageShowSize };
 		}
-		
-		
+
 		return (List) jdbcTemplate.query(SELECT_SQL, params, new RowMapperResultSetExtractor(new StockMapper()));
 	}
 
@@ -192,14 +190,14 @@ public class StockDao extends BaseDao {
 	 */
 	private static final String INSERT_SQL = " INSERT INTO stock " + " (stockCode, title, nowPrice, url, sharesTraded, "
 			+ "prefixedTicker, netIncome, netIncomeGrowth, netMargin, debtEquity, " + "bookValuePerShare, cashPerShare, roe, roa, dividend, "
-			+ "reScheduleDate, createDate, updateDate, sector) " + " VALUES " + " (?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?,"
-			+ "  ?, ?, ?, ?) ";
+			+ "reScheduleDate, createDate, updateDate, sector, strategy ) " + " VALUES " + " (?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?,"
+			+ "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?,? ) ";
 
 	public int insert(StockVO vo) {
 		final Object[] params = new Object[] { vo.getStockCode(), vo.getTitle(), vo.getNowPrice(), vo.getUrl(), vo.getSharesTraded(),
 				vo.getPrefixedTicker(), vo.getNetIncome(), vo.getNetIncomeGrowth(), vo.getNetMargin(), vo.getDebtEquity(), vo.getBookValuePerShare(),
 				vo.getCashPerShare(), vo.getRoe(), vo.getRoa(), vo.getDividend(), vo.getReScheduleDate(), vo.getCreateDate(), vo.getUpdateDate(),
-				vo.getSector() };
+				vo.getSector(), vo.getStrategy() };
 		return jdbcTemplate.update(INSERT_SQL, params);
 	}
 
@@ -212,13 +210,13 @@ public class StockDao extends BaseDao {
 	private static final String UPDATE_SQL = " UPDATE stock SET " + "title = ?, nowPrice = ?, url = ?, sharesTraded = ?, "
 			+ "prefixedTicker = ?, netIncome = ?, netIncomeGrowth = ?, netMargin = ?, debtEquity = ?, "
 			+ "bookValuePerShare = ?, cashPerShare = ?, roe = ?, roa = ?, dividend = ?, "
-			+ "reScheduleDate = ?, createDate = ?, updateDate = ?, sector = ? " + "where stockCode = ?";
+			+ "reScheduleDate = ?, createDate = ?, updateDate = ?, sector = ? , strategy = ?" + "where stockCode = ?";
 
 	public int update(StockVO vo) {
 		final Object[] params = new Object[] { vo.getTitle(), vo.getNowPrice(), vo.getUrl(), vo.getSharesTraded(), vo.getPrefixedTicker(),
 				vo.getNetIncome(), vo.getNetIncomeGrowth(), vo.getNetMargin(), vo.getDebtEquity(), vo.getBookValuePerShare(), vo.getCashPerShare(),
 				vo.getRoe(), vo.getRoa(), vo.getDividend(), vo.getReScheduleDate(), vo.getCreateDate(), vo.getUpdateDate(), vo.getSector(),
-				vo.getStockCode() };
+				vo.getStrategy(), vo.getStockCode() };
 		return jdbcTemplate.update(UPDATE_SQL, params);
 	}
 
@@ -282,14 +280,14 @@ public class StockDao extends BaseDao {
 	 */
 	private static final String INSERT_stock_SQL = " INSERT INTO stock " + " (stockCode, title, nowPrice, url, sharesTraded, "
 			+ "prefixedTicker, netIncome, netIncomeGrowth, netMargin, debtEquity, " + "bookValuePerShare, cashPerShare, roe, roa, dividend, "
-			+ "reScheduleDate, createDate, updateDate, sector) " + " VALUES " + " (?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?,"
-			+ "  ?, ?, ?, ?) ";
+			+ "reScheduleDate, createDate, updateDate, sector, strategy) " + " VALUES " + " (?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?,"
+			+ "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?) ";
 
 	public int insert(Stock vo) {
 		final Object[] params = new Object[] { vo.getStockCode(), vo.getTitle(), vo.getNowPrice(), vo.getUrl(), vo.getSharesTraded(),
 				vo.getPrefixedTicker(), vo.getNetIncome(), vo.getNetIncomeGrowth(), vo.getNetMargin(), vo.getDebtEquity(), vo.getBookValuePerShare(),
 				vo.getCashPerShare(), vo.getRoe(), vo.getRoa(), vo.getDividend(), vo.getReScheduleDate(), vo.getCreateDate(), vo.getUpdateDate(),
-				vo.getSector() };
+				vo.getSector(), vo.getStrategy() };
 		return jdbcTemplate.update(INSERT_stock_SQL, params);
 	}
 
@@ -302,13 +300,13 @@ public class StockDao extends BaseDao {
 	private static final String UPDATE_stock_SQL = " UPDATE stock SET " + "title = ?, nowPrice = ?, url = ?, sharesTraded = ?, "
 			+ "prefixedTicker = ?, netIncome = ?, netIncomeGrowth = ?, netMargin = ?, debtEquity = ?, "
 			+ "bookValuePerShare = ?, cashPerShare = ?, roe = ?, roa = ?, dividend = ?, "
-			+ "reScheduleDate = ?, createDate = ?, updateDate = ?, sector = ? " + "where stockCode = ?";
+			+ "reScheduleDate = ?, createDate = ?, updateDate = ?, sector = ? , strategy = ? " + "where stockCode = ?";
 
 	public int update(Stock vo) {
 		final Object[] params = new Object[] { vo.getTitle(), vo.getNowPrice(), vo.getUrl(), vo.getSharesTraded(), vo.getPrefixedTicker(),
 				vo.getNetIncome(), vo.getNetIncomeGrowth(), vo.getNetMargin(), vo.getDebtEquity(), vo.getBookValuePerShare(), vo.getCashPerShare(),
 				vo.getRoe(), vo.getRoa(), vo.getDividend(), vo.getReScheduleDate(), vo.getCreateDate(), vo.getUpdateDate(), vo.getSector(),
-				vo.getStockCode() };
+				vo.getStrategy(), vo.getStockCode() };
 		return jdbcTemplate.update(UPDATE_stock_SQL, params);
 	}
 
@@ -348,6 +346,13 @@ public class StockDao extends BaseDao {
 		return jdbcTemplate.update(UPDATE_StockSector2DB_SQL, params);
 	}
 
+	private static final String UPDATE_StockIchart2DB_SQL = " UPDATE stock SET " + "updateDate = ?, strategy = ? " + "where stockCode = ?";
+
+	public int updateIchart(Stock vo) {
+		final Object[] params = new Object[] { vo.getUpdateDate(), vo.getStrategy(), vo.getStockCode() };
+		return jdbcTemplate.update(UPDATE_StockIchart2DB_SQL, params);
+	}
+
 	/**
 	 * Friendly Class 讓Spring把讀取的資料一個一個塞到VO裡Call Back用.
 	 */
@@ -373,7 +378,7 @@ public class StockDao extends BaseDao {
 			vo.setCreateDate(rs.getString("createDate"));
 			vo.setUpdateDate(rs.getString("updateDate"));
 			vo.setSector(rs.getString("sector"));
-
+			vo.setStrategy(rs.getString("strategy"));
 			return vo;
 		}
 	}
@@ -415,8 +420,13 @@ public class StockDao extends BaseDao {
 			vo.setCreateDate(rs.getString("createDate"));
 			vo.setUpdateDate(rs.getString("updateDate"));
 			vo.setSector(rs.getString("sector"));
+			vo.setStrategy(rs.getString("strategy"));
 
 			return vo;
 		}
+	}
+
+	public List<Stock> queryStockBySql(String sql) {
+		return (List) jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new StockMapper2()));
 	}
 }

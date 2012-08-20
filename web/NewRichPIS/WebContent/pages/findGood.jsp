@@ -251,17 +251,18 @@
 					<tr>
 						<th width="2%"></th>
 						<th width="6%" align="center"><s:text name="findGood_stockCode" /></th>
-						<th width="8%" align="center"><s:text name="findGood_sector" /></th>
-						<th width="12%" align="center"><s:text name="findGood_sharesTraded" /></th>
-						<th width="8%" align="center"><s:text name="findGood_netIncome" /></th>
-						<th width="8%" align="center"><s:text name="findGood_netIncomeGrowth" /></th>
-						<th width="8%" align="center"><s:text name="findGood_netMargin" /></th>
-						<th width="8%" align="center"><s:text name="findGood_debtEquity" /></th>
-						<th width="8%" align="center"><s:text name="findGood_bookValuePerShare" /></th>
-						<th width="8%" align="center"><s:text name="findGood_cashPerShare" /></th>
-						<th width="8%" align="center"><s:text name="findGood_roe" /></th>
-						<th width="8%" align="center"><s:text name="findGood_roa" /></th>
-						<th width="8%" align="center"><s:text name="findGood_dividend" /></th>
+						<th width="6%" align="center"><s:text name="findGood_sector" /></th>
+						<th width="6%" align="center"><s:text name="findGood_sharesTraded" /></th>
+						<th width="6%" align="center"><s:text name="findGood_netIncome" /></th>
+						<th width="6%" align="center"><s:text name="findGood_netIncomeGrowth" /></th>
+						<th width="6%" align="center"><s:text name="findGood_netMargin" /></th>
+						<th width="6%" align="center"><s:text name="findGood_debtEquity" /></th>
+						<th width="6%" align="center"><s:text name="findGood_bookValuePerShare" /></th>
+						<th width="6%" align="center"><s:text name="findGood_cashPerShare" /></th>
+						<th width="6%" align="center"><s:text name="findGood_roe" /></th>
+						<th width="6%" align="center"><s:text name="findGood_roa" /></th>
+						<th width="6%" align="center"><s:text name="findGood_dividend" /></th>
+						<th width="28%" align="center"><s:text name="findGood_strategy" /></th>
 					</tr>
 					<s:iterator value="gridModel" status="status">
 						<s:if test="#status.even == true">
@@ -285,6 +286,7 @@
 						<td align="right"><s:property value="roe" /></td>
 						<td align="right"><s:property value="roa" /></td>
 						<td align="right"><s:property value="dividend" /></td>
+						<td align="left"><s:property value="strategy" /></td>
 						</tr>
 					</s:iterator>
 				</table>

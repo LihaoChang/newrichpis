@@ -49,8 +49,9 @@ public class Stock implements Serializable {
 	public String reScheduleDate;// 下次重跑的時間
 	public String createDate;// 建立時間
 	public String updateDate;// 修改時間
-	
+
 	public String sector;// 產業別
+	public String strategy;// 策略
 
 	public Stock() {
 	}
@@ -59,11 +60,9 @@ public class Stock implements Serializable {
 		this.stockCode = stockCode;
 	}
 
-	public Stock(String stockCode, String title, Double nowPrice, String url, int sharesTraded,
-			String prefixedTicker, Double netIncome, Double netIncomeGrowth, Double netMargin,
-			Double debtEquity, Double bookValuePerShare, Double cashPerShare, Double roe,
-			Double roa, Double dividend, String reScheduleDate, String createDate, String updateDate, 
-			String sector) {
+	public Stock(String stockCode, String title, Double nowPrice, String url, int sharesTraded, String prefixedTicker, Double netIncome,
+			Double netIncomeGrowth, Double netMargin, Double debtEquity, Double bookValuePerShare, Double cashPerShare, Double roe, Double roa,
+			Double dividend, String reScheduleDate, String createDate, String updateDate, String sector, String strategy) {
 
 		this.stockCode = stockCode;
 		this.title = title;
@@ -84,7 +83,7 @@ public class Stock implements Serializable {
 		this.createDate = createDate;
 		this.updateDate = updateDate;
 		this.sector = sector;
-
+		this.strategy = strategy;
 	}
 
 	@Column(name = "TITLE", length = 255)
@@ -249,7 +248,7 @@ public class Stock implements Serializable {
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
-	
+
 	@Column(name = "SECTOR", length = 100)
 	public String getSector() {
 		return sector;
@@ -257,6 +256,15 @@ public class Stock implements Serializable {
 
 	public void setSector(String sector) {
 		this.sector = sector;
+	}
+
+	@Column(name = "STRATEGY", length = 300)
+	public String getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
 	}
 
 	@Override
@@ -299,6 +307,9 @@ public class Stock implements Serializable {
 		builder.append(updateDate);
 		builder.append(", sector=");
 		builder.append(sector);
+		builder.append(", strategy=");
+		builder.append(strategy);
+
 		builder.append("]");
 
 		return builder.toString();

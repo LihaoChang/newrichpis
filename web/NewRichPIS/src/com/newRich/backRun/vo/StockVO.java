@@ -35,11 +35,12 @@ public class StockVO {
 	public String reScheduleDate;// 下次重跑的時間
 	public String createDate;// 建立時間
 	public String updateDate;// 修改時間
-	
+
 	public String sector;// 產業別
+	public String strategy;// 策略
 
 	public StockVO() {
-		
+
 	}
 
 	public String getTitle() {
@@ -193,6 +194,13 @@ public class StockVO {
 	public void setSector(String sector) {
 		this.sector = sector;
 	}
-	
-	
+
+	public String getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
+	}
+
 }

@@ -48,6 +48,7 @@ public class StockForm {
 	private String roeType;
 	private String roaType;
 	private String dividendType;
+	private String sharesTradedType;
 	private String sord;
 	public StockForm() {
 		
@@ -291,6 +292,14 @@ public class StockForm {
 
 	public void setSord(String sord) {
 		this.sord = sord;
+	}
+
+	public String getSharesTradedType() {
+		return sharesTradedType;
+	}
+
+	public void setSharesTradedType(String sharesTradedType) {
+		this.sharesTradedType = sharesTradedType;
 	}
 	
 }

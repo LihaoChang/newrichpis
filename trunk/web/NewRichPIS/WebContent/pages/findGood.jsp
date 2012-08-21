@@ -227,12 +227,36 @@
 							onBlur="javascript:if(checkNumber(document.updateForm.dividendStr.value)==1){alert('<s:text name="num_error2" />!') ;document.updateForm.dividendStr.focus();};">
 						%
 						</td>
+						<th width="15%" align="left"><s:text name="findGood_sharesTraded" />:
+						</th>
+						<td width="18%">
+                              <select name="sharesTradedType" size="1">
+								<s:iterator value="typeList" status="status">
+									<option value="<s:property value="value" />" <s:if test='sharesTradedType ==value'> selected="selected"</s:if>>
+									<s:property value="string" /></option>
+								</s:iterator>	
+						</select> <input type="text" name="sharesTradedStr" size="12" maxlength="10"
+							value='<s:property value="sharesTradedStr" />'
+							onBlur="javascript:if(checkNumber(document.updateForm.sharesTradedStr.value)==1){alert('<s:text name="num_error2" />!') ;document.updateForm.sharesTradedStr.focus();};">
+											
+						</td>
+					</tr>
+					
+					<tr>
+						<td width="15%" align="left">
+						</td>
+						<td width="18%">
+						</td>
+						<td width="15%" align="left">
+						</td>
+						<td width="18%">
+						</td>
 						<td width="15%" align="left">
 						</td>
 						<td width="18%" align="right"><input type="button" value="<s:text name="action_search" />"
 							onclick="searchGo();" />
 						</td>
-					</tr>
+					</tr>					
 
 				</table>
 				<input type="hidden" id="id" name="id"

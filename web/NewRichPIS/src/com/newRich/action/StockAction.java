@@ -38,6 +38,7 @@ public class StockAction extends DefaultAction {
 	private String roaStr;
 	private String dividendStr;
 	private String sectorStr;
+	private String sharesTradedStr;// 成交量
 
 	private String netIncomeType;
 	private String netIncomeType2;
@@ -49,7 +50,7 @@ public class StockAction extends DefaultAction {
 	private String roeType;
 	private String roaType;
 	private String dividendType;
-	private String sector;
+	private String sharesTradedType;// 成交量
 	private List<SelectVO> sectorList = new ArrayList<SelectVO>();// sector的下拉
 	private List<SelectVO> typeList = new ArrayList<SelectVO>();// 大於小於的下拉
 
@@ -85,6 +86,7 @@ public class StockAction extends DefaultAction {
 			System.out.println("..roaStr..[" + roaStr + "]");
 			System.out.println("..dividendStr..[" + dividendStr + "]");
 			System.out.println("..sectorStr..[" + sectorStr + "]");
+			System.out.println("..sharesTradedStr..[" + sharesTradedStr + "]");
 
 			// add sector select
 			querySectorList();
@@ -96,6 +98,16 @@ public class StockAction extends DefaultAction {
 				formVO.setStockCode(stockCodeStr);
 				countSearchKey++;
 			}
+			
+			if (!StringUtils.isBlank(sharesTradedStr) && !sharesTradedStr.equals("null")) {
+				if (!StringUtils.isBlank(sharesTradedType) && !sharesTradedType.equals("null")) {
+					int thisInt = Integer.parseInt(sharesTradedStr);
+					formVO.setSharesTraded(thisInt);
+					formVO.setSharesTradedType(typeChange(sharesTradedType));
+					countSearchKey++;
+				}
+			}
+			
 			if (null != sectorStr && !sectorStr.equals("") && !sectorStr.equals("null")) {
 				formVO.setSector(sectorStr);
 				countSearchKey++;
@@ -546,14 +558,6 @@ public class StockAction extends DefaultAction {
 		this.dividendType = dividendType;
 	}
 
-	public String getSector() {
-		return sector;
-	}
-
-	public void setSector(String sector) {
-		this.sector = sector;
-	}
-
 	public String getSectorStr() {
 		return sectorStr;
 	}
@@ -576,6 +580,22 @@ public class StockAction extends DefaultAction {
 
 	public void setTypeList(List<SelectVO> typeList) {
 		this.typeList = typeList;
+	}
+
+	public String getSharesTradedStr() {
+		return sharesTradedStr;
+	}
+
+	public void setSharesTradedStr(String sharesTradedStr) {
+		this.sharesTradedStr = sharesTradedStr;
+	}
+
+	public String getSharesTradedType() {
+		return sharesTradedType;
+	}
+
+	public void setSharesTradedType(String sharesTradedType) {
+		this.sharesTradedType = sharesTradedType;
 	}
 
 }

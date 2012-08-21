@@ -107,6 +107,10 @@ public class StockDao extends BaseDao {
 			if (null != formVO.getDividend()) {
 				SELECT_SQL += " and dividend " + formVO.getDividendType() + formVO.getDividend() + " ";
 			}
+			
+			if (formVO.getSharesTraded() != 0) {
+				SELECT_SQL += " and sharesTraded " + formVO.getSharesTradedType() + formVO.getSharesTraded() + " ";
+			}
 		}
 
 		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper()));
@@ -165,6 +169,11 @@ public class StockDao extends BaseDao {
 			if (null != formVO.getDividend()) {
 				SELECT_SQL += " and dividend " + formVO.getDividendType() + formVO.getDividend() + " ";
 			}
+			
+			if (formVO.getSharesTraded() != 0) {
+				SELECT_SQL += " and sharesTraded " + formVO.getSharesTradedType() + formVO.getSharesTraded() + " ";
+			}
+			
 			SELECT_SQL += " limit ?,? ";
 			params = new Object[] { from, pageShowSize };
 		}

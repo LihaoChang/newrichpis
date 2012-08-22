@@ -29,11 +29,12 @@ public class SystemUtil implements java.io.Serializable {
 	public static String QUARTZ_PACKAGE = "com.newRich.quartz";
 	public static String QUARTZ_CLASS_NAME[] = new String[] { "JobDemo",
 			"StockCode2DB", "StockFindGood2DB", "StockIchart2DB",
-			"StockSector2DB", "StockValue2DB" };
+			"StockSector2DB", "StockStrategy2DB", "StockValue2DB" };
 	public static String QUARTZ_CLASS_NAME_JobDemo = "JobDemo";
 	public static String QUARTZ_CLASS_NAME_StockCode2DB = "StockCode2DB";
 	public static String QUARTZ_CLASS_NAME_StockFindGood2DB = "StockFindGood2DB";
 	public static String QUARTZ_CLASS_NAME_StockIchart2DB = "StockIchart2DB";
+	public static String QUARTZ_CLASS_NAME_StockStrategy2DB = "StockStrategy2DB";
 	public static String QUARTZ_CLASS_NAME_StockSector2DB = "StockSector2DB";
 	public static String QUARTZ_CLASS_NAME_StockValue2DB = "StockValue2DB";
 	

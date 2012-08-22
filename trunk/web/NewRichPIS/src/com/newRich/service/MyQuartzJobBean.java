@@ -28,7 +28,7 @@ public class MyQuartzJobBean extends QuartzJobBean {
 		String triggerName = trigger.getName();
 		String group = trigger.getGroup();
 		
-		//根據Trigger組別調用不同的應用邏輯方法
+		//根據Trigger組別調用不同的應用邏輯方法QUARTZ_CLASS_NAME_xxxx
 		if (StringUtils.equals(group, Scheduler.DEFAULT_GROUP)) {
 			simpleService.testMethod2(triggerName, group);
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_JobDemo)) {
@@ -41,6 +41,8 @@ public class MyQuartzJobBean extends QuartzJobBean {
 			quartzService.StockIchart2DB(triggerName, group);
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockSector2DB)) {
 			quartzService.StockSector2DB(triggerName, group);
+		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockStrategy2DB)) {
+			quartzService.StockStrategy2DB(triggerName, group);
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockValue2DB)) {
 			quartzService.StockValue2DB(triggerName, group);
 		}

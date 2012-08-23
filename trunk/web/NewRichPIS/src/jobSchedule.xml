@@ -46,6 +46,10 @@
 		<job>
 			<name>StockIchart2DB</name>
 			<job-class>com.newRich.quartz.StockIchart2DB</job-class>
+		</job>
+		<job>
+			<name>StockStrategy2DB</name>
+			<job-class>com.newRich.quartz.StockStrategy2DB</job-class>
 		</job> 					
 	<!--
 		<trigger>
@@ -99,6 +103,15 @@
 				<name>Trigger_StockIchart2DB</name>
 				<job-name>StockIchart2DB</job-name>
 				<cron-expression>0 1 0/1 8 * ?</cron-expression>
+			</cron>
+		</trigger>
+		
+		<!-- 抓取符合佈局類型的股票進行更新原stock,每天早上九點執行-->
+		<trigger>
+			<cron>
+				<name>Trigger_StockStrategy2DB</name>
+				<job-name>StockStrategy2DB</job-name>
+				<cron-expression>0 0 9 * * ?</cron-expression>
 			</cron>
 		</trigger> 						 
 	</schedule>

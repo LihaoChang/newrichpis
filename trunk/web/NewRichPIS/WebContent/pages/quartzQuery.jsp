@@ -4,6 +4,7 @@
 <%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/jsp/include/re.jsp"%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.5.1.js"></script>
 		<script type="text/javascript">
 		function doCmd(state,triggerName,group,triggerState){
 			
@@ -16,7 +17,6 @@
 				alert("該Trigger正在運行中！");
 				return;
 			}
-			
 			//客戶端二次編碼，服務端再解碼，否則中文亂碼 
 			triggerName = encodeURIComponent(encodeURIComponent(triggerName));
 			group = encodeURIComponent(encodeURIComponent(group));
@@ -113,7 +113,7 @@
 				<s:else>
 					<tr>
 				</s:else>
-                    <td align="center"><s:property value="triggerName" /></td>
+                    <td align="center"><s:property value="triggerNameReal" /></td>
                     <td align="center"><s:property value="triggerGroup" /></td>
                     <td align="center"><s:property value="nextFireTime" /></td>
                     <td align="center"><s:property value="prevFireTime" /></td>
@@ -123,9 +123,9 @@
                     <td align="center"><s:property value="startTime" /></td>
                     <td align="center"><s:property value="endTime" /></td>
                     <td align="center">
-	                   	<input type="button" id="pause" value="<s:text name="trigger_pause" />" onclick="doCmd('pause','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">
-						<input type="button" id="resume" value="<s:text name="trigger_resume" />" onclick="doCmd('resume','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">
-						<input type="button" id="remove" value="<s:text name="trigger_remove" />" onclick="doCmd('remove','${map.trigger_name}','${map.trigger_group}','${map.trigger_state}')">						
+	                   	<input type="button" id="pause" value="<s:text name="trigger_pause" />" onclick="doCmd('pause','<s:property value="triggerName" />','<s:property value="triggerGroup" />','<s:property value="triggerState" />')">
+						<input type="button" id="resume" value="<s:text name="trigger_resume" />" onclick="doCmd('resume','<s:property value="triggerName" />','<s:property value="triggerGroup" />','<s:property value="triggerState" />')">
+						<input type="button" id="remove" value="<s:text name="trigger_remove" />" onclick="doCmd('remove','<s:property value="triggerName" />','<s:property value="triggerGroup" />','<s:property value="triggerState" />')">						
                     </td>
                 </tr>
             </s:iterator>

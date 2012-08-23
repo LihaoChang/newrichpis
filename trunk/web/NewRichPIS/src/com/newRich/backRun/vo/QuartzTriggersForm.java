@@ -19,6 +19,7 @@ public class QuartzTriggersForm {
 	public String calendarName;
 	public int misfireInstr;
 	public Blob jobData;
+	public String triggerNameReal;
 
 	public String getTriggerName() {
 		return triggerName;
@@ -147,4 +148,13 @@ public class QuartzTriggersForm {
 	public void setJobData(Blob jobData) {
 		this.jobData = jobData;
 	}
+	
+	public String getTriggerNameReal() {
+		return triggerNameReal;
+	}
+
+	public void setTriggerNameReal(String triggerNameReal) {
+		this.triggerNameReal = triggerNameReal;
+	}
+	
 }

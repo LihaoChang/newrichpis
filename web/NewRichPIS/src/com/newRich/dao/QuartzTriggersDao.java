@@ -69,7 +69,7 @@ public class QuartzTriggersDao extends BaseDao{
 	 */
 	public List<QuartzTriggersVO> findByFromEnd(QuartzTriggersForm formVO, int from, int pageShowSize) {
 		String SELECT_formVO_SQL = "SELECT * FROM QRTZ_TRIGGERS where 1=1 ";
-		System.out.println("findByFromEnd formVO.getTriggerGroup():"+formVO.getTriggerGroup());
+		//System.out.println("findByFromEnd formVO.getTriggerGroup():"+formVO.getTriggerGroup());
 		if (StringUtils.isNotBlank(formVO.getTriggerGroup())) {
 			SELECT_formVO_SQL += "and TRIGGER_GROUP like '%" + formVO.getTriggerGroup() + "%' ";
 		}
@@ -77,7 +77,7 @@ public class QuartzTriggersDao extends BaseDao{
 		
 		SELECT_formVO_SQL += " limit ?,? ";
 		final Object[] params = new Object[] { from, pageShowSize };
-		System.out.println("findByFromEnd SELECT_formVO_SQL:"+SELECT_formVO_SQL);
+		//System.out.println("findByFromEnd SELECT_formVO_SQL:"+SELECT_formVO_SQL);
 		return (List) jdbcTemplate.query(SELECT_formVO_SQL, params, new RowMapperResultSetExtractor(new QuartzTriggersMapper()));
 	}
     
@@ -125,7 +125,7 @@ public class QuartzTriggersDao extends BaseDao{
 	class QuartzTriggersMapper implements RowMapper {
 		public Object mapRow(ResultSet rs, int index) throws SQLException {
 			QuartzTriggersVO vo = new QuartzTriggersVO();
-			vo.setTriggerName(parserTriggerName(rs.getString("TRIGGER_NAME")));
+			vo.setTriggerName(rs.getString("TRIGGER_NAME"));
 			vo.setTriggerGroup(rs.getString("TRIGGER_GROUP"));
 			vo.setJobName(rs.getString("JOB_NAME"));
 			vo.setJobGroup(rs.getString("JOB_GROUP"));
@@ -141,6 +141,7 @@ public class QuartzTriggersDao extends BaseDao{
 			vo.setCalendarName(rs.getString("CALENDAR_NAME"));
 			vo.setMisfireInstr(rs.getInt("MISFIRE_INSTR"));
 			vo.setJobData(rs.getBlob("JOB_DATA"));
+			vo.setTriggerNameReal(parserTriggerName(rs.getString("TRIGGER_NAME")));
 
 			return vo;
 		}

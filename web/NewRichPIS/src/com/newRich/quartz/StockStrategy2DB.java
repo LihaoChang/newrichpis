@@ -58,6 +58,8 @@ public class StockStrategy2DB extends QuartzBaseDao implements Job {
 //					for (String type : strategyType) {
 //						allList = StockStrategyUtil.getStrategyListByStrategyType(type);
 //					}
+					//清除目前DB中所有佈局的字串
+					dao.clearStrategy();
 					//===========PB佈局 Start===========================
 					List<String> pb_list = StockStrategyUtil.getStrategyListByStrategyType(StockStrategyUtil.STRATEGY_TYPE_PB);
 					String noStock = "";

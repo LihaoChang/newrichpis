@@ -361,7 +361,15 @@ public class StockDao extends BaseDao {
 		final Object[] params = new Object[] { vo.getUpdateDate(), vo.getStrategy(), vo.getStockCode() };
 		return jdbcTemplate.update(UPDATE_StockIchart2DB_SQL, params);
 	}
+	
+	/**
+	 * 將strategy欄位的值清除
+	 */
+	private static final String UPDATE_CLEAR_STRATEGY_SQL = " UPDATE stock SET strategy = '' ";
 
+	public int clearStrategy() {
+		return jdbcTemplate.update(UPDATE_CLEAR_STRATEGY_SQL);
+	}
 	/**
 	 * Friendly Class 讓Spring把讀取的資料一個一個塞到VO裡Call Back用.
 	 */

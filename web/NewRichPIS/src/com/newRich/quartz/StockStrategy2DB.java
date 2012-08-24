@@ -1,7 +1,6 @@
 package com.newRich.quartz;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,45 +46,55 @@ public class StockStrategy2DB extends QuartzBaseDao implements Job {
 		
 				String mmStr = sdfMM.format(thisDate);
 				mmStr = (Integer.parseInt(mmStr) - 1) + "";
-				int totalStock = 0;
+				int totalStock = 0, sucessStotalStock = 0;
 		
 				StockDao dao = new StockDao();
 		
-				List<Stock> allList = new ArrayList<Stock>();
 				loger.info("StockStrategy2DB start -----------" + startDateString);
-				String sql = "SELECT * FROM STOCK ";
-				// System.out.println("sql:" + sql);
-				allList = dao.queryStockBySql(sql);
-				totalStock = allList.size();
 				try {
 					String strategys = "";
-					if (null != allList && allList.size() > 0) {
-						//取得目前所有的佈局類型
-						String strategyType[] = StockStrategyUtil.STRATEGY_TYPE;
-						for (Stock stockBean : allList) {
-							strategys = "";
-							Stock vo = new Stock();
-							System.out.println("stockBean.getStockCode():" + stockBean.getStockCode());
-							for (String type : strategyType) {
-								if(StockStrategyUtil.checkStockStrategy(type, stockBean.getStockCode()))
-									strategys += type + ", ";
+					//取得目前所有的佈局類型
+//					String strategyType[] = StockStrategyUtil.STRATEGY_TYPE;
+//					for (String type : strategyType) {
+//						allList = StockStrategyUtil.getStrategyListByStrategyType(type);
+//					}
+					//===========PB佈局 Start===========================
+					List<String> pb_list = StockStrategyUtil.getStrategyListByStrategyType(StockStrategyUtil.STRATEGY_TYPE_PB);
+					String noStock = "";
+					for (int i = 0; i < pb_list.size(); i++) {
+						String StockCode = pb_list.get(i);
+						strategys = StockStrategyUtil.STRATEGY_TYPE_PB;
+						//System.out.println("StockCode:"+StockCode);
+						Stock vo = dao.findByStockCodeToStock(StockCode);
+						//System.out.println("vo:"+vo);
+						Date updDate = new Date();
+						// 進行轉換
+						String updDateString = sdf1.format(updDate);
+						if(null != vo){
+							String strategy = vo.getStrategy() == null ? "" : vo.getStrategy();
+							//同一天才將原有的strategy字串相加，不同天就讓它塞符合的策略字串
+							if(vo.getUpdateDate().substring(0, 10).equals(updDateString.substring(0, 10)) &&
+								strategy.indexOf(StockStrategyUtil.STRATEGY_TYPE_PB) == -1){
+								if(!"".equals(strategy)){
+									strategys += ", " + strategy;
+								}
 							}
-							if(!"".equals(strategys))
-								strategys = strategys.substring(0, strategys.length() - 2);
 							
-							vo.setStockCode(stockBean.getStockCode());
-							Date updDate = new Date();
-							// 進行轉換
-							String updDateString = sdf1.format(updDate);
 							vo.setUpdateDate(updDateString);
 							//更新該筆資料的欄位
 							vo.setStrategy(strategys);
 							dao.updateIchart(vo);
-						}// end for
-						
-					}// end if
-		
-					loger.info("StockStrategy2DB totalStock:" + totalStock);
+							sucessStotalStock++;
+						}else{
+							noStock += StockCode + ", ";
+						}
+						totalStock++;
+						if(!"".equals(noStock))
+							noStock = noStock.substring(0, noStock.length() - 2);
+					}//end for
+					//===========PB佈局 End===========================
+					
+					loger.info("StockStrategy2DB totalStock:" + totalStock + ", No Stock code in DB:" + (totalStock - sucessStotalStock) + " , no Stock cdoes:" + noStock);
 					loger.info("StockStrategy2DB end -----------" + sdf1.format(new Date()));
 		
 				} catch (Exception e) {

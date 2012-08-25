@@ -243,9 +243,11 @@
 					</tr>
 					
 					<tr>
-						<td width="15%" align="left">
-						</td>
+						<th width="15%" align="left"><s:text name="findGood_strategy" />:
+						</th>
 						<td width="18%">
+						<input type="text" name="strategyStr" size="12" maxlength="10"
+							value='<s:property value="strategyStr" />'>							
 						</td>
 						<td width="15%" align="left">
 						</td>

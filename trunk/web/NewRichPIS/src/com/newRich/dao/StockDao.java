@@ -71,6 +71,10 @@ public class StockDao extends BaseDao {
 			if (StringUtils.isNotEmpty(formVO.getSector())) {
 				SELECT_SQL += " and sector like '%" + formVO.getSector() + "%' ";
 			}
+			
+			if (StringUtils.isNotEmpty(formVO.getStrategy())) {
+				SELECT_SQL += " and strategy like '%" + formVO.getStrategy() + "%' ";
+			}
 
 			if (null != formVO.getNetIncome()) {
 				SELECT_SQL += " and netIncome " + formVO.getNetIncomeType() + formVO.getNetIncome() + " ";
@@ -132,6 +136,10 @@ public class StockDao extends BaseDao {
 
 			if (StringUtils.isNotEmpty(formVO.getSector())) {
 				SELECT_SQL += " and sector like '%" + formVO.getSector() + "%' ";
+			}
+			
+			if (StringUtils.isNotEmpty(formVO.getStrategy())) {
+				SELECT_SQL += " and strategy like '%" + formVO.getStrategy() + "%' ";
 			}
 
 			if (null != formVO.getNetIncome()) {

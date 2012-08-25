@@ -35,8 +35,9 @@ public class StockForm {
 	public String reScheduleDate;// 下次重跑的時間
 	public String createDate;// 建立時間
 	public String updateDate;// 修改時間
-	
+
 	public String sector;// 產業別
+	public String strategy;
 
 	private String netIncomeType;
 	private String netIncomeType2;
@@ -50,8 +51,9 @@ public class StockForm {
 	private String dividendType;
 	private String sharesTradedType;
 	private String sord;
+
 	public StockForm() {
-		
+
 	}
 
 	public String getTitle() {
@@ -301,5 +303,13 @@ public class StockForm {
 	public void setSharesTradedType(String sharesTradedType) {
 		this.sharesTradedType = sharesTradedType;
 	}
-	
+
+	public String getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
+	}
+
 }

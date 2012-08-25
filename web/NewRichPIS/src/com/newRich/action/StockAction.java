@@ -39,6 +39,7 @@ public class StockAction extends DefaultAction {
 	private String dividendStr;
 	private String sectorStr;
 	private String sharesTradedStr;// 成交量
+	private String strategyStr;// 策略
 
 	private String netIncomeType;
 	private String netIncomeType2;
@@ -56,7 +57,8 @@ public class StockAction extends DefaultAction {
 
 	public String query() throws Exception {
 
-		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() + " Index Row :" + getSidx());
+		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord()
+				+ " Index Row :" + getSidx());
 		log.debug("getThis_ogin_user_id :" + getThis_login_user_id());
 
 		// log2.debug("2Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() +
@@ -87,7 +89,7 @@ public class StockAction extends DefaultAction {
 			System.out.println("..dividendStr..[" + dividendStr + "]");
 			System.out.println("..sectorStr..[" + sectorStr + "]");
 			System.out.println("..sharesTradedStr..[" + sharesTradedStr + "]");
-
+			System.out.println("..strategyStr..[" + strategyStr + "]");
 			// add sector select
 			querySectorList();
 			queryTypeList();
@@ -98,7 +100,7 @@ public class StockAction extends DefaultAction {
 				formVO.setStockCode(stockCodeStr);
 				countSearchKey++;
 			}
-			
+
 			if (!StringUtils.isBlank(sharesTradedStr) && !sharesTradedStr.equals("null")) {
 				if (!StringUtils.isBlank(sharesTradedType) && !sharesTradedType.equals("null")) {
 					int thisInt = Integer.parseInt(sharesTradedStr);
@@ -107,11 +109,17 @@ public class StockAction extends DefaultAction {
 					countSearchKey++;
 				}
 			}
-			
+
 			if (null != sectorStr && !sectorStr.equals("") && !sectorStr.equals("null")) {
 				formVO.setSector(sectorStr);
 				countSearchKey++;
 			}
+			
+			if (null != strategyStr && !strategyStr.equals("") && !strategyStr.equals("null")) {
+				formVO.setStrategy(strategyStr);
+				countSearchKey++;
+			}
+			
 			if (!StringUtils.isBlank(netIncomeStr) && !netIncomeStr.equals("null")) {
 				if (!StringUtils.isBlank(netIncomeType) && !netIncomeType.equals("null")) {
 					if (!StringUtils.isBlank(netIncomeType2) && !netIncomeType2.equals("null")) {
@@ -131,7 +139,8 @@ public class StockAction extends DefaultAction {
 			}
 
 			if (!StringUtils.isBlank(netIncomeGrowthStr) && !netIncomeGrowthStr.equals("null")) {
-				if (!StringUtils.isBlank(netIncomeGrowthType) && !netIncomeGrowthType.equals("null")) {
+				if (!StringUtils.isBlank(netIncomeGrowthType)
+						&& !netIncomeGrowthType.equals("null")) {
 					Double thisDouble = new Double(netIncomeGrowthStr);
 					thisDouble = thisDouble / 100;
 					formVO.setNetIncomeGrowth(thisDouble);
@@ -159,7 +168,8 @@ public class StockAction extends DefaultAction {
 				}
 			}
 			if (!StringUtils.isBlank(bookValuePerShareStr) && !bookValuePerShareStr.equals("null")) {
-				if (!StringUtils.isBlank(bookValuePerShareType) && !bookValuePerShareType.equals("null")) {
+				if (!StringUtils.isBlank(bookValuePerShareType)
+						&& !bookValuePerShareType.equals("null")) {
 					Double thisDouble = new Double(bookValuePerShareStr);
 					formVO.setBookValuePerShare(thisDouble);
 					formVO.setBookValuePerShareType(typeChange(bookValuePerShareType));
@@ -258,7 +268,8 @@ public class StockAction extends DefaultAction {
 					stockBean.setDividend(re100B(daividendStrDouble));
 				}
 				if (null != stockBean.getSharesTraded()) {
-					stockBean.setSharesTraded(fmt.format(Double.parseDouble(stockBean.getSharesTraded())));
+					stockBean.setSharesTraded(fmt.format(Double.parseDouble(stockBean
+							.getSharesTraded())));
 				}
 				gridModel.add(stockBean);
 			}
@@ -596,6 +607,14 @@ public class StockAction extends DefaultAction {
 
 	public void setSharesTradedType(String sharesTradedType) {
 		this.sharesTradedType = sharesTradedType;
+	}
+
+	public String getStrategyStr() {
+		return strategyStr;
+	}
+
+	public void setStrategyStr(String strategyStr) {
+		this.strategyStr = strategyStr;
 	}
 
 }

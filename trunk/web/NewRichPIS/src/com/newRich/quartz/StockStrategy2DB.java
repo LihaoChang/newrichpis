@@ -43,62 +43,67 @@ public class StockStrategy2DB extends QuartzBaseDao implements Job {
 				HttpClient httpclient = new DefaultHttpClient();
 				Date thisDate = new Date();
 				String startDateString = sdf1.format(thisDate);
-		
+
 				String mmStr = sdfMM.format(thisDate);
 				mmStr = (Integer.parseInt(mmStr) - 1) + "";
 				int totalStock = 0, sucessStotalStock = 0;
-		
+
 				StockDao dao = new StockDao();
-		
+
 				loger.info("StockStrategy2DB start -----------" + startDateString);
 				try {
 					String strategys = "";
-					//取得目前所有的佈局類型
-//					String strategyType[] = StockStrategyUtil.STRATEGY_TYPE;
-//					for (String type : strategyType) {
-//						allList = StockStrategyUtil.getStrategyListByStrategyType(type);
-//					}
-					//清除目前DB中所有佈局的字串
+					// 取得目前所有的佈局類型
+					// String strategyType[] = StockStrategyUtil.STRATEGY_TYPE;
+					// for (String type : strategyType) {
+					// allList = StockStrategyUtil.getStrategyListByStrategyType(type);
+					// }
+					// 清除目前DB中所有佈局的字串
 					dao.clearStrategy();
-					//===========PB佈局 Start===========================
+					// ===========PB佈局 Start===========================
 					List<String> pb_list = StockStrategyUtil.getStrategyListByStrategyType(StockStrategyUtil.STRATEGY_TYPE_PB);
 					String noStock = "";
 					for (int i = 0; i < pb_list.size(); i++) {
 						String StockCode = pb_list.get(i);
 						strategys = StockStrategyUtil.STRATEGY_TYPE_PB;
-						//System.out.println("StockCode:"+StockCode);
+						// System.out.println("StockCode:"+StockCode);
 						Stock vo = dao.findByStockCodeToStock(StockCode);
-						//System.out.println("vo:"+vo);
+						// System.out.println("vo:"+vo);
 						Date updDate = new Date();
 						// 進行轉換
 						String updDateString = sdf1.format(updDate);
-						if(null != vo){
+						if (null != vo) {
 							String strategy = vo.getStrategy() == null ? "" : vo.getStrategy();
-							//同一天才將原有的strategy字串相加，不同天就讓它塞符合的策略字串
-							if(vo.getUpdateDate().substring(0, 10).equals(updDateString.substring(0, 10)) &&
-								strategy.indexOf(StockStrategyUtil.STRATEGY_TYPE_PB) == -1){
-								if(!"".equals(strategy)){
+							// 同一天才將原有的strategy字串相加，不同天就讓它塞符合的策略字串
+							if (vo.getUpdateDate().substring(0, 10).equals(updDateString.substring(0, 10))
+									&& strategy.indexOf(StockStrategyUtil.STRATEGY_TYPE_PB) == -1) {
+								if (!"".equals(strategy)) {
 									strategys += ", " + strategy;
 								}
 							}
-							
+
 							vo.setUpdateDate(updDateString);
-							//更新該筆資料的欄位
+							// 更新該筆資料的欄位
 							vo.setStrategy(strategys);
 							dao.updateIchart(vo);
 							sucessStotalStock++;
-						}else{
+						} else {
 							noStock += StockCode + ", ";
 						}
 						totalStock++;
-						if(!"".equals(noStock))
-							noStock = noStock.substring(0, noStock.length() - 2);
-					}//end for
-					//===========PB佈局 End===========================
-					
-					loger.info("StockStrategy2DB totalStock:" + totalStock + ", No Stock code in DB:" + (totalStock - sucessStotalStock) + " , no Stock cdoes:" + noStock);
+						if (!"".equals(noStock)) {
+							System.out.println("noStock:[" + noStock + "]");
+							// noStock = noStock.substring(0, noStock.length() - 2);
+						}
+					}// end for
+						// ===========PB佈局 End===========================
+					if (null != noStock && noStock.length() > 2) {
+						noStock = noStock.substring(0, noStock.length() - 2);
+					}
+					loger.info("StockStrategy2DB totalStock:" + totalStock + ", No Stock code in DB:" + (totalStock - sucessStotalStock)
+							+ " , no Stock cdoes:" + noStock);
 					loger.info("StockStrategy2DB end -----------" + sdf1.format(new Date()));
-		
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
@@ -107,8 +112,8 @@ public class StockStrategy2DB extends QuartzBaseDao implements Job {
 					// immediate deallocation of all system resources
 					httpclient.getConnectionManager().shutdown();
 				}
-			}//end Spring doInTransactionWithoutResult
-		});//end Spring transactionTemplate
+			}// end Spring doInTransactionWithoutResult
+		});// end Spring transactionTemplate
 	}
-			
+
 }

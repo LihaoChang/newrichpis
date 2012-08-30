@@ -332,12 +332,12 @@ public class StockDao extends BaseDao {
 	 * 
 	 * @return List
 	 */
-	private static String SELECT_StockFindGood2DB_SQL = "SELECT * FROM STOCK WHERE (  ";
 
 	public List<Stock> FindStockFindGood2DBAll(String where) {
+		String SELECT_StockFindGood2DB_SQL = "SELECT * FROM STOCK WHERE (  ";
 		SELECT_StockFindGood2DB_SQL += where + " ) ";
 		log.info("StockFindGood2DBFindAll SQL:" + SELECT_StockFindGood2DB_SQL);
-		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper2()));
+		return (List) jdbcTemplate.query(SELECT_StockFindGood2DB_SQL, new RowMapperResultSetExtractor(new StockMapper2()));
 	}
 
 	/**
@@ -356,16 +356,14 @@ public class StockDao extends BaseDao {
 	 * @return int
 	 * 
 	 */
-	private static final String UPDATE_StockSector2DB_SQL = " UPDATE stock SET " + "updateDate = ?, sector = ? " + "where stockCode = ?";
-
 	public int updateSector(Stock vo) {
+		String UPDATE_StockSector2DB_SQL = " UPDATE stock SET " + "updateDate = ?, sector = ? " + "where stockCode = ?";
 		final Object[] params = new Object[] { vo.getUpdateDate(), vo.getSector(), vo.getStockCode() };
 		return jdbcTemplate.update(UPDATE_StockSector2DB_SQL, params);
 	}
-
-	private static final String UPDATE_StockIchart2DB_SQL = " UPDATE stock SET " + "updateDate = ?, strategy = ? " + "where stockCode = ?";
-
+	
 	public int updateIchart(Stock vo) {
+		String UPDATE_StockIchart2DB_SQL = " UPDATE stock SET " + "updateDate = ?, strategy = ? " + "where stockCode = ?";
 		final Object[] params = new Object[] { vo.getUpdateDate(), vo.getStrategy(), vo.getStockCode() };
 		return jdbcTemplate.update(UPDATE_StockIchart2DB_SQL, params);
 	}

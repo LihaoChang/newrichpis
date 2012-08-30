@@ -25,15 +25,12 @@ public class JobDemo implements Job {
 		Date thisDate = new Date();
 		String dateString = sdf.format(thisDate);
 		System.out.println("run " + JobDemo.class.getName() + " at " + dateString);
-		loger.warn("Executing job: executing at " + dateString);
+		loger.warn("job start: start at " + dateString);
 
 		try {
-			System.out.println("-------------------job_mail_demo-----------------------");
 			loger.warn("-------------------job_mail_demo-----------------------");
-
 			Date endDate = new Date();
 			String endDateString = sdf.format(endDate);
-			System.out.println("END " + JobDemo.class.getName() + " at " + endDateString);
 			loger.warn("job END: END at " + endDateString);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -16,9 +16,6 @@
         </property>
         <property name="jobDataAsMap">
             <map>
-                <entry key="simpleService">
-                    <ref bean="simpleService"/>
-                </entry>
                 <entry key="quartzService">
                     <ref bean="quartzService"/>
                 </entry>

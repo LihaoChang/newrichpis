@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import com.newRich.util.SpringQuartzConstant;
 
-/*for JobProcessServlet使用*/
 @Repository("quartzDao")
 @SuppressWarnings("unchecked")
 public class QuartzDao {

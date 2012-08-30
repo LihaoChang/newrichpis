@@ -22,7 +22,7 @@ import com.newRich.dao.StockDao;
 import com.newRich.util.StockStrategyUtil;
 
 public class StockStrategy2DB extends QuartzBaseDao implements Job {
-	static Logger loger = Logger.getLogger(StockIchart2DB.class.getName());
+	static Logger loger = Logger.getLogger(StockStrategy2DB.class.getName());
 	static PlatformTransactionManager transactionManager = null;
 	public static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	public static SimpleDateFormat sdfMM = new SimpleDateFormat("MM");

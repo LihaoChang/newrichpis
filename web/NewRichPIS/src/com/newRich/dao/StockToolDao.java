@@ -80,7 +80,7 @@ public class StockToolDao extends BaseDao {
 			SELECT_formVO_SQL += "and updateDate = '" + formVO.getUpdateDate() + "' ";
 		}
 
-		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockToolMapper()));
+		return (List) jdbcTemplate.query(SELECT_formVO_SQL, new RowMapperResultSetExtractor(new StockToolMapper()));
 	}
 	
 	/**

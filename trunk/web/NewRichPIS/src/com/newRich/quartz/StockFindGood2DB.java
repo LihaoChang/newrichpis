@@ -57,7 +57,7 @@ public class StockFindGood2DB extends QuartzBaseDao implements Job {
 					// 進行轉換
 					String dateString = sdf.format(thisDate);
 					String thisDateStr = sdf1.format(thisDate);
-					loger.info("StockFindGood2DB start -----------" + thisDateStr);
+					//loger.info("StockFindGood2DB start -----------" + thisDateStr);
 		
 					String searchUrl = "/Data/Key_Metrics";
 		
@@ -76,31 +76,40 @@ public class StockFindGood2DB extends QuartzBaseDao implements Job {
 					int totalStock = 0;
 					List<Stock> allList = new ArrayList();
 					String[] loopStr = null;
+					String showLoopStr = "";
 					if (HHInt >= 1 && HHInt <= 8) {
 						if ((HHInt % 8) == 1) {
 							loopStr = loopStr1;
-							loger.info("StockFindGood2DB loopStr1");
+							showLoopStr = "loopStr1";
+							loger.info("StockFindGood2DB loopStr1 start -----------" + thisDateStr);
 						} else if ((HHInt % 8) == 2) {
 							loopStr = loopStr2;
-							loger.info("StockFindGood2DB loopStr2");
+							showLoopStr = "loopStr2";
+							loger.info("StockFindGood2DB loopStr2 start -----------" + thisDateStr);
 						} else if ((HHInt % 8) == 3) {
 							loopStr = loopStr3;
-							loger.info("StockFindGood2DB loopStr3");
+							showLoopStr = "loopStr3";
+							loger.info("StockFindGood2DB loopStr3 start -----------" + thisDateStr);
 						} else if ((HHInt % 8) == 4) {
 							loopStr = loopStr4;
-							loger.info("StockFindGood2DB loopStr4");
+							showLoopStr = "loopStr4";
+							loger.info("StockFindGood2DB loopStr4 start -----------" + thisDateStr);
 						} else if ((HHInt % 8) == 5) {
 							loopStr = loopStr5;
-							loger.info("StockFindGood2DB loopStr5");
+							showLoopStr = "loopStr5";
+							loger.info("StockFindGood2DB loopStr5 start -----------" + thisDateStr);
 						} else if ((HHInt % 8) == 6) {
 							loopStr = loopStr6;
-							loger.info("StockFindGood2DB loopStr6");
+							showLoopStr = "loopStr6";
+							loger.info("StockFindGood2DB loopStr6 start -----------" + thisDateStr);
 						} else if ((HHInt % 8) == 7) {
 							loopStr = loopStr7;
-							loger.info("StockFindGood2DB loopStr7");
+							showLoopStr = "loopStr7";
+							loger.info("StockFindGood2DB loopStr7 start -----------" + thisDateStr);
 						} else if ((HHInt % 8) == 0) {
 							loopStr = loopStr8;
-							loger.info("StockFindGood2DB loopStr8");
+							showLoopStr = "loopStr8";
+							loger.info("StockFindGood2DB loopStr8 start -----------" + thisDateStr);
 						}
 		
 						allList = new ArrayList();
@@ -115,8 +124,9 @@ public class StockFindGood2DB extends QuartzBaseDao implements Job {
 						}
 		
 						allList = dao.FindStockFindGood2DBAll(sqlStr);
-						System.out.println("allList.size():" + allList.size());
+						loger.info("allList.size():" + allList.size());
 					} else {
+						showLoopStr = "do nothing";
 						loger.info("StockFindGood2DB do nothing");
 					}
 		
@@ -161,8 +171,8 @@ public class StockFindGood2DB extends QuartzBaseDao implements Job {
 						}
 		
 					}
-					loger.info("StockFindGood2DB totalStock:" + totalStock);
-					loger.info("StockFindGood2DB end -----------" + sdf1.format(new Date()));
+					loger.info("StockFindGood2DB "+showLoopStr+" totalStock:" + totalStock);
+					loger.info("StockFindGood2DB "+showLoopStr+" end -----------" + sdf1.format(new Date()));
 		
 				} catch (Exception e) {
 					System.out.println("getStock error:" + e.getMessage());

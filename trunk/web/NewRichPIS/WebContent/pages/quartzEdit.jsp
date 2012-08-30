@@ -72,7 +72,7 @@
           <td nowrap><s:text name="trigger_times" />：</td>
           <td>
               <input type="text" name="p_repeatCount" size="20">
-               	次（表示Trigger啟動後執行多少次結束，不填寫預設執行一次） 
+               	次（表示Trigger啟動後執行多少次結束，不填寫預設執行一次） <img src="<%=request.getContextPath()%>/images/help.png" alt="執行次數值『0』:表示執行一次；執行次數值『1』:表示執行二次；執行次數值『2』:表示執行三次，以此類推。">
           </td>
       </tr>
       <tr>

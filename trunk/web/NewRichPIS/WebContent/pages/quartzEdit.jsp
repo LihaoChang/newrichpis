@@ -45,7 +45,7 @@
           <td nowrap><s:text name="trigger_group" />：</td>
           <td>
               <select name="p_triggerGroup">
-              	<option value="DEFAULT">default</option>
+              	<!-- <option value="DEFAULT">default</option> -->
               	<s:iterator value="quartzTypeList" status="status">
 					<option value="<s:property value="value" />">
 					<s:property value="string" /></option>
@@ -127,7 +127,7 @@
           <td nowrap><s:text name="trigger_group" />：</td>
           <td>
               <select name="triggerGroup">
-              	<option value="DEFAULT">default</option>
+              	<!-- <option value="DEFAULT">default</option> -->
               	<s:iterator value="quartzTypeList" status="status">
 					<option value="<s:property value="value" />">
 					<s:property value="string" /></option>

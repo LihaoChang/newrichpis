@@ -66,7 +66,7 @@
 						<td width="40%">
 							<select name="triggerGroup">
 								<option value=""></option>
-				              	<option value="DEFAULT">default</option>
+				              	<!-- <option value="DEFAULT">default</option> -->
 				              	<s:iterator value="quartzTypeList" status="status">
 									<option value="<s:property value="value" />">
 									<s:property value="string" /></option>

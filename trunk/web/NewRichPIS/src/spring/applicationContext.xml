@@ -32,16 +32,17 @@
 		<property name="password" value="${default.jdbc.password}" />
 		<property name="minPoolSize" value="${cpool.minPoolSize}" />
 		<property name="maxPoolSize" value="${cpool.maxPoolSize}" />
-		<property name="initialPoolSize" value="${jdbc.initialPoolSize}" />
 		<property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
 		<property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
-
+		<!--  -->
+		<property name="initialPoolSize" value="${jdbc.initialPoolSize}" />
 		<property name="acquireRetryAttempts" value="${jdbc.acquireRetryAttempts}" />
 		<property name="acquireRetryDelay" value="${jdbc.acquireRetryDelay}" />
 		<property name="testConnectionOnCheckin" value="${jdbc.testConnectionOnCheckin}" />
 		<property name="automaticTestTable" value="${jdbc.automaticTestTable}" />
 		<property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
 		<property name="checkoutTimeout" value="${jdbc.checkoutTimeout}" />
+		
 	</bean>
 
 </beans>

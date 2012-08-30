@@ -1,7 +1,6 @@
 package com.newRich.service;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,47 +15,47 @@ import com.newRich.quartz.StockStrategy2DB;
 import com.newRich.quartz.StockValue2DB;
 
 @Service("quartzService")
-public class QuartzService implements Serializable{
+public class  QuartzService implements Serializable{
 	
 	private static final long serialVersionUID = 122323233244334343L;
 	private static final Logger logger = LoggerFactory.getLogger(QuartzService.class);
 	
-	public void JobDemo(String triggerName, String group){
+	public synchronized void JobDemo(String triggerName, String group){
 		logger.info("QuartzService JobDemo():"+triggerName+"=="+group+"=Running!!=");
 		JobDemo.run();
 	}
 	
-	public void StockCode2DB(String triggerName, String group){
+	public synchronized void StockCode2DB(String triggerName, String group){
 		logger.info("QuartzService StockCode2DB():"+triggerName+"=="+group+"=Running!!=");
 		StockCode2DB.run();
 	}
 	
-	public void StockFindGood2DB(String triggerName, String group){
+	public synchronized void StockFindGood2DB(String triggerName, String group){
 		logger.info("QuartzService StockFindGood2DB():"+triggerName+"=="+group+"=Running!!=");
 		StockFindGood2DB.run();
 	}
 	
-	public void StockIchart2DB(String triggerName, String group){
+	public synchronized void StockIchart2DB(String triggerName, String group){
 		logger.info("QuartzService StockIchart2DB():"+triggerName+"=="+group+"=Running!!=");
 		StockIchart2DB.run();
 	}
 	
-	public void StockSector2DB(String triggerName, String group){
+	public synchronized void StockSector2DB(String triggerName, String group){
 		logger.info("QuartzService StockSector2DB():"+triggerName+"=="+group+"=Running!!=");
 		StockSector2DB.run();
 	}
 	
-	public void StockStrategy2DB(String triggerName, String group){
+	public synchronized void StockStrategy2DB(String triggerName, String group){
 		logger.info("QuartzService StockStrategy2DB():"+triggerName+"=="+group+"=Running!!=");
 		StockStrategy2DB.run();
 	}
 	
-	public void StockValue2DB(String triggerName, String group){
+	public synchronized void StockValue2DB(String triggerName, String group){
 		logger.info("QuartzService StockValue2DB():"+triggerName+"=="+group+"=Running!!=");
 		StockValue2DB.run();
 	}
 	
-	public void testMethod2( String triggerName,String group){
+	public synchronized void testMethod2( String triggerName,String group){
 		logger.info("QuartzService testMethod2():"+triggerName+"=="+group+"=Running!!=");
 	}
 }

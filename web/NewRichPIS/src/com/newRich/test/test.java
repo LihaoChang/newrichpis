@@ -1,18 +1,31 @@
 package com.newRich.test;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.newRich.backRun.vo.SelectVO;
+import com.newRich.util.StockStrategyUtil;
 import com.newRich.util.SystemUtil;
 
 public class test {
 	public static void main(String[] args) {
 		try {
+			List<SelectVO> strategyList = new ArrayList<SelectVO>();
+			String strategy[] = StockStrategyUtil.STRATEGY_TYPE;
+			for (int i = 0; i < strategy.length; i++) {
+				String str = strategy[i];
+				SelectVO vo = new SelectVO();
+				vo.setString(str);
+				vo.setValue(str);
+				strategyList.add(vo);
+			}
 			
+			System.out.println("action strategyList.size():" + strategyList.size());
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd");
 			String date = "2012/08/21 20:37:47";
 			System.out.println(date.indexOf("9"));

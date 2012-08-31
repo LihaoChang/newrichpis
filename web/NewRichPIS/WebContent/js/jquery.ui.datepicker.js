@@ -863,8 +863,13 @@ $.extend(Datepicker.prototype, {
 		inst['selected' + (period == 'M' ? 'Month' : 'Year')] =
 		inst['draw' + (period == 'M' ? 'Month' : 'Year')] =
 			parseInt(select.options[select.selectedIndex].value,10);
-		this._notifyChange(inst);
-		this._adjustDate(target);
+		var mythis=this;
+        setTimeout(function() {
+                mythis._notifyChange(inst);
+                mythis._adjustDate(target);
+        },1);
+		//this._notifyChange(inst);
+		//this._adjustDate(target);
 	},
 
 	/* Restore input focus after not changing month/year. */

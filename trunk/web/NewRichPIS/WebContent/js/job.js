@@ -58,8 +58,8 @@ function showResponse(responseText, statusText)  {
     //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
     //    '\n\nThe output div should have already been updated with the responseText.'); 
 	if(responseText == 0){
-		alert("添加Trigger成功！");
+		alert("新增成功!!");
 	}else if(responseText == 1){
-		alert("请输入必填值！");
+		alert("請輸入必填的值!!");
 	}
 } 

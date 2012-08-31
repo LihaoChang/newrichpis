@@ -16,6 +16,7 @@ import com.newRich.backRun.vo.StockVO;
 import com.newRich.dao.StockDao;
 import com.newRich.model.StockBean;
 import com.newRich.util.StockBeanCopy;
+import com.newRich.util.StockStrategyUtil;
 
 public class StockAction extends DefaultAction {
 
@@ -54,6 +55,7 @@ public class StockAction extends DefaultAction {
 	private String sharesTradedType;// 成交量
 	private List<SelectVO> sectorList = new ArrayList<SelectVO>();// sector的下拉
 	private List<SelectVO> typeList = new ArrayList<SelectVO>();// 大於小於的下拉
+	private List<SelectVO> strategyList = new ArrayList<SelectVO>();// 大於小於的下拉
 
 	public String query() throws Exception {
 
@@ -93,6 +95,7 @@ public class StockAction extends DefaultAction {
 			// add sector select
 			querySectorList();
 			queryTypeList();
+			queryStrategyList();
 
 			// set查詢的參數
 			StockForm formVO = new StockForm();
@@ -349,7 +352,11 @@ public class StockAction extends DefaultAction {
 		}
 		return outStr;
 	}
-
+	
+	/**
+	 * 產生『產業類別』下拉
+	 * @return
+	 */
 	public List<SelectVO> querySectorList() {
 		List<SelectVO> sectors = new ArrayList<SelectVO>();
 		sectors = StockDao.querySectorList();
@@ -359,6 +366,10 @@ public class StockAction extends DefaultAction {
 		return sectors;
 	}
 
+	/**
+	 * 產生『數值比較』下拉
+	 * @return
+	 */
 	public List<SelectVO> queryTypeList() {
 		List<SelectVO> types = new ArrayList<SelectVO>();
 
@@ -381,7 +392,28 @@ public class StockAction extends DefaultAction {
 		typeList = types;
 		return types;
 	}
-
+	
+	/**
+	 * 產生『策略』下拉
+	 */
+	public void queryStrategyList() {
+		List<SelectVO> strategys = new ArrayList<SelectVO>();
+		SelectVO selectVO1 = new SelectVO();
+		selectVO1.setString("");
+		selectVO1.setValue("");
+		strategys.add(selectVO1);
+		String strategy[] = StockStrategyUtil.STRATEGY_TYPE;
+		for (int i = 0; i < strategy.length; i++) {
+			String str = strategy[i];
+			SelectVO vo = new SelectVO();
+			vo.setString(str);
+			vo.setValue(str);
+			strategys.add(vo);
+		}
+		strategyList = strategys;
+		System.out.println("action strategyList.size():" + strategyList.size());
+	}
+	
 	public String typeChange(String typeCode) {
 		String str = "";
 		if (null != typeCode && !"".equals(typeCode)) {
@@ -615,6 +647,14 @@ public class StockAction extends DefaultAction {
 
 	public void setStrategyStr(String strategyStr) {
 		this.strategyStr = strategyStr;
+	}
+
+	public List<SelectVO> getStrategyList() {
+		return strategyList;
+	}
+
+	public void setStrategyList(List<SelectVO> strategyList) {
+		this.strategyList = strategyList;
 	}
 
 }

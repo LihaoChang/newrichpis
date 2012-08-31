@@ -12,7 +12,7 @@
 </script>
 <script type="text/javascript" src='<%=request.getContextPath()%>/js/components/calendar/lang/calendar-zh_CN.js'>
 </script>
-<script type="text/javascript" src='<%=request.getContextPath()%>/js/jquery-1.5.1.js'>
+<script type="text/javascript" src='<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js'>
 </script>
 <script type="text/javascript" src='<%=request.getContextPath()%>/js/components/jquery/jquery.form.js'>
 </script>
@@ -38,7 +38,6 @@
           <td nowrap width="10%"><s:text name="trigger_name" />： </td>
           <td>
               <input type="text" name ="p_triggerName" size="20">
-              <span style="font:red">*</span>（必填） 
           </td>
       </tr>
       <tr>
@@ -57,15 +56,15 @@
       <tr>
           <td nowrap><s:text name="trigger_start_time" />：</td>
           <td>
-              <input type="text" name="p_startTime" size="20">
-              <img id="calBegin" src="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/cal.gif" border="0" alt="開始時間" style="cursor:pointer">（Trigger執行開始時間，<span style="font:red">*</span>必填）
+              <input type="text" name="p_startTime" id="p_startTime" size="20">
+              <img id="calBegin" src="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/cal.gif" border="0" alt="開始時間" style="cursor:pointer">（Trigger執行開始時間Ex:2012-08-31 13:00，<span style="font:red">*</span>必填）
           </td>
       </tr>
       <tr>
           <td nowrap><s:text name="trigger_end_time" />：</td>
           <td>
-              <input type="text" name="p_endTime" size="20">
-              <img id="calEnd" src="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/cal.gif" border="0" alt="結束時間" style="cursor:pointer">（Trigger執行結束時間，可以不填寫）
+              <input type="text" name="p_endTime" id="p_endTime" size="20">
+              <img id="calEnd" src="<%=request.getContextPath()%>/js/components/calendar/skins/aqua/cal.gif" border="0" alt="結束時間" style="cursor:pointer">（Trigger執行結束時間Ex:2012-08-31 13:00，可以不填寫）
           </td>
       </tr>
       <tr>
@@ -88,8 +87,7 @@
           </td>
       </tr>
   </table>
-</form>
-<script type="text/javascript">
+  <script type="text/javascript">
     Calendar.setup({
         inputField: "p_startTime",
         ifFormat: "%Y-%m-%d %H:%M",
@@ -106,6 +104,8 @@
         step: 1
     });
 </script>
+</form>
+
 
 <br>
 

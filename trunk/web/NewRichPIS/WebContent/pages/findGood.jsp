@@ -246,8 +246,15 @@
 						<th width="15%" align="left"><s:text name="findGood_strategy" />:
 						</th>
 						<td width="18%">
-						<input type="text" name="strategyStr" size="12" maxlength="10"
-							value='<s:property value="strategyStr" />'>							
+							<select name="strategyStr" size="1">
+								<s:iterator value="strategyList" status="status">
+									<option value="<s:property value="value" />" <s:if test='strategyStr ==value'> selected="selected"</s:if>>
+									<s:property value="string" /></option>
+								</s:iterator>	
+							</select>
+							<!-- 
+							<input type="text" name="strategyStr" size="12" maxlength="10" value='<s:property value="strategyStr" />'>
+							 -->							
 						</td>
 						<td width="15%" align="left">
 						</td>
@@ -278,17 +285,17 @@
 						<th width="2%"></th>
 						<th width="6%" align="center"><s:text name="findGood_stockCode" /></th>
 						<th width="6%" align="center"><s:text name="findGood_sector" /></th>
-						<th width="6%" align="center"><s:text name="findGood_sharesTraded" /></th>
-						<th width="6%" align="center"><s:text name="findGood_netIncome" /></th>
-						<th width="6%" align="center"><s:text name="findGood_netIncomeGrowth" /></th>
-						<th width="6%" align="center"><s:text name="findGood_netMargin" /></th>
-						<th width="6%" align="center"><s:text name="findGood_debtEquity" /></th>
-						<th width="6%" align="center"><s:text name="findGood_bookValuePerShare" /></th>
-						<th width="6%" align="center"><s:text name="findGood_cashPerShare" /></th>
-						<th width="6%" align="center"><s:text name="findGood_roe" /></th>
-						<th width="6%" align="center"><s:text name="findGood_roa" /></th>
-						<th width="6%" align="center"><s:text name="findGood_dividend" /></th>
-						<th width="28%" align="center"><s:text name="findGood_strategy" /></th>
+						<th width="7%" align="center"><s:text name="findGood_sharesTraded" /></th>
+						<th width="7%" align="center"><s:text name="findGood_netIncome" /></th>
+						<th width="7%" align="center"><s:text name="findGood_netIncomeGrowth" /></th>
+						<th width="7%" align="center"><s:text name="findGood_netMargin" /></th>
+						<th width="8%" align="center"><s:text name="findGood_debtEquity" /></th>
+						<th width="7%" align="center"><s:text name="findGood_bookValuePerShare" /></th>
+						<th width="7%" align="center"><s:text name="findGood_cashPerShare" /></th>
+						<th width="7%" align="center"><s:text name="findGood_roe" /></th>
+						<th width="7%" align="center"><s:text name="findGood_roa" /></th>
+						<th width="7%" align="center"><s:text name="findGood_dividend" /></th>
+						<th width="6%" align="center"><s:text name="findGood_strategy" /></th>
 					</tr>
 					<s:iterator value="gridModel" status="status">
 						<s:if test="#status.even == true">
@@ -298,7 +305,7 @@
 							<tr>
 						</s:else>
 
-						<td align="left"><s:property value="#status.count" /></td>
+						<td align="center"><s:property value="#status.count" /></td>
 						<!-- <td align="center"><a href='http://www.finviz.com/quote.ashx?t=<s:property value="stockCode" />&ty=c&ta=1&p=d&b=1' target='_blank'><s:property value="stockCode" /></a></td> -->
 						<td align="center"><a href='#' onclick="openwin('<s:property value="stockCode" />')"><s:property value="stockCode" /></a></td>
 						<td align="center"><s:property value="sector" /></td><!--  -->

@@ -134,7 +134,7 @@ public class QuartzTriggersDao extends BaseDao{
 			vo.setNextFireTime(longToDateString(rs.getLong("NEXT_FIRE_TIME")));
 			vo.setPrevFireTime(longToDateString(rs.getLong("PREV_FIRE_TIME")));
 			vo.setPriority(rs.getInt("PRIORITY"));
-			vo.setTriggerState(rs.getString("TRIGGER_STATE"));
+			vo.setTriggerState(SpringQuartzConstant.status.get(rs.getString("TRIGGER_STATE")));
 			vo.setTriggerType(rs.getString("TRIGGER_TYPE"));
 			vo.setStartTime(longToDateString(rs.getLong("START_TIME")));
 			vo.setEndTime(longToDateString(rs.getLong("END_TIME")));
@@ -142,7 +142,7 @@ public class QuartzTriggersDao extends BaseDao{
 			vo.setMisfireInstr(rs.getInt("MISFIRE_INSTR"));
 			vo.setJobData(rs.getBlob("JOB_DATA"));
 			vo.setTriggerNameReal(parserTriggerName(rs.getString("TRIGGER_NAME")));
-
+			
 			return vo;
 		}
 	}

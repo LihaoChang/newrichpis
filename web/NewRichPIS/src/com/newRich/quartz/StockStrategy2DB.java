@@ -91,12 +91,49 @@ public class StockStrategy2DB extends QuartzBaseDao implements Job {
 							noStock += StockCode + ", ";
 						}
 						totalStock++;
+						//if (!"".equals(noStock)) {
+							//System.out.println("noStock:[" + noStock + "]");
+							// noStock = noStock.substring(0, noStock.length() - 2);
+						//}
+					}// end for
+					// ===========PB佈局 End===========================
+					
+					// ===========PC佈局 Start===========================
+					List<String> pc_list = StockStrategyUtil.getStrategyListByStrategyType(StockStrategyUtil.STRATEGY_TYPE_PC);
+					for (int i = 0; i < pc_list.size(); i++) {
+						String StockCode = pc_list.get(i);
+						strategys = StockStrategyUtil.STRATEGY_TYPE_PC;
+						// System.out.println("StockCode:"+StockCode);
+						Stock vo = dao.findByStockCodeToStock(StockCode);
+						// System.out.println("vo:"+vo);
+						Date updDate = new Date();
+						// 進行轉換
+						String updDateString = sdf1.format(updDate);
+						if (null != vo) {
+							String strategy = vo.getStrategy() == null ? "" : vo.getStrategy();
+							// 同一天才將原有的strategy字串相加，不同天就讓它塞符合的策略字串
+							if (vo.getUpdateDate().substring(0, 10).equals(updDateString.substring(0, 10))
+									&& strategy.indexOf(StockStrategyUtil.STRATEGY_TYPE_PC) == -1) {
+								if (!"".equals(strategy)) {
+									strategys += ", " + strategy;
+								}
+							}
+
+							vo.setUpdateDate(updDateString);
+							// 更新該筆資料的欄位
+							vo.setStrategy(strategys);
+							dao.updateIchart(vo);
+							sucessStotalStock++;
+						} else {
+							noStock += StockCode + ", ";
+						}
+						totalStock++;
 						if (!"".equals(noStock)) {
 							System.out.println("noStock:[" + noStock + "]");
 							// noStock = noStock.substring(0, noStock.length() - 2);
 						}
 					}// end for
-						// ===========PB佈局 End===========================
+					// ===========PC佈局 End===========================
 					if (null != noStock && noStock.length() > 2) {
 						noStock = noStock.substring(0, noStock.length() - 2);
 					}

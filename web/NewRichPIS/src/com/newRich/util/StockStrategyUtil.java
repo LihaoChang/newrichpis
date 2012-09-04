@@ -17,13 +17,13 @@ import org.apache.http.protocol.HttpContext;
 
 public class StockStrategyUtil {
 	
-	public static String STRATEGY_TYPE[] = new String[] { "PB" };
+	public static String STRATEGY_TYPE[] = new String[] { "PB", "PC" };
 	public static String STRATEGY_TYPE_PB = "PB";
 	public static String STRATEGY_TYPE_PC = "PC";
 	
 	//各種佈局策略的url -- start
 	private static String PB_STRATEGY_URL = "http://finviz.com/screener.ashx?v=111&f=ta_candlestick_mw,ta_highlow20d_nh,ta_highlow50d_nh,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=3";
-	private static String PC_STRATEGY_URL = "";
+	private static String PC_STRATEGY_URL = "http://finviz.com/screener.ashx?v=111&f=ta_highlow20d_nh,ta_sma20_pa,ta_sma200_pb,ta_sma50_pa&ft=3";
 	
 	//各種佈局策略的url -- end
 	
@@ -41,7 +41,7 @@ public class StockStrategyUtil {
 	
 	public static void main(String[] args) {
 		try {
-			List<String> list = getStrategyListByStrategyType(STRATEGY_TYPE_PB);
+			List<String> list = getStrategyListByStrategyType(STRATEGY_TYPE_PC);
 			System.out.println("list.size():" + list.size());
 		} catch (Exception d) {
 			d.printStackTrace();
@@ -181,7 +181,9 @@ public class StockStrategyUtil {
 	}
 	
 	/**
+	 * @@舊方法目前不再使用
 	 * 傳入股票代號，驗證是否符合PB佈局
+	 * 
 	 * @param stockCode
 	 * @return
 	 */
@@ -193,6 +195,7 @@ public class StockStrategyUtil {
 	}
 	
 	/**
+	 * @@舊方法目前不再使用
 	 * 傳入欲查詢的佈局類型及欲查詢的股票代碼，驗證是否符合佈局類型的條件
 	 * 符合回傳true,否則false
 	 * @param strategyType(佈局類型)

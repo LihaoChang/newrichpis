@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import net.sf.navigator.menu.MenuComponent;
 import net.sf.navigator.menu.MenuRepository;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
@@ -120,11 +121,13 @@ public class LoginAction extends ActionSupport {
 		// LoginBusiness business = new LoginBusiness();
 
 		String login_user_id = "loginerror";
+		String role = "";
 		// login_user_id = business.check_login(name, password);
 		List<Person> personList = personDao.findByUserPwd(name, password);
 		for (Person person : personList) {
 			if (person.getName().equals(name) && person.getPassword().equals(password)) {
 				login_user_id = person.getId();
+				role = person.getRole();
 			}
 		}
 		if (login_user_id.equals("loginerror")) {
@@ -136,6 +139,8 @@ public class LoginAction extends ActionSupport {
 			request.getSession(true).setAttribute("check_login", "loginsuccess");
 			request.getSession(true).setAttribute("login_user_id", login_user_id);
 			request.getSession(true).setAttribute("login_user_name", name);
+			request.getSession(true).setAttribute("login_role", role);
+			System.out.println("=-===========================role:" + role);
 
 			if (request.getSession(true).getAttribute("check_login") != null) {
 				this_check_login = request.getSession(true).getAttribute("check_login").toString();
@@ -147,15 +152,15 @@ public class LoginAction extends ActionSupport {
 			if (request.getSession(true).getAttribute("login_user_name") != null) {
 				this_login_user_name = request.getSession(true).getAttribute("login_user_name").toString();
 			}
-			try{
+			try {
 				gridModel = menuItemDao.findAll();
-			}catch (Exception e) {
-	        	e.printStackTrace();
-	            throw new RuntimeException("Get Connection Error!", e);
-	        }
-			
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("Get Connection Error!", e);
+			}
+
 			// menu.listMenuItem();
-			//System.out.println("gridModel : "+gridModel.size());
+			// System.out.println("gridModel : "+gridModel.size());
 			System.out.println("gridModel : " + gridModel);
 			MenuRepository repository = new MenuRepository();
 			HttpSession httpsession = (HttpSession) request.getSession();
@@ -165,26 +170,52 @@ public class LoginAction extends ActionSupport {
 			for (int i = 0; i < gridModel.size(); i++) {
 				MenuComponent mc = new MenuComponent();
 				MenuItem mi = (MenuItem) gridModel.get(i);
-				String name = mi.getName();
-				mc.setName(name);
-				String parent = (String) mi.getParent_name();
-				System.out.println(name + ", parent is: " + parent);
-				if (parent != null) {
-					MenuComponent parentMenu = repository.getMenu(parent);
-					if (parentMenu == null) {
-						System.out.println("parentMenu '" + parent + "' doesn't exist!");
-						// create a temporary parentMenu
-						parentMenu = new MenuComponent();
-						parentMenu.setName(parent);
-						repository.addMenu(parentMenu);
+
+				if (!StringUtils.isBlank(mi.getTarget()) && mi.getTarget().equals(SystemUtil.ADMIN_ROLE)) {
+					if (!StringUtils.isBlank(role) && role.equals(SystemUtil.ADMIN_ROLE)) {
+						String name = mi.getName();
+						mc.setName(name);
+						String parent = (String) mi.getParent_name();
+						// System.out.println(name + ", parent is: " + parent);
+						if (parent != null) {
+							MenuComponent parentMenu = repository.getMenu(parent);
+							if (parentMenu == null) {
+								// System.out.println("parentMenu '" + parent + "' doesn't exist!");
+								// create a temporary parentMenu
+								parentMenu = new MenuComponent();
+								parentMenu.setName(parent);
+								repository.addMenu(parentMenu);
+							}
+							mc.setParent(parentMenu);
+						}
+						String title = (String) mi.getTitle();
+						mc.setTitle(getText(title));
+						String location = (String) mi.getLocation();
+						mc.setLocation(location);
+						repository.addMenu(mc);
 					}
-					mc.setParent(parentMenu);
+				} else {
+					String name = mi.getName();
+					mc.setName(name);
+					String parent = (String) mi.getParent_name();
+					// System.out.println(name + ", parent is: " + parent);
+					if (parent != null) {
+						MenuComponent parentMenu = repository.getMenu(parent);
+						if (parentMenu == null) {
+							// System.out.println("parentMenu '" + parent + "' doesn't exist!");
+							// create a temporary parentMenu
+							parentMenu = new MenuComponent();
+							parentMenu.setName(parent);
+							repository.addMenu(parentMenu);
+						}
+						mc.setParent(parentMenu);
+					}
+					String title = (String) mi.getTitle();
+					mc.setTitle(getText(title));
+					String location = (String) mi.getLocation();
+					mc.setLocation(location);
+					repository.addMenu(mc);
 				}
-				String title = (String) mi.getTitle();
-				mc.setTitle(getText(title));
-				String location = (String) mi.getLocation();
-				mc.setLocation(location);
-				repository.addMenu(mc);
 			}
 			// request.setAttribute("repository", repository);
 			session.setAttribute("repository", repository);

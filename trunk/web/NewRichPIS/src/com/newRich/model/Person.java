@@ -1,12 +1,11 @@
 package com.newRich.model;
 
-
-
 public class Person implements java.io.Serializable {
 	private static final long serialVersionUID = 1983691355339139003L;
 	private String id;
 	private String name;
 	private String password;
+	private String role;
 
 	public Person() {
 	}
@@ -15,10 +14,11 @@ public class Person implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Person(String id, String name, String password) {
+	public Person(String id, String name, String password, String role) {
 		this.id = id;
 		this.name = name;
 		this.password = password;
+		this.role = role;
 	}
 
 	public String getId() {
@@ -43,6 +43,14 @@ public class Person implements java.io.Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }

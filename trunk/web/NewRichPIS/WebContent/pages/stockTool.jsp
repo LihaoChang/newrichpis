@@ -87,8 +87,11 @@
 						<th width="20%"><s:text name="note" />:</th>
 						<td width="40%">
                         <textarea name="remark" rows="4" cols="50"><s:property value="remark" /></textarea></td>
-						<td width="40%"><input type="button" name="button"
-							value="<s:text name="save" />" onclick="check_up()" /> <input type="button"
+						<td width="40%">
+						<s:if test='#session["login_role"] != null && #session["login_role"] =="A" '>
+						<input type="button" name="button" value="<s:text name="save" />" onclick="check_up()" />
+						</s:if> 
+							<input type="button"
 							value="<s:text name="clean" />" onclick="self.location.href='stockTool.action'" /> <input
 							type="button" value="<s:text name="search" />" onclick="searchGo();" /></td>
 					</tr>

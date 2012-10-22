@@ -113,7 +113,9 @@
 						<th width="5%"></th>
 						<th width="20%"><s:text name="stockTool_name" /></th>
 						<th width="55%"><s:text name="note" /></th>
+						<s:if test='#session["login_role"] != null && #session["login_role"] =="A" '>
 						<th width="20%"></th>
+						</s:if>
 					</tr>
 					<s:iterator value="gridModel" status="status">
 						<s:if test="#status.even == true">
@@ -126,10 +128,14 @@
 						<td><s:property value="#status.count" /></td>
 						<td><a href='#' onclick="window.open('<s:property value="url" />')"><s:property value="name" /></td>
 						<td><s:property value="remark" /></td>
-						<td><input type="button" name="button" value="<s:text name="action_edit" />"
+						<s:if test='#session["login_role"] != null && #session["login_role"] =="A" '>
+						<td>						
+						<input type="button" name="button" value="<s:text name="action_edit" />"
 							onclick="toModify('<s:property value="id" />','M','')" /> <input
 							type="button" name="button" value="<s:text name="action_delete" />"
-							onclick="toModify('<s:property value="id" />','D','<s:property value="#status.count" />')" /></td>
+							onclick="toModify('<s:property value="id" />','D','<s:property value="#status.count" />')" />							
+							</td>
+						</s:if>
 						</tr>
 					</s:iterator>
 				</table>

@@ -52,6 +52,7 @@ public class Stock implements Serializable {
 
 	public String sector;// 產業別
 	public String strategy;// 策略
+	public String exDividendDate;// 除權除息日
 
 	public Stock() {
 	}
@@ -62,7 +63,7 @@ public class Stock implements Serializable {
 
 	public Stock(String stockCode, String title, Double nowPrice, String url, int sharesTraded, String prefixedTicker, Double netIncome,
 			Double netIncomeGrowth, Double netMargin, Double debtEquity, Double bookValuePerShare, Double cashPerShare, Double roe, Double roa,
-			Double dividend, String reScheduleDate, String createDate, String updateDate, String sector, String strategy) {
+			Double dividend, String reScheduleDate, String createDate, String updateDate, String sector, String strategy, String exDividendDate) {
 
 		this.stockCode = stockCode;
 		this.title = title;
@@ -84,6 +85,7 @@ public class Stock implements Serializable {
 		this.updateDate = updateDate;
 		this.sector = sector;
 		this.strategy = strategy;
+		this.exDividendDate = exDividendDate;
 	}
 
 	@Column(name = "TITLE", length = 255)
@@ -267,6 +269,15 @@ public class Stock implements Serializable {
 		this.strategy = strategy;
 	}
 
+	@Column(name = "EXDIVIDENDDATE", length = 3)
+	public String getExDividendDate() {
+		return exDividendDate;
+	}
+
+	public void setExDividendDate(String exDividendDate) {
+		this.exDividendDate = exDividendDate;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -309,6 +320,8 @@ public class Stock implements Serializable {
 		builder.append(sector);
 		builder.append(", strategy=");
 		builder.append(strategy);
+		builder.append(", exDividendDate=");
+		builder.append(exDividendDate);
 
 		builder.append("]");
 

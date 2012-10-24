@@ -31,7 +31,7 @@ import com.newRich.dao.StockDao;
 public class StockValue2DB extends QuartzBaseDao implements Job {
 	static Logger loger = Logger.getLogger(StockValue2DB.class.getName());
 	static PlatformTransactionManager transactionManager = null;
-	
+
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		run();
 	}
@@ -46,7 +46,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 		// 進行轉換
 		String startDateString = sdf1.format(startDate);
 		loger.info("StockValue2DB start -----------" + startDateString);
-		
+
 		transactionManager = new DataSourceTransactionManager(getDataSource());
 		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -56,29 +56,30 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				try {
 					// 呼叫dao
 					StockDao dao = new StockDao();
-		
+
 					List<Stock> stockList = dao.findAllToStock();
-		
+
 					loger.info("StockValue2DB stockList.size():" + stockList.size());
-		
+
 					int totalStock = 0;
-		
+
 					// 進行利用股票代號，查詢網頁的股票其產業類別為何
 					String financeUrl = "";
 					String valueStr = "";
 					String nowPriceStr = "";
 					String sqlStr = "";
+					String exDividendDate = "";
 					for (int i = 0; i < stockList.size(); i++) {
 						Stock vo = stockList.get(i);
 						financeUrl = "";
 						financeUrl = "http://finance.yahoo.com/q?s=" + vo.getStockCode() + "&ql=1";
 						// financeUrl = "http://finance.yahoo.com/q?s=FAZ&ql=1";
 						httpget = new HttpGet(financeUrl);
-		
+
 						if (checkResponseCode(financeUrl)) {
 							ResponseHandler<String> responseHandler = new BasicResponseHandler();
 							String responseBody = httpclient.execute(httpget, responseHandler);
-		
+
 							String updDateString = sdf1.format(new Date());
 							vo.setUpdateDate(updDateString);
 							// loger.info(responseBody);
@@ -90,32 +91,34 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 								valueStr = "";
 								// String firstString =
 								// responseBody.substring(responseBody.indexOf("Volume:"));
-								String firstString = responseBody.substring(responseBody
-										.indexOf("Avg Vol <span class=\"small\">(3m)</span>:"));
-								String secendString = firstString
-										.substring(0, firstString.indexOf("</td>"));
+								String firstString = responseBody.substring(responseBody.indexOf("Avg Vol <span class=\"small\">(3m)</span>:"));
+								String secendString = firstString.substring(0, firstString.indexOf("</td>"));
 								secendString = secendString.replaceAll("</span>", "");
-								valueStr = secendString.substring(secendString.lastIndexOf(">") + 1,
-										secendString.length());
+								valueStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
 								valueStr = valueStr.replaceAll(",", "");
 								vo.setSharesTraded(!"N/A".equals(valueStr) ? Integer.parseInt(valueStr) : 0);
 							}
 							if (responseBody.indexOf("Prev Close:") > -1) {
 								nowPriceStr = "";
-								String firstString = responseBody.substring(responseBody
-										.indexOf("Prev Close:"));
-								String secendString = firstString
-										.substring(0, firstString.indexOf("</td>"));
-								nowPriceStr = secendString.substring(secendString.lastIndexOf(">") + 1,
-										secendString.length());
+								String firstString = responseBody.substring(responseBody.indexOf("Prev Close:"));
+								String secendString = firstString.substring(0, firstString.indexOf("</td>"));
+								nowPriceStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
 								nowPriceStr = nowPriceStr.replaceAll(",", "");
-		
+
 								if (!nowPriceStr.equals("N/A")) {
 									if (sqlStr.length() > 0) {
 										sqlStr += " , nowPrice='" + nowPriceStr + "' ";
 									} else {
 										sqlStr += " nowPrice='" + nowPriceStr + "' ";
 									}
+									Double thisValue = new Double(0);
+									try {
+										thisValue = Double.parseDouble(nowPriceStr);
+										vo.setNowPrice(thisValue);
+									} catch (Exception e) {
+
+									}
+
 								} else {
 									if (sqlStr.length() > 0) {
 										sqlStr += " , nowPrice='0' ";
@@ -124,14 +127,26 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 									}
 								}
 							}
-		
+
+							if (responseBody.indexOf("Ex-Dividend Date:") > -1) {
+								// Ex-Dividend Date:</th><td class="yfnc_tabledata1">03-Oct-12</td>
+								exDividendDate = "";
+								String firstString = responseBody.substring(responseBody.indexOf("Ex-Dividend Date:"));
+								String secendString = firstString.substring(0, firstString.indexOf("</td>"));
+								secendString = secendString.replaceAll("Ex-Dividend Date:", "");
+								exDividendDate = secendString.replaceAll("</th>", "");
+								exDividendDate = exDividendDate.replaceAll("<td class=\"yfnc_tabledata1\">", "");
+								exDividendDate = exDividendDate.replaceAll("</td>", "");
+								vo.setExDividendDate(exDividendDate);
+							}
+
 							if (sqlStr.length() > 0) {
 								dao.update(vo);
 								totalStock++;
 							}
 						}
 					}
-		
+
 					loger.info("StockValue2DB totalStock:" + totalStock);
 					loger.info("StockValue2DB end -----------" + sdf1.format(new Date()));
 				} catch (ClientProtocolException e) {

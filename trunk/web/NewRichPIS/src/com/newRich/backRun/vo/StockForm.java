@@ -38,6 +38,7 @@ public class StockForm {
 
 	public String sector;// 產業別
 	public String strategy;
+	public String exDividendDate;// 除權除息日
 
 	private String netIncomeType;
 	private String netIncomeType2;
@@ -310,6 +311,14 @@ public class StockForm {
 
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
+	}
+
+	public String getExDividendDate() {
+		return exDividendDate;
+	}
+
+	public void setExDividendDate(String exDividendDate) {
+		this.exDividendDate = exDividendDate;
 	}
 
 }

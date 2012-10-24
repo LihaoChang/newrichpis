@@ -38,6 +38,7 @@ public class StockVO {
 
 	public String sector;// 產業別
 	public String strategy;// 策略
+	public String exDividendDate;// 除權除息日
 
 	public StockVO() {
 
@@ -201,6 +202,14 @@ public class StockVO {
 
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
+	}
+
+	public String getExDividendDate() {
+		return exDividendDate;
+	}
+
+	public void setExDividendDate(String exDividendDate) {
+		this.exDividendDate = exDividendDate;
 	}
 
 }

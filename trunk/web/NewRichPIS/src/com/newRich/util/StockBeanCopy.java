@@ -69,6 +69,9 @@ public class StockBeanCopy {
 		if (!StringUtils.isBlank(stock.getStrategy())) {
 			stockBean.setStrategy(stock.getStrategy());
 		}
+		if (!StringUtils.isBlank(stock.getExDividendDate())) {
+			stockBean.setExDividendDate(stock.getExDividendDate());
+		}
 		return stockBean;
 	}
 }

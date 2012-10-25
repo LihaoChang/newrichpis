@@ -243,17 +243,19 @@ public class StockDao extends BaseDao {
 	 * @return int
 	 * 
 	 */
-	private static final String SELECT_SECTOR_SQL = " SELECT DISTINCT(sector) FROM stock ";
+	private static final String SELECT_SECTOR_SQL = " SELECT DISTINCT(sector) FROM stock order by 1";
 
 	public List<SelectVO> querySectorList() {
 		List<SelectVO> selects = new ArrayList<SelectVO>();
 		List<StockVO> sectorList = (List) jdbcTemplate.query(SELECT_SECTOR_SQL, new RowMapperResultSetExtractor(new SectorMapper()));
 		for (int i = 0; i < sectorList.size(); i++) {
 			StockVO vo = sectorList.get(i);
-			SelectVO svo = new SelectVO();
-			svo.setString(vo.getSector());
-			svo.setValue(vo.getSector());
-			selects.add(svo);
+			if (null != vo.getSector()) {
+				SelectVO svo = new SelectVO();
+				svo.setString(vo.getSector());
+				svo.setValue(vo.getSector());
+				selects.add(svo);
+			}
 		}
 		return selects;
 	}

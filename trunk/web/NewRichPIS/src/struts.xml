@@ -101,6 +101,14 @@
 			<result name="error">/pages/messages.jsp</result>
 		</action>
 		<!-- Quartz排程相關 End -->
+		
+		<!--com.newRich.action.SpmmAction start-->
+		<action name="spmm" class="com.newRich.action.SpmmAction"
+			method="query">
+			<result name="success">/pages/spmm.jsp</result>
+			<result name="error" type="dispatcher">/index.jsp</result>
+		</action>
+ 		<!--com.newRich.action.SpmmAction end-->		
 	</package>
 
 

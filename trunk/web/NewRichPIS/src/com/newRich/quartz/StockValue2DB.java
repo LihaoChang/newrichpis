@@ -97,6 +97,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 								valueStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
 								valueStr = valueStr.replaceAll(",", "");
 								vo.setSharesTraded(!"N/A".equals(valueStr) ? Integer.parseInt(valueStr) : 0);
+								sqlStr += " , " + valueStr;
 							}
 							if (responseBody.indexOf("Prev Close:") > -1) {
 								nowPriceStr = "";
@@ -138,6 +139,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 								exDividendDate = exDividendDate.replaceAll("<td class=\"yfnc_tabledata1\">", "");
 								exDividendDate = exDividendDate.replaceAll("</td>", "");
 								vo.setExDividendDate(exDividendDate);
+								sqlStr += " , " + exDividendDate;
 							}
 
 							if (sqlStr.length() > 0) {

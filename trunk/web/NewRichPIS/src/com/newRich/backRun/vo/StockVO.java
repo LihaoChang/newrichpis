@@ -39,6 +39,8 @@ public class StockVO {
 	public String sector;// 產業別
 	public String strategy;// 策略
 	public String exDividendDate;// 除權除息日
+	public String options;// 有無選擇權
+	public String weeklyoptions;// 有無weekly選擇權
 
 	public StockVO() {
 
@@ -212,4 +214,19 @@ public class StockVO {
 		this.exDividendDate = exDividendDate;
 	}
 
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
+	}
+
+	public String getWeeklyoptions() {
+		return weeklyoptions;
+	}
+
+	public void setWeeklyoptions(String weeklyoptions) {
+		this.weeklyoptions = weeklyoptions;
+	}
 }

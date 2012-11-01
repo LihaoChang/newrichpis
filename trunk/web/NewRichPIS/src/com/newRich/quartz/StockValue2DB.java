@@ -1,10 +1,19 @@
 package com.newRich.quartz;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -15,6 +24,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -27,21 +42,26 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.newRich.backRun.vo.Stock;
 import com.newRich.dao.QuartzBaseDao;
 import com.newRich.dao.StockDao;
+import com.newRich.util.PoiUtil;
 
 public class StockValue2DB extends QuartzBaseDao implements Job {
 	static Logger loger = Logger.getLogger(StockValue2DB.class.getName());
 	static PlatformTransactionManager transactionManager = null;
+	final static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		run();
 	}
 
 	public static void main(String[] args) {
-		run();
+		// run();
+		// getOptions();
+		// getWeeklyOptions();
 	}
 
 	public static void run() {
-		final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		getOptions();
+		getWeeklyOptions();
 		Date startDate = new Date();
 		// 進行轉換
 		String startDateString = sdf1.format(startDate);
@@ -165,6 +185,239 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				}
 			}
 		});
+	}
+
+	public static void getOptions() {
+		loger.info("StockValue2DB getOptions start -----------" + sdf1.format(new Date()));
+		String excelUrl = "";
+		// http://www.cboe.com/publish/ScheduledTask/MktData/cboesymboldir2.csv
+		// http://www.cboe.com/publish/weelkysmf/weeklysmf.xls
+		excelUrl = "http://www.cboe.com/publish/ScheduledTask/MktData/cboesymboldir2.csv";
+
+		String saveToFile = "D:/" + new Date().getTime() + "_1.csv";
+		HttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet(excelUrl);
+		try {
+			// send get request
+			HttpResponse response = client.execute(get);
+			// get http response stream and prepare the fileouputstream
+			InputStream in = response.getEntity().getContent();
+			BufferedInputStream bin = new BufferedInputStream(in);
+			OutputStream os = new FileOutputStream(saveToFile);
+			Long time1 = System.currentTimeMillis();
+			// seems quicker when file is big, commons-io needed.
+			IOUtils.copy(bin, os); // quicker
+			Long time2 = System.currentTimeMillis();
+			// System.out.println("Time spent: " + (double) (time2 - time1) / 1000 + " seconds.");
+			bin.close();
+			in.close();
+			os.close();
+			client.getConnectionManager().shutdown();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// csv change to xls start
+		// new xls
+		String newXlsFile = "D:/" + new Date().getTime() + "_2.xls";
+		ArrayList<ArrayList<String>> arList = new ArrayList<ArrayList<String>>();
+		ArrayList<String> al = null;
+		String thisLine;
+		try {
+			DataInputStream myInput = new DataInputStream(new FileInputStream(saveToFile));
+			while ((thisLine = myInput.readLine()) != null) {
+				al = new ArrayList<String>();
+				String strar[] = thisLine.split(",");
+				for (int j = 0; j < strar.length; j++) {
+					// My Attempt (BELOW)
+					String edit = strar[j].replace('\n', ' ');
+					al.add(edit);
+				}
+				arList.add(al);
+				// System.out.println();
+			}
+			myInput.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			HSSFWorkbook hwb = new HSSFWorkbook();
+			HSSFSheet sheet = hwb.createSheet("new sheet");
+			for (int k = 0; k < arList.size(); k++) {
+				ArrayList<String> ardata = (ArrayList<String>) arList.get(k);
+				HSSFRow row = sheet.createRow((short) 0 + k);
+				for (int p = 0; p < ardata.size(); p++) {
+					// System.out.print(ardata.get(p));
+					HSSFCell cell = row.createCell((short) p);
+					cell.setCellValue(ardata.get(p).toString());
+				}
+			}
+			FileOutputStream fileOut = new FileOutputStream(newXlsFile);
+			hwb.write(fileOut);
+			fileOut.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		// del saveToFile
+		File delFile1 = new File(saveToFile);
+		if (delFile1.isFile()) {
+			delFile1.delete();
+		}
+		// csv change to xls end
+
+		// set to poi excel
+		FileInputStream fileIn = null;
+		try {
+			fileIn = new FileInputStream(newXlsFile);
+			// POIFSFileSystem fs = new POIFSFileSystem(fileIn);
+			HSSFWorkbook wb = new HSSFWorkbook(fileIn);
+			Sheet sheet = wb.getSheetAt(0);
+			int row_num = sheet.getLastRowNum();
+			System.out.println("row_num:" + row_num);
+			short row = 0;
+			Row r = sheet.getRow(row);
+			row = 2;
+
+			// 先將db options 設成空,在update
+			StockDao dao = new StockDao();
+			dao.updateAllOptionsEmpty();
+			String updDateString = sdf1.format(new Date());
+
+			for (; row <= row_num; row++) { // Excel每筆record
+				r = sheet.getRow(row);
+				if (PoiUtil.isRowBlank(r))
+					continue;
+				String str0 = PoiUtil.getCellString(r.getCell(0));
+				String stockCode = PoiUtil.getCellString(r.getCell(1));
+
+				if (null == dao.findByStockCodeToStock(stockCode)) {
+					Stock newStock = new Stock();
+					newStock.setStockCode(stockCode);
+					newStock.setUpdateDate(updDateString);
+					newStock.setTitle(str0);
+					dao.insert(newStock);
+					System.out.println("Options insert stock :" + stockCode);
+				}
+
+				Stock thisStock = new Stock();
+				thisStock.setStockCode(stockCode);
+				thisStock.setUpdateDate(updDateString);
+				thisStock.setOptions("O");
+				dao.updateOptions(thisStock);
+				// String str2 = PoiUtil.getCellString(r.getCell(2));
+				// String str3 = PoiUtil.getCellString(r.getCell(3));
+				// String str4 = PoiUtil.getCellString(r.getCell(4));
+				// String str5 = PoiUtil.getCellString(r.getCell(5));
+				// String str6 = PoiUtil.getCellString(r.getCell(6));
+				// String str7 = PoiUtil.getCellString(r.getCell(7));
+				// String str8 = PoiUtil.getCellString(r.getCell(8));
+				// System.out.println("stockCode:" + stockCode);
+			}
+			fileIn.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// del newXlsFile
+		File delFile2 = new File(newXlsFile);
+		if (delFile2.isFile()) {
+			delFile2.delete();
+		}
+		loger.info("StockValue2DB getOptions end -----------" + sdf1.format(new Date()));
+	}
+
+	public static void getWeeklyOptions() {
+		loger.info("StockValue2DB getWeeklyOptions start -----------" + sdf1.format(new Date()));
+		String excelUrl = "";
+		excelUrl = "http://www.cboe.com/publish/weelkysmf/weeklysmf.xls";
+
+		String saveToFile = "D:/" + new Date().getTime() + "_1.xls";
+		HttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet(excelUrl);
+		try {
+			// send get request
+			HttpResponse response = client.execute(get);
+			// get http response stream and prepare the fileouputstream
+			InputStream in = response.getEntity().getContent();
+			BufferedInputStream bin = new BufferedInputStream(in);
+			OutputStream os = new FileOutputStream(saveToFile);
+			Long time1 = System.currentTimeMillis();
+			// seems quicker when file is big, commons-io needed.
+			IOUtils.copy(bin, os); // quicker
+			Long time2 = System.currentTimeMillis();
+			// System.out.println("Time spent: " + (double) (time2 - time1) / 1000 + " seconds.");
+			bin.close();
+			in.close();
+			os.close();
+			client.getConnectionManager().shutdown();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// set to poi excel
+		FileInputStream fileIn = null;
+		try {
+			fileIn = new FileInputStream(saveToFile);
+			// POIFSFileSystem fs = new POIFSFileSystem(fileIn);
+			HSSFWorkbook wb = new HSSFWorkbook(fileIn);
+			Sheet sheet = wb.getSheetAt(0);
+			int row_num = sheet.getLastRowNum();
+			System.out.println("getWeeklyOptions row_num:" + row_num);
+			short row = 0;
+			Row r = sheet.getRow(row);
+			row = 2;
+
+			// 先將db options 設成空,在update
+			StockDao dao = new StockDao();
+			dao.updateAllWeeklyoptionsEmpty();
+			String updDateString = sdf1.format(new Date());
+			for (; row <= row_num; row++) { // Excel每筆record
+				r = sheet.getRow(row);
+				if (PoiUtil.isRowBlank(r))
+					continue;
+				String stockCode = PoiUtil.getCellString(r.getCell(0));
+
+				if (null == dao.findByStockCodeToStock(stockCode)) {
+					Stock newStock = new Stock();
+					newStock.setStockCode(stockCode);
+					newStock.setUpdateDate(updDateString);
+					dao.insert(newStock);
+					System.out.println("Weeklyoptions insert stock :" + stockCode);
+				}
+
+				Stock thisStock = new Stock();
+				thisStock.setStockCode(stockCode);
+				thisStock.setUpdateDate(updDateString);
+				thisStock.setWeeklyoptions("W");
+				dao.updateWeeklyoptions(thisStock);
+
+				// String str1 = PoiUtil.getCellString(r.getCell(1));
+				// String str2 = PoiUtil.getCellString(r.getCell(2));
+				// String str3 = PoiUtil.getCellString(r.getCell(3));
+				// String str4 = PoiUtil.getCellString(r.getCell(4));
+				// String str5 = PoiUtil.getCellString(r.getCell(5));
+				// String str6 = PoiUtil.getCellString(r.getCell(6));
+				// String str7 = PoiUtil.getCellString(r.getCell(7));
+				// String str8 = PoiUtil.getCellString(r.getCell(8));
+				if (stockCode.length() < 6) {
+					System.out.println("stockCode:" + stockCode.replaceAll("\\*", ""));
+				}
+
+			}
+			fileIn.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// del saveToFile
+		File delFile2 = new File(saveToFile);
+		if (delFile2.isFile()) {
+			delFile2.delete();
+		}
+		loger.info("StockValue2DB getWeeklyOptions end -----------" + sdf1.format(new Date()));
 	}
 
 	public static boolean checkResponseCode(String url) {

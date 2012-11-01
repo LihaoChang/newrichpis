@@ -53,6 +53,8 @@ public class Stock implements Serializable {
 	public String sector;// 產業別
 	public String strategy;// 策略
 	public String exDividendDate;// 除權除息日
+	public String options;// 有無選擇權
+	public String weeklyoptions;// 有無weekly選擇權
 
 	public Stock() {
 	}
@@ -63,7 +65,8 @@ public class Stock implements Serializable {
 
 	public Stock(String stockCode, String title, Double nowPrice, String url, int sharesTraded, String prefixedTicker, Double netIncome,
 			Double netIncomeGrowth, Double netMargin, Double debtEquity, Double bookValuePerShare, Double cashPerShare, Double roe, Double roa,
-			Double dividend, String reScheduleDate, String createDate, String updateDate, String sector, String strategy, String exDividendDate) {
+			Double dividend, String reScheduleDate, String createDate, String updateDate, String sector, String strategy, String exDividendDate,
+			String options, String weeklyoptions) {
 
 		this.stockCode = stockCode;
 		this.title = title;
@@ -86,6 +89,8 @@ public class Stock implements Serializable {
 		this.sector = sector;
 		this.strategy = strategy;
 		this.exDividendDate = exDividendDate;
+		this.options = options;
+		this.weeklyoptions = weeklyoptions;
 	}
 
 	@Column(name = "TITLE", length = 255)
@@ -269,13 +274,29 @@ public class Stock implements Serializable {
 		this.strategy = strategy;
 	}
 
-	@Column(name = "EXDIVIDENDDATE", length = 3)
+	@Column(name = "EXDIVIDENDDATE", length = 30)
 	public String getExDividendDate() {
 		return exDividendDate;
 	}
 
 	public void setExDividendDate(String exDividendDate) {
 		this.exDividendDate = exDividendDate;
+	}
+	@Column(name = "OPTIONS", length = 1)
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
+	}
+	@Column(name = "WEEKLYOPTIONS", length = 1)
+	public String getWeeklyoptions() {
+		return weeklyoptions;
+	}
+
+	public void setWeeklyoptions(String weeklyoptions) {
+		this.weeklyoptions = weeklyoptions;
 	}
 
 	@Override
@@ -322,6 +343,10 @@ public class Stock implements Serializable {
 		builder.append(strategy);
 		builder.append(", exDividendDate=");
 		builder.append(exDividendDate);
+		builder.append(", options=");
+		builder.append(options);
+		builder.append(", weeklyoptions=");
+		builder.append(weeklyoptions);
 
 		builder.append("]");
 

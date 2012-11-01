@@ -299,15 +299,15 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				}
 				if (row == 1000) {
 					// System.out.println("Options  row :" + row);
-					Thread.sleep(5000);
+					Thread.sleep(60000);
 				}
 				if (row == 1500) {
 					// System.out.println("Options  row :" + row);
-					Thread.sleep(60000);
+					Thread.sleep(10000);
 				}
 				if (row == 2000) {
 					// System.out.println("Options  row :" + row);
-					Thread.sleep(5000);
+					Thread.sleep(60000);
 				}
 				if (row == 2500) {
 					// System.out.println("Options  row :" + row);

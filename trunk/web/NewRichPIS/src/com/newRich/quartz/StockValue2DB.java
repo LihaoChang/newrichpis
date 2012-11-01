@@ -189,6 +189,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 
 	public static void getOptions() {
 		loger.info("StockValue2DB getOptions start -----------" + sdf1.format(new Date()));
+		StockDao dao = new StockDao();
 		String excelUrl = "";
 		// http://www.cboe.com/publish/ScheduledTask/MktData/cboesymboldir2.csv
 		// http://www.cboe.com/publish/weelkysmf/weeklysmf.xls
@@ -281,7 +282,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 			row = 2;
 
 			// 先將db options 設成空,在update
-			StockDao dao = new StockDao();
+
 			dao.updateAllOptionsEmpty();
 			String updDateString = sdf1.format(new Date());
 
@@ -291,14 +292,35 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 					continue;
 				String str0 = PoiUtil.getCellString(r.getCell(0));
 				String stockCode = PoiUtil.getCellString(r.getCell(1));
-
-				if (null == dao.findByStockCodeToStock(stockCode)) {
+				System.out.println("Options  stock :" + stockCode);
+				if (row == 500) {
+					// System.out.println("Options  row :" + row);
+					Thread.sleep(10000);
+				}
+				if (row == 1000) {
+					// System.out.println("Options  row :" + row);
+					Thread.sleep(5000);
+				}
+				if (row == 1500) {
+					// System.out.println("Options  row :" + row);
+					Thread.sleep(60000);
+				}
+				if (row == 2000) {
+					// System.out.println("Options  row :" + row);
+					Thread.sleep(5000);
+				}
+				if (row == 2500) {
+					// System.out.println("Options  row :" + row);
+					Thread.sleep(10000);
+				}
+				Stock findStock = dao.findByStockCodeToStock(stockCode);
+				if (null == findStock) {
 					Stock newStock = new Stock();
 					newStock.setStockCode(stockCode);
 					newStock.setUpdateDate(updDateString);
 					newStock.setTitle(str0);
 					dao.insert(newStock);
-					System.out.println("Options insert stock :" + stockCode);
+					// System.out.println("Options insert stock :" + stockCode);
 				}
 
 				Stock thisStock = new Stock();
@@ -316,7 +338,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				// System.out.println("stockCode:" + stockCode);
 			}
 			fileIn.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -379,20 +401,9 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				if (PoiUtil.isRowBlank(r))
 					continue;
 				String stockCode = PoiUtil.getCellString(r.getCell(0));
-
-				if (null == dao.findByStockCodeToStock(stockCode)) {
-					Stock newStock = new Stock();
-					newStock.setStockCode(stockCode);
-					newStock.setUpdateDate(updDateString);
-					dao.insert(newStock);
-					System.out.println("Weeklyoptions insert stock :" + stockCode);
+				if (row == 100) {
+					Thread.sleep(5000);
 				}
-
-				Stock thisStock = new Stock();
-				thisStock.setStockCode(stockCode);
-				thisStock.setUpdateDate(updDateString);
-				thisStock.setWeeklyoptions("W");
-				dao.updateWeeklyoptions(thisStock);
 
 				// String str1 = PoiUtil.getCellString(r.getCell(1));
 				// String str2 = PoiUtil.getCellString(r.getCell(2));
@@ -403,12 +414,26 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				// String str7 = PoiUtil.getCellString(r.getCell(7));
 				// String str8 = PoiUtil.getCellString(r.getCell(8));
 				if (stockCode.length() < 6) {
-					System.out.println("stockCode:" + stockCode.replaceAll("\\*", ""));
+					stockCode = stockCode.replaceAll("\\*", "");
+					System.out.println("stockCode:" + stockCode);
+					if (null == dao.findByStockCodeToStock(stockCode)) {
+						Stock newStock = new Stock();
+						newStock.setStockCode(stockCode);
+						newStock.setUpdateDate(updDateString);
+						dao.insert(newStock);
+						System.out.println("Weeklyoptions insert stock :" + stockCode);
+					}
+
+					Stock thisStock = new Stock();
+					thisStock.setStockCode(stockCode);
+					thisStock.setUpdateDate(updDateString);
+					thisStock.setWeeklyoptions("W");
+					dao.updateWeeklyoptions(thisStock);
 				}
 
 			}
 			fileIn.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

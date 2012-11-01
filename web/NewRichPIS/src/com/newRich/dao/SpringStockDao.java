@@ -69,14 +69,14 @@ public class SpringStockDao extends BaseDao {
 	 */
 	private static final String INSERT_SQL = " INSERT INTO stock " + " (stockCode, title, nowPrice, url, sharesTraded, "
 			+ "prefixedTicker, netIncome, netIncomeGrowth, netMargin, debtEquity, " + "bookValuePerShare, cashPerShare, roe, roa, dividend, "
-			+ "reScheduleDate, createDate, updateDate, sector, exDividendDate) " + " VALUES " + " (?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?,"
-			+ "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?) ";
+			+ "reScheduleDate, createDate, updateDate, sector, exDividendDate, options, weeklyoptions) " + " VALUES " + " (?, ?, ?, ?, ?,"
+			+ "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?, ?, ?) ";
 
 	public int insert(StockVO vo) {
 		final Object[] params = new Object[] { vo.getStockCode(), vo.getTitle(), vo.getNowPrice(), vo.getUrl(), vo.getSharesTraded(),
 				vo.getPrefixedTicker(), vo.getNetIncome(), vo.getNetIncomeGrowth(), vo.getNetMargin(), vo.getDebtEquity(), vo.getBookValuePerShare(),
 				vo.getCashPerShare(), vo.getRoe(), vo.getRoa(), vo.getDividend(), vo.getReScheduleDate(), vo.getCreateDate(), vo.getUpdateDate(),
-				vo.getSector(), vo.getExDividendDate() };
+				vo.getSector(), vo.getExDividendDate(), vo.getOptions(), vo.getWeeklyoptions() };
 		return jdbcTemplate.update(INSERT_SQL, params);
 	}
 
@@ -89,13 +89,14 @@ public class SpringStockDao extends BaseDao {
 	private static final String UPDATE_SQL = " UPDATE stock SET " + "title = ?, nowPrice = ?, url = ?, sharesTraded = ?, "
 			+ "prefixedTicker = ?, netIncome = ?, netIncomeGrowth = ?, netMargin = ?, debtEquity = ?, "
 			+ "bookValuePerShare = ?, cashPerShare = ?, roe = ?, roa = ?, dividend = ?, "
-			+ "reScheduleDate = ?, createDate = ?, updateDate = ?, sector = ?, exDividendDate = ? " + "where stockCode = ?";
+			+ "reScheduleDate = ?, createDate = ?, updateDate = ?, sector = ?, exDividendDate = ? , options = ?, weeklyoptions = ? "
+			+ " where stockCode = ?";
 
 	public int update(StockVO vo) {
 		final Object[] params = new Object[] { vo.getTitle(), vo.getNowPrice(), vo.getUrl(), vo.getSharesTraded(), vo.getPrefixedTicker(),
 				vo.getNetIncome(), vo.getNetIncomeGrowth(), vo.getNetMargin(), vo.getDebtEquity(), vo.getBookValuePerShare(), vo.getCashPerShare(),
 				vo.getRoe(), vo.getRoa(), vo.getDividend(), vo.getReScheduleDate(), vo.getCreateDate(), vo.getUpdateDate(), vo.getSector(),
-				vo.getExDividendDate(), vo.getStockCode() };
+				vo.getExDividendDate(), vo.getOptions(), vo.getWeeklyoptions(), vo.getStockCode() };
 		return jdbcTemplate.update(UPDATE_SQL, params);
 	}
 
@@ -124,7 +125,10 @@ public class SpringStockDao extends BaseDao {
 			vo.setCreateDate(rs.getString("createDate"));
 			vo.setUpdateDate(rs.getString("updateDate"));
 			vo.setSector(rs.getString("sector"));
+			vo.setStrategy(rs.getString("strategy"));
 			vo.setExDividendDate(rs.getString("exDividendDate"));
+			vo.setOptions(rs.getString("options"));
+			vo.setWeeklyoptions(rs.getString("weeklyoptions"));
 
 			return vo;
 		}

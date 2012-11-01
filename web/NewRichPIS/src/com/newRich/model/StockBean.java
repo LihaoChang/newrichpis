@@ -45,6 +45,8 @@ public class StockBean implements Serializable {
 	public String sector;// 產業別
 	public String strategy;// 策略
 	public String exDividendDate;// 除權除息日
+	public String options;// 有無選擇權
+	public String weeklyoptions;// 有無weekly選擇權
 
 	public StockBean() {
 	}
@@ -55,7 +57,8 @@ public class StockBean implements Serializable {
 
 	public StockBean(String stockCode, String title, String nowPrice, String url, String sharesTraded, String prefixedTicker, String netIncome,
 			String netIncomeGrowth, String netMargin, String debtEquity, String bookValuePerShare, String cashPerShare, String roe, String roa,
-			String dividend, String reScheduleDate, String createDate, String updateDate, String sector, String strategy, String exDividendDate) {
+			String dividend, String reScheduleDate, String createDate, String updateDate, String sector, String strategy, String exDividendDate,
+			String options, String weeklyoptions) {
 
 		this.stockCode = stockCode;
 		this.title = title;
@@ -78,6 +81,8 @@ public class StockBean implements Serializable {
 		this.sector = sector;
 		this.strategy = strategy;
 		this.exDividendDate = exDividendDate;
+		this.options = options;
+		this.weeklyoptions = weeklyoptions;
 	}
 
 	public String getTitle() {
@@ -248,6 +253,22 @@ public class StockBean implements Serializable {
 		this.exDividendDate = exDividendDate;
 	}
 
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
+	}
+
+	public String getWeeklyoptions() {
+		return weeklyoptions;
+	}
+
+	public void setWeeklyoptions(String weeklyoptions) {
+		this.weeklyoptions = weeklyoptions;
+	}
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(stockCode);
@@ -291,6 +312,10 @@ public class StockBean implements Serializable {
 		builder.append(strategy);
 		builder.append(", exDividendDate=");
 		builder.append(exDividendDate);
+		builder.append(", options=");
+		builder.append(options);
+		builder.append(", weeklyoptions=");
+		builder.append(weeklyoptions);
 		
 		builder.append("]");
 

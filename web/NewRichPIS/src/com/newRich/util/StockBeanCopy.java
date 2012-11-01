@@ -72,6 +72,12 @@ public class StockBeanCopy {
 		if (!StringUtils.isBlank(stock.getExDividendDate())) {
 			stockBean.setExDividendDate(stock.getExDividendDate());
 		}
+		if (!StringUtils.isBlank(stock.getOptions())) {
+			stockBean.setOptions(stock.getOptions());
+		}
+		if (!StringUtils.isBlank(stock.getWeeklyoptions())) {
+			stockBean.setWeeklyoptions(stock.getWeeklyoptions());
+		}
 		return stockBean;
 	}
 }

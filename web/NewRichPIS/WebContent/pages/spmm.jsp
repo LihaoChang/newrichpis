@@ -150,7 +150,17 @@
 
 						<td align="center"><s:property value="#status.count" /></td>
 						<!-- <td align="center"><a href='http://www.finviz.com/quote.ashx?t=<s:property value="stockCode" />&ty=c&ta=1&p=d&b=1' target='_blank'><s:property value="stockCode" /></a></td> -->
-						<td align="center"><a href='#' onclick="openwin('<s:property value="stockCode" />')"><s:property value="stockCode" /></a></td>
+						<td align="center">
+						<a href='#' onclick="openwin('<s:property value="stockCode" />')">
+						<s:property value="stockCode" />						
+						<s:if test="options != null">
+						<font color="red">(<s:property value="options" />)</font>
+						</s:if>
+						<s:if test="weeklyoptions != null">
+						<font color="red">(<s:property value="weeklyoptions" />)</font>
+						</s:if>							
+						</a>
+						</td>
 						<td align="right"><s:property value="nowPrice" /></td>
 						<td align="right"><s:property value="sharesTraded" /></td>
 						<td align="right"><s:property value="dividend" /></td>

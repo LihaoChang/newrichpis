@@ -153,10 +153,10 @@
 						<td align="center">
 						<a href='#' onclick="openwin('<s:property value="stockCode" />')">
 						<s:property value="stockCode" />						
-						<s:if test="options != null">
+						<s:if test="options != null && options != ''">
 						<font color="red">(<s:property value="options" />)</font>
 						</s:if>
-						<s:if test="weeklyoptions != null">
+						<s:if test="weeklyoptions != null && weeklyoptions != ''">
 						<font color="red">(<s:property value="weeklyoptions" />)</font>
 						</s:if>							
 						</a>

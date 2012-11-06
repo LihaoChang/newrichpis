@@ -145,7 +145,7 @@
 					<tr>
 						<th width="15%" align="left"><s:text name="findGood_exDividendDate" />:
 						</th>
-						<td width="33%" colspan="2">	
+						<td width="51%" colspan="3">	
 						
           <sj:datepicker id="exDividendDateStart" name="exDividendDateStart" label="Start Date" 
                     changeMonth="true" changeYear="true" onChangeMonthYearTopics="onDpChangeMonthAndYear"
@@ -156,8 +156,6 @@
 					displayFormat="yy-mm-dd" yearRange="2012:2025" />						
 						
 									
-						</td>
-						<td width="18%">
 						</td>
 						<td width="15%" align="left">
 						</td>

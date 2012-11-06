@@ -314,9 +314,17 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				String str0 = PoiUtil.getCellString(r.getCell(0));
 				String stockCode = PoiUtil.getCellString(r.getCell(1));
 				System.out.println("Options  stock :" + stockCode);
+				if (row == 250) {
+					// System.out.println("Options  row :" + row);
+					Thread.sleep(30000);
+				}
 				if (row == 500) {
 					// System.out.println("Options  row :" + row);
-					Thread.sleep(10000);
+					Thread.sleep(30000);
+				}
+				if (row == 750) {
+					// System.out.println("Options  row :" + row);
+					Thread.sleep(30000);
 				}
 				if (row == 1000) {
 					// System.out.println("Options  row :" + row);
@@ -324,7 +332,11 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				}
 				if (row == 1500) {
 					// System.out.println("Options  row :" + row);
-					Thread.sleep(10000);
+					Thread.sleep(30000);
+				}
+				if (row == 1750) {
+					// System.out.println("Options  row :" + row);
+					Thread.sleep(30000);
 				}
 				if (row == 2000) {
 					// System.out.println("Options  row :" + row);
@@ -332,7 +344,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				}
 				if (row == 2500) {
 					// System.out.println("Options  row :" + row);
-					Thread.sleep(10000);
+					Thread.sleep(30000);
 				}
 				Stock findStock = dao.findByStockCodeToStock(stockCode);
 				if (null == findStock) {
@@ -423,7 +435,13 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 					continue;
 				String stockCode = PoiUtil.getCellString(r.getCell(0));
 				if (row == 100) {
-					Thread.sleep(5000);
+					Thread.sleep(30000);
+				}
+				if (row == 200) {
+					Thread.sleep(30000);
+				}
+				if (row == 300) {
+					Thread.sleep(30000);
 				}
 
 				// String str1 = PoiUtil.getCellString(r.getCell(1));

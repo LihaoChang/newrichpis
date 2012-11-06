@@ -53,6 +53,8 @@ public class StockForm {
 	private String dividendType;
 	private String sharesTradedType;
 	private String sord;
+	private String exDividendDateStart;// 除權除息日 開始
+	private String exDividendDateEnd;// 除權除息日 結束
 
 	public StockForm() {
 
@@ -336,6 +338,22 @@ public class StockForm {
 
 	public void setWeeklyoptions(String weeklyoptions) {
 		this.weeklyoptions = weeklyoptions;
+	}
+
+	public String getExDividendDateStart() {
+		return exDividendDateStart;
+	}
+
+	public void setExDividendDateStart(String exDividendDateStart) {
+		this.exDividendDateStart = exDividendDateStart;
+	}
+
+	public String getExDividendDateEnd() {
+		return exDividendDateEnd;
+	}
+
+	public void setExDividendDateEnd(String exDividendDateEnd) {
+		this.exDividendDateEnd = exDividendDateEnd;
 	}
 
 }

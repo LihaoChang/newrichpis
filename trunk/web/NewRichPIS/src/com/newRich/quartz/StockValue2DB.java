@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -48,6 +49,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 	static Logger loger = Logger.getLogger(StockValue2DB.class.getName());
 	static PlatformTransactionManager transactionManager = null;
 	final static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	final static SimpleDateFormat exDividendDateSdf = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
 
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		run();
@@ -62,6 +64,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 	public static void run() {
 		getOptions();
 		getWeeklyOptions();
+
 		Date startDate = new Date();
 		// 進行轉換
 		String startDateString = sdf1.format(startDate);
@@ -158,7 +161,25 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 								exDividendDate = secendString.replaceAll("</th>", "");
 								exDividendDate = exDividendDate.replaceAll("<td class=\"yfnc_tabledata1\">", "");
 								exDividendDate = exDividendDate.replaceAll("</td>", "");
-								vo.setExDividendDate(exDividendDate);
+								if (exDividendDate.length() > 7) {
+									// Jan 1,Feb 2,Mar 3,Apr 4,May 5,Jun 6
+									// Jul 7,Aug 8,Sep 9,Oct 10,Nov 11,Dec 12
+
+									try {
+										if (exDividendDate.split("-").length == 3) {
+											Date thisExDividendDate = exDividendDateSdf.parse(exDividendDate);
+											exDividendDate = new SimpleDateFormat("yyyy/MM/dd").format(thisExDividendDate);
+											vo.setExDividendDate(exDividendDate);
+										} else {
+											vo.setExDividendDate(null);
+										}
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								} else {
+									vo.setExDividendDate(null);
+								}
 								sqlStr += " , " + exDividendDate;
 							}
 

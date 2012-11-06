@@ -115,8 +115,13 @@ public class StockDao extends BaseDao {
 			if (formVO.getSharesTraded() != 0) {
 				SELECT_SQL += " and sharesTraded " + formVO.getSharesTradedType() + formVO.getSharesTraded() + " ";
 			}
-		}
 
+			if (null != formVO.getExDividendDateStart() && null != formVO.getExDividendDateEnd()) {
+				SELECT_SQL += " and exDividendDate >= '" + formVO.getExDividendDateStart() + "' ";
+				SELECT_SQL += " and exDividendDate <= '" + formVO.getExDividendDateEnd() + "' ";
+				SELECT_SQL += " and exDividendDate is not null ";
+			}
+		}
 		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper()));
 	}
 
@@ -180,6 +185,12 @@ public class StockDao extends BaseDao {
 
 			if (formVO.getSharesTraded() != 0) {
 				SELECT_SQL += " and sharesTraded " + formVO.getSharesTradedType() + formVO.getSharesTraded() + " ";
+			}
+
+			if (null != formVO.getExDividendDateStart() && null != formVO.getExDividendDateEnd()) {
+				SELECT_SQL += " and exDividendDate >= '" + formVO.getExDividendDateStart() + "' ";
+				SELECT_SQL += " and exDividendDate <= '" + formVO.getExDividendDateEnd() + "' ";
+				SELECT_SQL += " and exDividendDate is not null ";
 			}
 
 			SELECT_SQL += " limit ?,? ";

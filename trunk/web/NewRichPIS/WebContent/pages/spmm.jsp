@@ -3,15 +3,47 @@
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
 <%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
 <%@ include file="/jsp/include/re.jsp"%>
+<s:if test="%{theme == 'showcase' || theme == null}">
+	<sj:head debug="true" compressed="false" jquerytheme="showcase"
+		customBasepath="themes" loadFromGoogle="%{google}"
+		ajaxhistory="%{ajaxhistory}" defaultIndicator="myDefaultIndicator"
+		defaultLoadingText="Please wait ..." />
+</s:if>
+<s:else>
+	<sj:head debug="true" compressed="false" jquerytheme="%{theme}"
+		loadFromGoogle="true" loadFromGoogle="%{google}"
+		ajaxhistory="%{ajaxhistory}" defaultIndicator="myDefaultIndicator"
+		defaultLoadingText="Please wait ..." />
+</s:else>
 
+<!-- This file includes necessary functions/topics for validation and all topic examples -->
+<script type="text/javascript" src="js/showcase.js"></script>
+<!-- Extend the Struts2 jQuery Plugin with an richtext editor -->
+<script type="text/javascript" src="js/extendplugin.js"></script>
 <script type='text/javascript'>
 <!--
 	function searchGo() {
+		if ((updateForm.exDividendDateStart.value) == "" && (updateForm.exDividendDateEnd.value) != "") {
+			window.alert('[<s:text name="findGood_exDividendDate" /> <s:text name="start_date" />]<s:text name="must_have_var" />');
+			return;
+		}
+		if ((updateForm.exDividendDateStart.value) != "" && (updateForm.exDividendDateEnd.value) == "") {
+			window.alert('[<s:text name="findGood_exDividendDate" /> <s:text name="end_date" />]<s:text name="must_have_var" />');
+			return;
+		}			
 		document.updateForm.action = "spmm.action";
 		document.updateForm.submit(); //送出表單中的資料
 	}
 
 	function searchGoPage(strPage) {
+		if ((updateForm.exDividendDateStart.value) == "" && (updateForm.exDividendDateEnd.value) != "") {
+			window.alert('[<s:text name="findGood_exDividendDate" /> <s:text name="start_date" />]<s:text name="must_have_var" />');
+			return;
+		}
+		if ((updateForm.exDividendDateStart.value) != "" && (updateForm.exDividendDateEnd.value) == "") {
+			window.alert('[<s:text name="findGood_exDividendDate" /> <s:text name="end_date" />]<s:text name="must_have_var" />');
+			return;
+		}			
 		document.updateForm.page.value = strPage;
 		document.updateForm.action = "spmm.action";
 		document.updateForm.submit(); //送出表單中的資料
@@ -55,6 +87,14 @@
 	    }  
 	} 
 //-->
+</script>
+<script type="text/javascript">
+	$.subscribe('onDpChangeMonthAndYear', function(event, data) {
+		//alert('Change month to : '+event.originalEvent.month+' and year to '+event.originalEvent.year);
+	});
+	$.subscribe('onDpClose', function(event, data) {
+		//alert('Selected Date : '+event.originalEvent.dateText);
+	});
 </script>
 <body onkeydown="enterEvent('event.keyCode | event.which');">
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -103,11 +143,19 @@
 					</tr>
 					
 					<tr>
-						<td width="15%" align="left">
-						</td>
-						<td width="18%">				
-						</td>
-						<td width="15%" align="left">
+						<th width="15%" align="left"><s:text name="findGood_exDividendDate" />:
+						</th>
+						<td width="33%" colspan="2">	
+						
+          <sj:datepicker id="exDividendDateStart" name="exDividendDateStart" label="Start Date" 
+                    changeMonth="true" changeYear="true" onChangeMonthYearTopics="onDpChangeMonthAndYear"
+					displayFormat="yy-mm-dd" yearRange="2012:2025" /> 
+					~
+					 <sj:datepicker id="exDividendDateEnd" name="exDividendDateEnd" label="End Date"
+					changeMonth="true" changeYear="true" onChangeMonthYearTopics="onDpChangeMonthAndYear" 
+					displayFormat="yy-mm-dd" yearRange="2012:2025" />						
+						
+									
 						</td>
 						<td width="18%">
 						</td>

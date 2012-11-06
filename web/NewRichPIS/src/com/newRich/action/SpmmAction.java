@@ -57,6 +57,8 @@ public class SpmmAction extends DefaultAction {
 	private List<SelectVO> sectorList = new ArrayList<SelectVO>();// sector的下拉
 	private List<SelectVO> typeList = new ArrayList<SelectVO>();// 大於小於的下拉
 	private List<SelectVO> strategyList = new ArrayList<SelectVO>();// 大於小於的下拉
+	private String exDividendDateStart;// 除權除息日 開始
+	private String exDividendDateEnd;// 除權除息日 結束
 
 	public String query() throws Exception {
 
@@ -92,6 +94,8 @@ public class SpmmAction extends DefaultAction {
 			// System.out.println("..sectorStr..[" + sectorStr + "]");
 			// System.out.println("..sharesTradedStr..[" + sharesTradedStr + "]");
 			// System.out.println("..strategyStr..[" + strategyStr + "]");
+			// System.out.println("..exDividendDateStart..[" + exDividendDateStart + "]");
+			// System.out.println("..exDividendDateEnd..[" + exDividendDateEnd + "]");
 			// add sector select
 			querySectorList();
 			queryTypeList();
@@ -102,6 +106,16 @@ public class SpmmAction extends DefaultAction {
 			if (null != stockCodeStr && !stockCodeStr.equals("") && !stockCodeStr.equals("null")) {
 				formVO.setStockCode(stockCodeStr);
 				countSearchKey++;
+			}
+
+			if (!StringUtils.isBlank(exDividendDateStart) && !exDividendDateStart.equals("null")) {
+				if (!StringUtils.isBlank(exDividendDateEnd) && !exDividendDateEnd.equals("null")) {
+					String exDividendDateStartStr = exDividendDateStart.replaceAll("-", "/");
+					String exDividendDateEndStr = exDividendDateEnd.replaceAll("-", "/");
+					formVO.setExDividendDateStart(exDividendDateStartStr);
+					formVO.setExDividendDateEnd(exDividendDateEndStr);
+					countSearchKey++;
+				}
 			}
 
 			if (!StringUtils.isBlank(sharesTradedStr) && !sharesTradedStr.equals("null")) {
@@ -230,7 +244,7 @@ public class SpmmAction extends DefaultAction {
 			}
 
 			gridModel = new ArrayList<StockBean>();
-			System.out.println("..gridModel.." + gridModel);
+			// System.out.println("..gridModel.." + gridModel);
 			for (StockVO stock : gridModel0) {
 				StockBean stockBean = StockBeanCopy.copy(stock);
 
@@ -359,7 +373,7 @@ public class SpmmAction extends DefaultAction {
 		List<SelectVO> sectors = new ArrayList<SelectVO>();
 		sectors = StockDao.querySectorList();
 		sectorList = sectors;
-		System.out.println("action sectors.size():" + sectors.size());
+		// System.out.println("action sectors.size():" + sectors.size());
 
 		return sectors;
 	}
@@ -387,7 +401,7 @@ public class SpmmAction extends DefaultAction {
 		selectVO3.setValue("le");
 		types.add(selectVO3);
 
-		System.out.println("typeList :" + typeList);
+		// System.out.println("typeList :" + typeList);
 		typeList = types;
 		return types;
 	}
@@ -410,7 +424,7 @@ public class SpmmAction extends DefaultAction {
 			strategys.add(vo);
 		}
 		strategyList = strategys;
-		System.out.println("action strategyList.size():" + strategyList.size());
+		// System.out.println("action strategyList.size():" + strategyList.size());
 	}
 
 	public String typeChange(String typeCode) {
@@ -654,6 +668,22 @@ public class SpmmAction extends DefaultAction {
 
 	public void setStrategyList(List<SelectVO> strategyList) {
 		this.strategyList = strategyList;
+	}
+
+	public String getExDividendDateStart() {
+		return exDividendDateStart;
+	}
+
+	public void setExDividendDateStart(String exDividendDateStart) {
+		this.exDividendDateStart = exDividendDateStart;
+	}
+
+	public String getExDividendDateEnd() {
+		return exDividendDateEnd;
+	}
+
+	public void setExDividendDateEnd(String exDividendDateEnd) {
+		this.exDividendDateEnd = exDividendDateEnd;
 	}
 
 }

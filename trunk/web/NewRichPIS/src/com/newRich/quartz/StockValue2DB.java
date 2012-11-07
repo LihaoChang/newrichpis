@@ -76,6 +76,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				HttpGet httpget = null;
 				HttpClient httpclient = new DefaultHttpClient();
+				String thisStockCode = "";
 				try {
 					// 呼叫dao
 					StockDao dao = new StockDao();
@@ -90,10 +91,11 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 					String financeUrl = "";
 					String valueStr = "";
 					String nowPriceStr = "";
-					String sqlStr = "";
 					String exDividendDate = "";
 					for (int i = 0; i < stockList.size(); i++) {
+						thisStockCode = "";
 						Stock vo = stockList.get(i);
+						thisStockCode = vo.getStockCode();
 						financeUrl = "";
 						financeUrl = "http://finance.yahoo.com/q?s=" + vo.getStockCode() + "&ql=1";
 						// financeUrl = "http://finance.yahoo.com/q?s=FAZ&ql=1";
@@ -108,7 +110,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 							// loger.info(responseBody);
 							// Return=> Sector:</th><td nowrap class="yfnc_tabledata1"><a
 							// href="http://biz.yahoo.com/p/8conameu.html">Technology</a>
-							sqlStr = "";
+
 							// if (responseBody.indexOf("Volume:") > -1) {
 							if (responseBody.indexOf("Avg Vol <span class=\"small\">(3m)</span>:") > -1) {
 								valueStr = "";
@@ -120,7 +122,9 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 								valueStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
 								valueStr = valueStr.replaceAll(",", "");
 								vo.setSharesTraded(!"N/A".equals(valueStr) ? Integer.parseInt(valueStr) : 0);
-								sqlStr += " , " + valueStr;
+
+							} else {
+								vo.setSharesTraded(0);
 							}
 							if (responseBody.indexOf("Prev Close:") > -1) {
 								nowPriceStr = "";
@@ -130,25 +134,17 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 								nowPriceStr = nowPriceStr.replaceAll(",", "");
 
 								if (!nowPriceStr.equals("N/A")) {
-									if (sqlStr.length() > 0) {
-										sqlStr += " , nowPrice='" + nowPriceStr + "' ";
-									} else {
-										sqlStr += " nowPrice='" + nowPriceStr + "' ";
-									}
 									Double thisValue = new Double(0);
 									try {
 										thisValue = Double.parseDouble(nowPriceStr);
 										vo.setNowPrice(thisValue);
 									} catch (Exception e) {
-
+										loger.info("StockValue2DB StockCode " + thisStockCode + " ,error0:" + e.getMessage());
+										vo.setNowPrice(new Double(0));
 									}
 
 								} else {
-									if (sqlStr.length() > 0) {
-										sqlStr += " , nowPrice='0' ";
-									} else {
-										sqlStr += " nowPrice='0' ";
-									}
+									vo.setNowPrice(new Double(0));
 								}
 							}
 
@@ -175,18 +171,16 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 										}
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
+										vo.setExDividendDate(null);
+										loger.info("StockValue2DB StockCode " + thisStockCode + " ,error00:" + e.getMessage());
 										e.printStackTrace();
 									}
 								} else {
 									vo.setExDividendDate(null);
 								}
-								sqlStr += " , " + exDividendDate;
 							}
-
-							if (sqlStr.length() > 0) {
-								dao.update(vo);
-								totalStock++;
-							}
+							dao.update(vo);
+							totalStock++;
 						}
 					}
 
@@ -194,14 +188,17 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 					loger.info("StockValue2DB end -----------" + sdf1.format(new Date()));
 				} catch (ClientProtocolException e) {
 					// TODO Auto-generated catch block
+					loger.info("StockValue2DB StockCode " + thisStockCode + " ,error1:" + e.getMessage());
 					e.printStackTrace();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
+					loger.info("StockValue2DB StockCode " + thisStockCode + " ,error2:" + e.getMessage());
 					e.printStackTrace();
 				} finally {
 					// When HttpClient instance is no longer needed,
 					// shut down the connection manager to ensure
 					// immediate deallocation of all system resources
+					loger.info("StockValue2DB StockCode finally " + thisStockCode);
 					httpclient.getConnectionManager().shutdown();
 				}
 			}
@@ -237,6 +234,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 			client.getConnectionManager().shutdown();
 
 		} catch (Exception e) {
+			loger.info("StockValue2DB getOptions error1: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -261,6 +259,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 			}
 			myInput.close();
 		} catch (Exception e) {
+			loger.info("StockValue2DB getOptions error2: " + e.getMessage());
 			e.printStackTrace();
 		}
 		try {
@@ -278,8 +277,9 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 			FileOutputStream fileOut = new FileOutputStream(newXlsFile);
 			hwb.write(fileOut);
 			fileOut.close();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			loger.info("StockValue2DB getOptions error3: " + e.getMessage());
+			e.printStackTrace();
 		}
 
 		// del saveToFile
@@ -372,6 +372,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 			}
 			fileIn.close();
 		} catch (Exception e) {
+			loger.info("StockValue2DB getOptions error4: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -409,6 +410,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 			client.getConnectionManager().shutdown();
 
 		} catch (Exception e) {
+			loger.info("StockValue2DB getWeeklyOptions error1: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -473,6 +475,7 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 			}
 			fileIn.close();
 		} catch (Exception e) {
+			loger.info("StockValue2DB getWeeklyOptions error2: " + e.getMessage());
 			e.printStackTrace();
 		}
 

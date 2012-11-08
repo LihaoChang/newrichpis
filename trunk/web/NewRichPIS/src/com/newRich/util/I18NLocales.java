@@ -20,7 +20,7 @@ public class I18NLocales {
 	public Map<String, Locale> getLocales() {
 		// 將當前系統所支持的全部語言保存在Map對像中
 		Map<String, Locale> locales = new Hashtable<String, Locale>();
-		System.out.println("getLocales current:" + current);
+		// System.out.println("getLocales current:" + current);
 		// ResourceBundle bundle = ResourceBundle.getBundle("globalMessages", current);
 
 		/**

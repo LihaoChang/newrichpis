@@ -28,7 +28,7 @@ import com.newRich.backRun.vo.Stock;
 import com.newRich.dao.QuartzBaseDao;
 import com.newRich.dao.StockDao;
 
-public class StockSector2DB extends QuartzBaseDao implements Job{
+public class StockSector2DB extends QuartzBaseDao implements Job {
 	static Logger loger = Logger.getLogger(StockSector2DB.class.getName());
 	static PlatformTransactionManager transactionManager = null;
 
@@ -73,8 +73,7 @@ public class StockSector2DB extends QuartzBaseDao implements Job{
 
 						if (checkResponseCode(financeUrl)) {
 							ResponseHandler<String> responseHandler = new BasicResponseHandler();
-							String responseBody = httpclient.execute(httpget,
-									responseHandler);
+							String responseBody = httpclient.execute(httpget, responseHandler);
 
 							// loger.info(responseBody);
 							// Return=> Sector:</th><td nowrap class="yfnc_tabledata1"><a href="http://biz.yahoo.com/p/8conameu.html">Technology</a>
@@ -102,9 +101,11 @@ public class StockSector2DB extends QuartzBaseDao implements Job{
 						}
 					}
 				} catch (ClientProtocolException e) {
+					loger.info("Exception:" + e.getMessage());
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
+					loger.info("Exception:" + e.getMessage());
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} finally {
@@ -117,7 +118,6 @@ public class StockSector2DB extends QuartzBaseDao implements Job{
 				loger.info("StockSector2DB end -----------" + sdf1.format(new Date()));
 			}
 		});
-		
 
 	}
 
@@ -134,9 +134,11 @@ public class StockSector2DB extends QuartzBaseDao implements Job{
 			if (response.getStatusLine().getStatusCode() == 200)
 				is200 = true;
 		} catch (ClientProtocolException e) {
+			loger.info("url:" + url + " ,Exception:" + e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			loger.info("url:" + url + " ,Exception:" + e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

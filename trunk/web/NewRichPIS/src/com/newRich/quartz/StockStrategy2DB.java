@@ -76,7 +76,8 @@ public class StockStrategy2DB extends QuartzBaseDao implements Job {
 							if (null != vo) {
 								String strategy = vo.getStrategy() == null ? "" : vo.getStrategy();
 								// 同一天才將原有的strategy字串相加，不同天就讓它塞符合的策略字串
-								if (vo.getUpdateDate().substring(0, 10).equals(updDateString.substring(0, 10)) && strategy.indexOf(StockStrategyUtil.STRATEGY_TYPE_PB) == -1) {
+								if (vo.getUpdateDate().substring(0, 10).equals(updDateString.substring(0, 10))
+										&& strategy.indexOf(StockStrategyUtil.STRATEGY_TYPE_PB) == -1) {
 									if (!"".equals(strategy)) {
 										strategys += ", " + strategy;
 									}
@@ -114,7 +115,8 @@ public class StockStrategy2DB extends QuartzBaseDao implements Job {
 							if (null != vo) {
 								String strategy = vo.getStrategy() == null ? "" : vo.getStrategy();
 								// 同一天才將原有的strategy字串相加，不同天就讓它塞符合的策略字串
-								if (vo.getUpdateDate().substring(0, 10).equals(updDateString.substring(0, 10)) && strategy.indexOf(StockStrategyUtil.STRATEGY_TYPE_PC) == -1) {
+								if (vo.getUpdateDate().substring(0, 10).equals(updDateString.substring(0, 10))
+										&& strategy.indexOf(StockStrategyUtil.STRATEGY_TYPE_PC) == -1) {
 									if (!"".equals(strategy)) {
 										strategys += ", " + strategy;
 									}
@@ -139,10 +141,12 @@ public class StockStrategy2DB extends QuartzBaseDao implements Job {
 					if (null != noStock && noStock.length() > 2) {
 						noStock = noStock.substring(0, noStock.length() - 2);
 					}
-					loger.info("StockStrategy2DB totalStock:" + totalStock + ", No Stock code in DB:" + (totalStock - sucessStotalStock) + " , no Stock cdoes:" + noStock);
+					loger.info("StockStrategy2DB totalStock:" + totalStock + ", No Stock code in DB:" + (totalStock - sucessStotalStock)
+							+ " , no Stock cdoes:" + noStock);
 					loger.info("StockStrategy2DB end -----------" + sdf1.format(new Date()));
 
 				} catch (Exception e) {
+					loger.info("Exception:" + e.getMessage());
 					e.printStackTrace();
 				} finally {
 					// When HttpClient instance is no longer needed,

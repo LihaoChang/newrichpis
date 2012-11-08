@@ -277,7 +277,7 @@ public class StockDao extends BaseDao {
 	 * 
 	 * @return List
 	 */
-	private static final String SELECT_stock_SQL = "SELECT * " + "FROM stock ";
+	private static final String SELECT_stock_SQL = "SELECT * FROM stock ";
 
 	public List<Stock> findAllToStock() {
 		return (List) jdbcTemplate.query(SELECT_stock_SQL, new RowMapperResultSetExtractor(new StockMapper2()));

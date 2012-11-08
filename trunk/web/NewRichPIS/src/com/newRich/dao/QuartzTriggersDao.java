@@ -18,81 +18,81 @@ import com.newRich.backRun.vo.QuartzTriggersForm;
 import com.newRich.backRun.vo.QuartzTriggersVO;
 import com.newRich.util.SpringQuartzConstant;
 
-public class QuartzTriggersDao extends BaseDao{
-	
+public class QuartzTriggersDao extends BaseDao {
+
 	private static QuartzTriggersDao daoInstance = new QuartzTriggersDao();
 	private JdbcTemplate jdbcTemplate = null;
 	private Log log = null;
-	
-	public static QuartzTriggersDao getInstance() {
-        return daoInstance;
-    }
-	
-	//取得欲連線的資料庫來源
-    protected String getDsName() {
-        return DATA_SOURCE_DEFAULT;
-    }
 
-    protected Log getLog() {
-        return log;
-    }
-    
-    public QuartzTriggersDao() {
-        super();
-        //System.out.println("666");
-        this.log = LogFactory.getLog(this.getClass());
-        this.jdbcTemplate = new JdbcTemplate(getDataSource());
-        //System.out.println("777");
-    }
-    
-    /**
+	public static QuartzTriggersDao getInstance() {
+		return daoInstance;
+	}
+
+	// 取得欲連線的資料庫來源
+	protected String getDsName() {
+		return DATA_SOURCE_DEFAULT;
+	}
+
+	protected Log getLog() {
+		return log;
+	}
+
+	public QuartzTriggersDao() {
+		super();
+		// System.out.println("666");
+		this.log = LogFactory.getLog(this.getClass());
+		this.jdbcTemplate = new JdbcTemplate(getDataSource());
+		// System.out.println("777");
+	}
+
+	/**
 	 * 讀取資料BY user、pwd
 	 * 
 	 * @return List
 	 */
 	public List<QuartzTriggersVO> findAllByForm(QuartzTriggersForm formVO) {
 		String SELECT_formVO_SQL = "SELECT * FROM QRTZ_TRIGGERS where 1=1 ";
-		System.out.println("findAllByForm formVO.getTriggerGroup():"+formVO.getTriggerGroup());
+		// System.out.println("findAllByForm formVO.getTriggerGroup():" + formVO.getTriggerGroup());
 		if (StringUtils.isNotBlank(formVO.getTriggerGroup())) {
 			SELECT_formVO_SQL += "and TRIGGER_GROUP like '%" + formVO.getTriggerGroup() + "%' ";
 		}
 		SELECT_formVO_SQL += " order by start_time ";
-		System.out.println("findAllByForm SELECT_formVO_SQL:"+SELECT_formVO_SQL);
+		// System.out.println("findAllByForm SELECT_formVO_SQL:" + SELECT_formVO_SQL);
 
 		return (List) jdbcTemplate.query(SELECT_formVO_SQL, new RowMapperResultSetExtractor(new QuartzTriggersMapper()));
 	}
-    
-    /**
+
+	/**
 	 * 讀取資料BY user、pwd
 	 * 
 	 * @return List
 	 */
 	public List<QuartzTriggersVO> findByFromEnd(QuartzTriggersForm formVO, int from, int pageShowSize) {
 		String SELECT_formVO_SQL = "SELECT * FROM QRTZ_TRIGGERS where 1=1 ";
-		//System.out.println("findByFromEnd formVO.getTriggerGroup():"+formVO.getTriggerGroup());
+		// System.out.println("findByFromEnd formVO.getTriggerGroup():"+formVO.getTriggerGroup());
 		if (StringUtils.isNotBlank(formVO.getTriggerGroup())) {
 			SELECT_formVO_SQL += "and TRIGGER_GROUP like '%" + formVO.getTriggerGroup() + "%' ";
 		}
 		SELECT_formVO_SQL += " order by start_time ";
-		
+
 		SELECT_formVO_SQL += " limit ?,? ";
 		final Object[] params = new Object[] { from, pageShowSize };
-		//System.out.println("findByFromEnd SELECT_formVO_SQL:"+SELECT_formVO_SQL);
+		// System.out.println("findByFromEnd SELECT_formVO_SQL:"+SELECT_formVO_SQL);
 		return (List) jdbcTemplate.query(SELECT_formVO_SQL, params, new RowMapperResultSetExtractor(new QuartzTriggersMapper()));
 	}
-    
-    public List<Map<String, Object>> getQrtzTriggers() {
+
+	public List<Map<String, Object>> getQrtzTriggers() {
 		List<Map<String, Object>> results = jdbcTemplate.queryForList("select * from QRTZ_TRIGGERS order by start_time");
 		long val = 0;
 		String temp = null;
 		for (Map<String, Object> map : results) {
 			temp = MapUtils.getString(map, "trigger_name");
-			if(StringUtils.indexOf(temp, "&") != -1){
+			if (StringUtils.indexOf(temp, "&") != -1) {
 				map.put("display_name", StringUtils.substringBefore(temp, "&"));
-			}else{
+			} else {
 				map.put("display_name", temp);
 			}
-			
+
 			val = MapUtils.getLongValue(map, "next_fire_time");
 			if (val > 0) {
 				map.put("next_fire_time", DateFormatUtils.format(val, "yyyy-MM-dd HH:mm:ss"));
@@ -107,19 +107,19 @@ public class QuartzTriggersDao extends BaseDao{
 			if (val > 0) {
 				map.put("start_time", DateFormatUtils.format(val, "yyyy-MM-dd HH:mm:ss"));
 			}
-			
+
 			val = MapUtils.getLongValue(map, "end_time");
 			if (val > 0) {
 				map.put("end_time", DateFormatUtils.format(val, "yyyy-MM-dd HH:mm:ss"));
 			}
-			
-			map.put("statu",SpringQuartzConstant.status.get(MapUtils.getString(map, "trigger_state")));
+
+			map.put("statu", SpringQuartzConstant.status.get(MapUtils.getString(map, "trigger_state")));
 		}
 
 		return results;
 	}
-    
-    /**
+
+	/**
 	 * Friendly Class 讓Spring把讀取的資料一個一個塞到VO裡Call Back用.
 	 */
 	class QuartzTriggersMapper implements RowMapper {
@@ -142,25 +142,24 @@ public class QuartzTriggersDao extends BaseDao{
 			vo.setMisfireInstr(rs.getInt("MISFIRE_INSTR"));
 			vo.setJobData(rs.getBlob("JOB_DATA"));
 			vo.setTriggerNameReal(parserTriggerName(rs.getString("TRIGGER_NAME")));
-			
+
 			return vo;
 		}
 	}
-	
-	
-	public String longToDateString(long dateLong){
+
+	public String longToDateString(long dateLong) {
 		String date = "";
 		if (dateLong > 0) {
 			date = DateFormatUtils.format(dateLong, "yyyy-MM-dd HH:mm:ss");
 		}
 		return date;
 	}
-	
-	public String parserTriggerName(String triggerName){
+
+	public String parserTriggerName(String triggerName) {
 		String name = "";
-		if(StringUtils.indexOf(triggerName, "&") != -1){
+		if (StringUtils.indexOf(triggerName, "&") != -1) {
 			name = StringUtils.substringBefore(triggerName, "&");
-		}else{
+		} else {
 			name = triggerName;
 		}
 		return name;

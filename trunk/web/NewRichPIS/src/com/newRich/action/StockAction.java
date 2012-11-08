@@ -59,8 +59,7 @@ public class StockAction extends DefaultAction {
 
 	public String query() throws Exception {
 
-		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord()
-				+ " Index Row :" + getSidx());
+		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() + " Index Row :" + getSidx());
 		log.debug("getThis_ogin_user_id :" + getThis_login_user_id());
 
 		// log2.debug("2Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() +
@@ -79,19 +78,19 @@ public class StockAction extends DefaultAction {
 		try {
 			// Handle Search
 			int countSearchKey = 0;
-			System.out.println("..stockCodeStr..[" + stockCodeStr + "]");
-			System.out.println("..netIncomeStr..[" + netIncomeStr + "]");
-			System.out.println("..netIncomeGrowthStr..[" + netIncomeGrowthStr + "]");
-			System.out.println("..netMarginStr..[" + netMarginStr + "]");
-			System.out.println("..debtEquityStr..[" + debtEquityStr + "]");
-			System.out.println("..bookValuePerShareStr..[" + bookValuePerShareStr + "]");
-			System.out.println("..cashPerShareStr..[" + cashPerShareStr + "]");
-			System.out.println("..roeStr..[" + roeStr + "]");
-			System.out.println("..roaStr..[" + roaStr + "]");
-			System.out.println("..dividendStr..[" + dividendStr + "]");
-			System.out.println("..sectorStr..[" + sectorStr + "]");
-			System.out.println("..sharesTradedStr..[" + sharesTradedStr + "]");
-			System.out.println("..strategyStr..[" + strategyStr + "]");
+			// System.out.println("..stockCodeStr..[" + stockCodeStr + "]");
+			// System.out.println("..netIncomeStr..[" + netIncomeStr + "]");
+			// System.out.println("..netIncomeGrowthStr..[" + netIncomeGrowthStr + "]");
+			// System.out.println("..netMarginStr..[" + netMarginStr + "]");
+			// System.out.println("..debtEquityStr..[" + debtEquityStr + "]");
+			// System.out.println("..bookValuePerShareStr..[" + bookValuePerShareStr + "]");
+			// System.out.println("..cashPerShareStr..[" + cashPerShareStr + "]");
+			// System.out.println("..roeStr..[" + roeStr + "]");
+			// System.out.println("..roaStr..[" + roaStr + "]");
+			// System.out.println("..dividendStr..[" + dividendStr + "]");
+			// System.out.println("..sectorStr..[" + sectorStr + "]");
+			// System.out.println("..sharesTradedStr..[" + sharesTradedStr + "]");
+			// System.out.println("..strategyStr..[" + strategyStr + "]");
 			// add sector select
 			querySectorList();
 			queryTypeList();
@@ -117,12 +116,12 @@ public class StockAction extends DefaultAction {
 				formVO.setSector(sectorStr);
 				countSearchKey++;
 			}
-			
+
 			if (null != strategyStr && !strategyStr.equals("") && !strategyStr.equals("null")) {
 				formVO.setStrategy(strategyStr);
 				countSearchKey++;
 			}
-			
+
 			if (!StringUtils.isBlank(netIncomeStr) && !netIncomeStr.equals("null")) {
 				if (!StringUtils.isBlank(netIncomeType) && !netIncomeType.equals("null")) {
 					if (!StringUtils.isBlank(netIncomeType2) && !netIncomeType2.equals("null")) {
@@ -142,8 +141,7 @@ public class StockAction extends DefaultAction {
 			}
 
 			if (!StringUtils.isBlank(netIncomeGrowthStr) && !netIncomeGrowthStr.equals("null")) {
-				if (!StringUtils.isBlank(netIncomeGrowthType)
-						&& !netIncomeGrowthType.equals("null")) {
+				if (!StringUtils.isBlank(netIncomeGrowthType) && !netIncomeGrowthType.equals("null")) {
 					Double thisDouble = new Double(netIncomeGrowthStr);
 					thisDouble = thisDouble / 100;
 					formVO.setNetIncomeGrowth(thisDouble);
@@ -171,8 +169,7 @@ public class StockAction extends DefaultAction {
 				}
 			}
 			if (!StringUtils.isBlank(bookValuePerShareStr) && !bookValuePerShareStr.equals("null")) {
-				if (!StringUtils.isBlank(bookValuePerShareType)
-						&& !bookValuePerShareType.equals("null")) {
+				if (!StringUtils.isBlank(bookValuePerShareType) && !bookValuePerShareType.equals("null")) {
 					Double thisDouble = new Double(bookValuePerShareStr);
 					formVO.setBookValuePerShare(thisDouble);
 					formVO.setBookValuePerShareType(typeChange(bookValuePerShareType));
@@ -232,7 +229,7 @@ public class StockAction extends DefaultAction {
 			}
 
 			gridModel = new ArrayList<StockBean>();
-			System.out.println("..gridModel.." + gridModel);
+			// System.out.println("..gridModel.." + gridModel);
 			for (StockVO stock : gridModel0) {
 				StockBean stockBean = StockBeanCopy.copy(stock);
 
@@ -271,8 +268,7 @@ public class StockAction extends DefaultAction {
 					stockBean.setDividend(re100B(daividendStrDouble));
 				}
 				if (null != stockBean.getSharesTraded()) {
-					stockBean.setSharesTraded(fmt.format(Double.parseDouble(stockBean
-							.getSharesTraded())));
+					stockBean.setSharesTraded(fmt.format(Double.parseDouble(stockBean.getSharesTraded())));
 				}
 				gridModel.add(stockBean);
 			}
@@ -289,7 +285,7 @@ public class StockAction extends DefaultAction {
 			// System.out.println("..records.." + records);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("000000000000000000000000000:  " + e);
+			// System.out.println("000000000000000000000000000:  " + e);
 			addActionError("ERROR : " + e.getLocalizedMessage());
 			return "error";
 		}
@@ -352,22 +348,24 @@ public class StockAction extends DefaultAction {
 		}
 		return outStr;
 	}
-	
+
 	/**
 	 * 產生『產業類別』下拉
+	 * 
 	 * @return
 	 */
 	public List<SelectVO> querySectorList() {
 		List<SelectVO> sectors = new ArrayList<SelectVO>();
 		sectors = StockDao.querySectorList();
 		sectorList = sectors;
-		System.out.println("action sectors.size():" + sectors.size());
+		// System.out.println("action sectors.size():" + sectors.size());
 
 		return sectors;
 	}
 
 	/**
 	 * 產生『數值比較』下拉
+	 * 
 	 * @return
 	 */
 	public List<SelectVO> queryTypeList() {
@@ -388,11 +386,11 @@ public class StockAction extends DefaultAction {
 		selectVO3.setValue("le");
 		types.add(selectVO3);
 
-		System.out.println("typeList :" + typeList);
+		// System.out.println("typeList :" + typeList);
 		typeList = types;
 		return types;
 	}
-	
+
 	/**
 	 * 產生『策略』下拉
 	 */
@@ -411,9 +409,9 @@ public class StockAction extends DefaultAction {
 			strategys.add(vo);
 		}
 		strategyList = strategys;
-		System.out.println("action strategyList.size():" + strategyList.size());
+		// System.out.println("action strategyList.size():" + strategyList.size());
 	}
-	
+
 	public String typeChange(String typeCode) {
 		String str = "";
 		if (null != typeCode && !"".equals(typeCode)) {

@@ -24,8 +24,8 @@ public class StockCode2DB {
 	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 	public static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	public static SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy_MM_dd");
-	public static String[] loopStr = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
-			"m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
+	public static String[] loopStr = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+			"w", "x", "y", "z" };
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -38,7 +38,7 @@ public class StockCode2DB {
 			// 進行轉換
 			String dateString = sdf.format(thisDate);
 			String thisDateStr = sdf1.format(thisDate);
-			System.out.println("start -----------" + thisDateStr);
+			// System.out.println("start -----------" + thisDateStr);
 			outPath = "d:\\";
 			outPath = outPath + "stock" + dateString + ".xls";
 			outPathTW = "d:\\";
@@ -61,8 +61,7 @@ public class StockCode2DB {
 
 				JSONObject jsonObjectMsg = new JSONObject(responseBody);
 				ResultSetHeader resultSet = new ResultSetHeader(jsonObjectMsg);
-				System.out.println(loopStr[i].toUpperCase() + " :["
-						+ resultSet.getTotalResultsReturned() + "]");
+				// System.out.println(loopStr[i].toUpperCase() + " :[" + resultSet.getTotalResultsReturned() + "]");
 				ArrayList<Stock> stockBeanList = resultSet.getStockBeanList();
 				if (null != stockBeanList && stockBeanList.size() > 0) {
 					for (Stock stock : stockBeanList) {
@@ -84,7 +83,7 @@ public class StockCode2DB {
 								int s = Integer.parseInt(stockCodeStr);
 							} catch (Exception e) {
 								StockCodeDao dao = new StockCodeDao();
-								
+
 								if (null == dao.findByStockCode(stockCodeStr)) {
 									stockCode.setStockCode(stockCodeStr);
 									dao.insert(stockCode);
@@ -95,9 +94,9 @@ public class StockCode2DB {
 				}
 			}
 
-			System.out.println("totalStock:" + totalStock);
+			// System.out.println("totalStock:" + totalStock);
 		} catch (Exception e) {
-			System.out.println("getStock error:" + e.getMessage());
+			// System.out.println("getStock error:" + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			// When HttpClient instance is no longer needed,

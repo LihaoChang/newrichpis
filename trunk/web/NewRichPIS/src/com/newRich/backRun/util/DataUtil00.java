@@ -44,12 +44,12 @@ public class DataUtil00 {
 	public static String[] loopStr = { "w", "x", "y", "z" };
 
 	public static void checkValue(ArrayList<Stock> newStockBeanList, ArrayList<String> searchStockList) {
-//	public static void checkValue(ArrayList<StockVO> newStockBeanList, ArrayList<String> searchStockList) {
+		// public static void checkValue(ArrayList<StockVO> newStockBeanList, ArrayList<String> searchStockList) {
 		try {
 			if (null != searchStockList) {
 				// nowPriceUrl = "http://finance.yahoo.com/d/quotes.csv?s=" +
 				// stockBean.getStockCode() + ".US&f=l1v";
-				System.out.println("checkValue searchStockList:" + searchStockList.size());
+				// System.out.println("checkValue searchStockList:" + searchStockList.size());
 
 				int inSize = searchStockList.size();
 				int a = inSize / 100;
@@ -84,7 +84,7 @@ public class DataUtil00 {
 
 				for (int y = 0; y < newStockBeanList.size(); y++) {
 					Stock stockBean = newStockBeanList.get(y);
-//					StockVO stockBean = newStockBeanList.get(y);
+					// StockVO stockBean = newStockBeanList.get(y);
 					if (!StringUtils.isBlank(priceList.get(y))) {
 						stockBean.setNowPrice(new Double(priceList.get(y)));
 					} else {
@@ -99,7 +99,7 @@ public class DataUtil00 {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("checkValue error:" + e.getMessage());
+			// System.out.println("checkValue error:" + e.getMessage());
 			e.printStackTrace();
 		} finally {
 		}
@@ -128,7 +128,7 @@ public class DataUtil00 {
 		String responseBody2 = "";
 		try {
 			HttpGet httpget = null;
-			System.out.println("checkValue2 nowPriceUrl:" + nowPriceUrl);
+			// System.out.println("checkValue2 nowPriceUrl:" + nowPriceUrl);
 			httpget = new HttpGet(nowPriceUrl);
 			ResponseHandler<String> responseHandler2 = new BasicResponseHandler();
 			responseBody2 = httpclient.execute(httpget, responseHandler2);
@@ -144,7 +144,7 @@ public class DataUtil00 {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("checkValue2 error:" + e.getMessage());
+			// System.out.println("checkValue2 error:" + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			// When HttpClient instance is no longer needed,
@@ -155,7 +155,7 @@ public class DataUtil00 {
 	}
 
 	public static Stock dataWork(Stock stockBean, String searchUrl) {
-//	public static StockVO dataWork(StockVO stockBean, String searchUrl) {
+		// public static StockVO dataWork(StockVO stockBean, String searchUrl) {
 
 		String netIncome = "";
 		String netIncomeGrowth = "";
@@ -174,7 +174,7 @@ public class DataUtil00 {
 		try {
 			HttpGet httpget = null;
 			String dataCentralUrl = stockBean.getUrl() + searchUrl;
-			System.out.println("dataWork dataCentralUrl:" + dataCentralUrl);
+			// System.out.println("dataWork dataCentralUrl:" + dataCentralUrl);
 			httpget = new HttpGet(dataCentralUrl);
 			ResponseHandler<String> responseHandler1 = new BasicResponseHandler();
 			String responseBody1 = httpclient.execute(httpget, responseHandler1);
@@ -358,7 +358,7 @@ public class DataUtil00 {
 			}
 
 		} catch (Exception e) {
-			System.out.println("getStock error:" + e.getMessage());
+			// System.out.println("getStock error:" + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			// When HttpClient instance is no longer needed,

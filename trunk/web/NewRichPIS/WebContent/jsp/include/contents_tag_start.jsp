@@ -63,12 +63,7 @@
   </table>
 	
  
-</html:form>
-		
-		<%
-		//System.out.println("-contents_add----error-"+request.getAttribute("contents_add"));
-		System.out.println(" ");
-		%>
+</html:form>		
 		
 	
 </td></tr></table></td>

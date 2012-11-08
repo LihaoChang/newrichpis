@@ -34,7 +34,7 @@ public class DefaultAction extends ActionSupport {
 	private String this_login_user_id;
 	private String this_login_user_name;
 	SystemUtil systemUtil = new SystemUtil();
-	
+
 	// get how many rows we want to have into the grid - rowNum attribute in the
 	// grid
 	protected Integer rows = 0;
@@ -53,7 +53,7 @@ public class DefaultAction extends ActionSupport {
 
 	// All Records
 	protected Integer records = 0;
-	
+
 	public DefaultAction() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		if (request.getSession(true).getAttribute("check_login") != null) {
@@ -86,14 +86,14 @@ public class DefaultAction extends ActionSupport {
 			if (StringUtils.isNotBlank(locale)) {
 				Locale defaultLocale = getSysLocale(locale);
 				ActionContext.getContext().setLocale(defaultLocale);
-				System.out.println("rrrrrrrrrrrrrrrrdefaultLocale:" + defaultLocale);
+				// System.out.println("rrrrrrrrrrrrrrrrdefaultLocale:" + defaultLocale);
 				request.getSession().setAttribute("WW_TRANS_I18N_LOCALE", defaultLocale);
 			}
-			System.out.println("1111111111111111locale:" + locale);
+			// System.out.println("1111111111111111locale:" + locale);
 			if (null != request.getSession(true).getAttribute("gridModelMenu")) {
 
 				List<MenuItem> gridModel = (List<MenuItem>) request.getSession(true).getAttribute("gridModelMenu");
-				System.out.println("??qqqqqqqqqqqqgridModel:" + gridModel);
+				// System.out.println("??qqqqqqqqqqqqgridModel:" + gridModel);
 				HttpSession session = request.getSession();
 				MenuRepository repository = new MenuRepository();
 				HttpSession httpsession = (HttpSession) request.getSession();
@@ -118,9 +118,9 @@ public class DefaultAction extends ActionSupport {
 						}
 						mc.setParent(parentMenu);
 					}
-					System.out.println("getContext-getText(cancel)---" + ActionContext.getContext().getLocale());
+					// System.out.println("getContext-getText(cancel)---" + ActionContext.getContext().getLocale());
 					String title = (String) mi.getTitle();
-					System.out.println("-getText(cancel)---" + this.getText("cancel"));
+					// System.out.println("-getText(cancel)---" + this.getText("cancel"));
 					mc.setTitle(this.getText(title));
 					String location = (String) mi.getLocation();
 					mc.setLocation(location);
@@ -190,7 +190,7 @@ public class DefaultAction extends ActionSupport {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		// 進行轉換
 		String dateString = sdf.format(new Date());
-		System.out.println(dateString);
+		// System.out.println(dateString);
 		return dateString;
 	}
 
@@ -216,7 +216,7 @@ public class DefaultAction extends ActionSupport {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @return how many rows we want to have into the grid
 	 */
@@ -283,7 +283,7 @@ public class DefaultAction extends ActionSupport {
 			this.total = 0;
 		}
 	}
-	
+
 	/**
 	 * @return sorting order
 	 */

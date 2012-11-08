@@ -130,6 +130,7 @@ public class LoginAction extends ActionSupport {
 				role = person.getRole();
 			}
 		}
+		log.info("check login role :" + role);
 		if (login_user_id.equals("loginerror")) {
 			log.error("check login error !!");
 			addActionError("Enter Error!!");
@@ -140,7 +141,7 @@ public class LoginAction extends ActionSupport {
 			request.getSession(true).setAttribute("login_user_id", login_user_id);
 			request.getSession(true).setAttribute("login_user_name", name);
 			request.getSession(true).setAttribute("login_role", role);
-			System.out.println("=-===========================role:" + role);
+			// System.out.println("=-===========================role:" + role);
 
 			if (request.getSession(true).getAttribute("check_login") != null) {
 				this_check_login = request.getSession(true).getAttribute("check_login").toString();
@@ -161,7 +162,7 @@ public class LoginAction extends ActionSupport {
 
 			// menu.listMenuItem();
 			// System.out.println("gridModel : "+gridModel.size());
-			System.out.println("gridModel : " + gridModel);
+			// System.out.println("gridModel : " + gridModel);
 			MenuRepository repository = new MenuRepository();
 			HttpSession httpsession = (HttpSession) request.getSession();
 			ServletContext application = (ServletContext) httpsession.getServletContext();

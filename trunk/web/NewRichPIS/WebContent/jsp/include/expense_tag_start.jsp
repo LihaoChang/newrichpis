@@ -59,11 +59,6 @@
   </table>
 </html:form>
 		
-		<%
-		//System.out.println("-expense_add----error-"+request.getAttribute("expense_add"));
-		System.out.println(" ");
-		%>
-		
 	
 </td></tr></table></td>
 <td background='<%=request.getContextPath()%>/images/parts/blue_06.gif'>

@@ -50,7 +50,7 @@ public class StockToolAction extends DefaultAction {
 		int countSearchKey = 0;
 		try {
 
-			System.out.println("..name..[" + name + "]");
+			// System.out.println("..name..[" + name + "]");
 			StockToolForm formVO = new StockToolForm();
 			if (null != name && !name.equals("") && !name.equals("null")) {
 				// criteria.add(checkSQL("eq", "item_type", (new
@@ -73,7 +73,7 @@ public class StockToolAction extends DefaultAction {
 			// Calculate total Pages
 			total = (int) Math.ceil((double) records / (double) rows);
 		} catch (Exception e) {
-			System.out.println("000000000000000000000000000:  " + e);
+			// System.out.println("000000000000000000000000000:  " + e);
 			addActionError("ERROR : " + e.getLocalizedMessage());
 			return "error";
 		}
@@ -83,11 +83,11 @@ public class StockToolAction extends DefaultAction {
 
 	public String save() throws Exception {
 		try {
-			System.out.println("..id..[" + id + "]");
-			System.out.println("..userid.." + userid);
-			System.out.println("..name.." + name);
-			System.out.println("..url.." + url);
-			System.out.println("..remark.." + remark);
+			// System.out.println("..id..[" + id + "]");
+			// System.out.println("..userid.." + userid);
+			// System.out.println("..name.." + name);
+			// System.out.println("..url.." + url);
+			// System.out.println("..remark.." + remark);
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Date thisDate = new Date();
 			String thisDateStr = sdf1.format(thisDate);
@@ -133,7 +133,7 @@ public class StockToolAction extends DefaultAction {
 
 	public String delete() throws Exception {
 		try {
-			System.out.println("..delete.." + modify_id);
+			// System.out.println("..delete.." + modify_id);
 			if (null != modify_id) {
 				log.debug("Delete StockTool " + modify_id);
 				stockToolDao.delete(modify_id);
@@ -150,16 +150,16 @@ public class StockToolAction extends DefaultAction {
 
 	public String modify() throws Exception {
 		try {
-			System.out.println("..modify.." + modify_id);
-			System.out.println("..userid.." + userid);
-			System.out.println("..name.." + name);
-			System.out.println("..url.." + url);
-			System.out.println("..remark.." + remark);
+			// System.out.println("..modify.." + modify_id);
+			// System.out.println("..userid.." + userid);
+			// System.out.println("..name.." + name);
+			// System.out.println("..url.." + url);
+			// System.out.println("..remark.." + remark);
 			StockTool StockTool;
 			if (null != modify_id) {
 				log.debug("Delete StockTool " + modify_id);
 				StockTool = stockToolDao.findById(modify_id);
-				System.out.println("modify StockTool:" + StockTool);
+				// System.out.println("modify StockTool:" + StockTool);
 				if (null != StockTool) {
 					id = StockTool.getId();
 					userid = StockTool.getUserid();

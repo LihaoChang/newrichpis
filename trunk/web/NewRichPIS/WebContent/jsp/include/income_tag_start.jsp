@@ -53,11 +53,6 @@
   </table>
 </html:form>
 		
-		<%
-		//System.out.println("-income_add----error-"+request.getAttribute("income_add"));
-		System.out.println(" ");
-		%>
-		
 	
 </td></tr></table></td>
 <td background='<%=request.getContextPath()%>/images/parts/blue_06.gif'>

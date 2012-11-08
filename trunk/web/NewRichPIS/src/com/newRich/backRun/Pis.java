@@ -36,7 +36,7 @@ public class Pis {
 
 			// 進行轉換
 			String dateString = sdf.format(thisDate);
-			System.out.println("start -----------" + sdf1.format(thisDate));
+			// System.out.println("start -----------" + sdf1.format(thisDate));
 			outPath = "d:\\";
 			outPath = outPath + "stock" + dateString + ".xls";
 			outPathTW = "d:\\";
@@ -58,13 +58,12 @@ public class Pis {
 
 				JSONObject jsonObjectMsg = new JSONObject(responseBody);
 				ResultSetHeader resultSet = new ResultSetHeader(jsonObjectMsg);
-				System.out.println(DataUtil00.loopStr[i].toUpperCase() + " :["
-						+ resultSet.getTotalResultsReturned() + "]");
+				// System.out.println(DataUtil00.loopStr[i].toUpperCase() + " :[" + resultSet.getTotalResultsReturned() + "]");
 				ArrayList<Stock> stockBeanList = resultSet.getStockBeanList();
 				totalStock += Integer.parseInt(resultSet.getTotalResultsReturned());
 				allList.add(stockBeanList);
 			}
-			System.out.println("totalStock:" + totalStock);
+			// System.out.println("totalStock:" + totalStock);
 			ArrayList<ArrayList<Stock>> newAllList = new ArrayList();
 			ArrayList<ArrayList<Stock>> newAllList2 = new ArrayList();
 
@@ -73,7 +72,7 @@ public class Pis {
 			ArrayList<String> searchStockList = new ArrayList();
 			Stock stockBean = new Stock();
 			String stockCode = "";
-			System.out.println("allList.size():" + allList.size());
+			// System.out.println("allList.size():" + allList.size());
 			if (null != allList && allList.size() > 0) {
 
 				for (int i = 0; i < allList.size(); i++) {
@@ -143,10 +142,10 @@ public class Pis {
 			Date endDate = new Date();
 			// 進行轉換
 			String endDateString = sdf1.format(endDate);
-			System.out.println("end -----------" + endDateString);
+			// System.out.println("end -----------" + endDateString);
 
 		} catch (Exception e) {
-			System.out.println("getStock error:" + e.getMessage());
+			// System.out.println("getStock error:" + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			// When HttpClient instance is no longer needed,

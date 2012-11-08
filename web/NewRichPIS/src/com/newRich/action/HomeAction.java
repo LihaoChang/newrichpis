@@ -12,17 +12,17 @@ public class HomeAction extends DefaultAction {
 	SystemUtil systemUtil = new SystemUtil();
 
 	public String execute() {
-		System.out.println("---------------------------------------------home---------------");
+		// System.out.println("---------------------------------------------home---------------");
 		java.util.Date date_Ut = new java.util.Date();
 		java.sql.Timestamp date_ts = new java.sql.Timestamp(date_Ut.getTime());
 		String thismonthdate = date_ts.toString().substring(0, 7);
 		String thismonth_1 = thismonthdate + "-01";
 		String thismonth_31 = thismonthdate + "-31";
-		System.out.println("===thismonth_1=" + thismonth_1);
-		System.out.println("===thismonth_31=" + thismonth_31);
+		// System.out.println("===thismonth_1=" + thismonth_1);
+		// System.out.println("===thismonth_31=" + thismonth_31);
 		try {
 		} catch (Exception e) {
-			System.out.println("  error !! : " + e.getMessage());
+			log.error("  error !! : " + e.getMessage());
 		}
 		return SUCCESS;
 	}

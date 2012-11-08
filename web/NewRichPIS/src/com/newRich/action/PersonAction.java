@@ -23,7 +23,6 @@ public class PersonAction extends DefaultAction {
 
 	private String modify_id;
 
-
 	public String query() throws Exception {
 
 		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() + " Index Row :" + getSidx());
@@ -46,9 +45,9 @@ public class PersonAction extends DefaultAction {
 			// Handle Search
 			int countSearchKey = 0;
 
-			System.out.println("..name..[" + name + "]");
-			System.out.println("..password..[" + password + "]");
-			
+			// System.out.println("..name..[" + name + "]");
+			// System.out.println("..password..[" + password + "]");
+
 			PersonForm formVO = new PersonForm();
 			if (null != name && !name.equals("") && !name.equals("null")) {
 				// criteria.add(checkSQL("eq", "item_type", (new String(item_type.getBytes("ISO8859_1"), "UTF-8"))));
@@ -70,11 +69,11 @@ public class PersonAction extends DefaultAction {
 			if (to > records) {
 				to = records;
 			}
-			System.out.println("..gridModel.." + gridModel);
+			// System.out.println("..gridModel.." + gridModel);
 			// Calculate total Pages
 			total = (int) Math.ceil((double) records / (double) rows);
 		} catch (Exception e) {
-			System.out.println("PersonAction query() Exception:  " + e);
+			// System.out.println("PersonAction query() Exception:  " + e);
 			addActionError("ERROR : " + e.getLocalizedMessage());
 			return "error";
 		}
@@ -84,9 +83,9 @@ public class PersonAction extends DefaultAction {
 
 	public String save() throws Exception {
 		try {
-			System.out.println("..id..[" + id + "]");
-			System.out.println("..name.." + name);
-			System.out.println("..password.." + password);
+			// System.out.println("..id..[" + id + "]");
+			// System.out.println("..name.." + name);
+			// System.out.println("..password.." + password);
 			// name = (new String(name.getBytes("ISO8859_1"), "UTF-8"));
 			// password = (new String(password.getBytes("ISO8859_1"), "UTF-8"));
 			Person person;
@@ -123,7 +122,7 @@ public class PersonAction extends DefaultAction {
 
 	public String delete() throws Exception {
 		try {
-			System.out.println("..delete.." + modify_id);
+			// System.out.println("..delete.." + modify_id);
 			if (null != modify_id) {
 				log.debug("Delete Person " + modify_id);
 				personDao.delete(modify_id);
@@ -140,7 +139,7 @@ public class PersonAction extends DefaultAction {
 
 	public String modify() throws Exception {
 
-		System.out.println("..modify.." + modify_id);
+		// System.out.println("..modify.." + modify_id);
 		Person Person;
 		if (null != modify_id) {
 			log.debug("Delete Person " + modify_id);

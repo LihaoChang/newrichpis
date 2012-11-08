@@ -300,7 +300,7 @@ public class SpmmAction extends DefaultAction {
 			// System.out.println("..records.." + records);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("000000000000000000000000000:  " + e);
+			// System.out.println("000000000000000000000000000:  " + e);
 			addActionError("ERROR : " + e.getLocalizedMessage());
 			return "error";
 		}

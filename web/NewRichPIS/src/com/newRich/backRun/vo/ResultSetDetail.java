@@ -13,12 +13,12 @@ public class ResultSetDetail {
 
 	public ResultSetDetail(JSONObject jsonObject) {
 		try {
-			
+
 			Iterator<String> myIter = jsonObject.keys();
-			System.out.println("myIter:"+myIter);
+			// System.out.println("myIter:"+myIter);
 			while (myIter.hasNext()) {
 				String nextStr = myIter.next();
-				System.out.println("nextStr:"+nextStr);
+				// System.out.println("nextStr:"+nextStr);
 				if ("totalResultsReturned".equals(nextStr)) {
 					if (null != jsonObject.get("totalResultsReturned") && !jsonObject.get("totalResultsReturned").toString().equals("null")) {
 						this.setTotalResultsReturned((String) jsonObject.get("totalResultsReturned"));

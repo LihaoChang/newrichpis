@@ -1,14 +1,7 @@
 <%
-  System.out.println("--all--check_login-----"+session.getAttribute("check_login"));
-  System.out.println("--login_user_id-----"+session.getAttribute("login_user_id"));
-  System.out.println("--login_user_name-----"+session.getAttribute("login_user_name"));
-
   String login_user_name =String.valueOf(session.getAttribute("login_user_name")); 
   java.util.Date date_Ut = new java.util.Date();
   java.sql.Timestamp date_ts = new java.sql.Timestamp( date_Ut.getTime());  
-  System.out.println(date_Ut);
-  System.out.println(date_ts);
-  System.out.println(date_ts.getTime());
 
   String check_login = String.valueOf(session.getAttribute("check_login"));
   if(!check_login.equals("loginsuccess")){

@@ -255,6 +255,7 @@ public class StockIchart2DB implements Job {
 
 							}
 						} catch (Exception e) {
+							loger.info("Exception:" + e.getMessage());
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -283,6 +284,7 @@ public class StockIchart2DB implements Job {
 							try {
 								responseBody = httpclient.execute(httpget, responseHandler);
 							} catch (Exception e) {
+								loger.info("Exception:" + e.getMessage());
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
@@ -396,6 +398,7 @@ public class StockIchart2DB implements Job {
 			loger.info("StockIchart2DB " + thisLoopStr + " end -----------" + sdf1.format(new Date()));
 
 		} catch (Exception e) {
+			loger.info("Exception:" + e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
@@ -420,9 +423,11 @@ public class StockIchart2DB implements Job {
 			if (response.getStatusLine().getStatusCode() == 200)
 				is200 = true;
 		} catch (ClientProtocolException e) {
+			loger.info("url:" + url + " ,Exception:" + e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			loger.info("url:" + url + " ,Exception:" + e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

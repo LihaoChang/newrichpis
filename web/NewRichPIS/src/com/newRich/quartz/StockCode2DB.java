@@ -52,25 +52,24 @@ public class StockCode2DB extends QuartzBaseDao implements Job {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				HttpClient httpclient = new DefaultHttpClient();
-		
+
 				try {
 					ExcelUtil excelUtil = new ExcelUtil();
 					Date thisDate = new Date();
-					
+
 					StockCodeDao dao = new StockCodeDao();
 					StockDao sdao = new StockDao();
-					
+
 					// 進行轉換
 					String dateString = sdf.format(thisDate);
 					String thisDateStr = sdf1.format(thisDate);
 					loger.info("StockCode2DB start -----------" + thisDateStr);
 					String searchUrl = "/Data/Key_Metrics";
-		
+
 					String urlStr = "http://www.wikinvest.com/wikinvest/livesearch/?q=stockLoop&limit=10000&timestamp=0000000000000&format=json&referrers=0&type=regular&_xhr=1";
 					HttpGet httpget = null;
 					int totalStock = 0;
-		
-		
+
 					ArrayList<StockCode> allList = new ArrayList();
 					ArrayList<Stock> allList2 = new ArrayList();
 					for (int i = 0; i < loopStr.length; i++) {
@@ -80,15 +79,15 @@ public class StockCode2DB extends QuartzBaseDao implements Job {
 						// Create a response handler
 						ResponseHandler<String> responseHandler = new BasicResponseHandler();
 						String responseBody = httpclient.execute(httpget, responseHandler);
-		
+
 						JSONObject jsonObjectMsg = new JSONObject(responseBody);
 						ResultSetHeader resultSet = new ResultSetHeader(jsonObjectMsg);
 						System.out.println(loopStr[i].toUpperCase() + " :[" + resultSet.getTotalResultsReturned() + "]");
-		
+
 						ArrayList<Stock> stockBeanList = resultSet.getStockBeanList();
 						if (null != stockBeanList && stockBeanList.size() > 0) {
 							for (Stock stock : stockBeanList) {
-		
+
 								StockCode stockCode = new StockCode();
 								String stockCodeStr = stock.getPrefixedTicker();
 								if (!StringUtils.isBlank(stockCodeStr)) {
@@ -123,13 +122,13 @@ public class StockCode2DB extends QuartzBaseDao implements Job {
 									try {
 										int s = Integer.parseInt(stockCodeStr);
 									} catch (Exception e) {
-										
+
 										if (null == dao.findByStockCode(stockCodeStr)) {
 											stockCode.setStockCode(stockCodeStr.trim());
 											allList.add(stockCode);
 											// sess.save(stockCode);
 										}
-										
+
 										if (null == sdao.findByStockCodeToStock(stockCodeStr)) {
 											stock.setStockCode(stockCodeStr.trim());
 											stock.setCreateDate(thisDateStr);
@@ -140,7 +139,7 @@ public class StockCode2DB extends QuartzBaseDao implements Job {
 							}
 						}
 					}
-		
+
 					for (int i = 0; i < allList.size() - 1; i++) {
 						for (int j = allList.size() - 1; j > i; j--) {
 							if (allList.get(j).getStockCode().equals(allList.get(i).getStockCode())) {
@@ -148,7 +147,7 @@ public class StockCode2DB extends QuartzBaseDao implements Job {
 							}
 						}
 					}
-		
+
 					for (int i = 0; i < allList2.size() - 1; i++) {
 						for (int j = allList2.size() - 1; j > i; j--) {
 							if (allList2.get(j).getStockCode().equals(allList2.get(i).getStockCode())) {
@@ -156,26 +155,26 @@ public class StockCode2DB extends QuartzBaseDao implements Job {
 							}
 						}
 					}
-		
+
 					for (StockCode stockCode : allList) {
 						if (null == dao.findByStockCode(stockCode.getStockCode())) {
 							dao.insert(stockCode);
-						}else{
+						} else {
 							dao.update(stockCode);
 						}
 					}
-		
+
 					for (Stock stock : allList2) {
 						if (null == sdao.findByStockCodeToStock(stock.getStockCode())) {
 							sdao.insert(stock);
-						}else{
+						} else {
 							sdao.update(stock);
 						}
 					}
-		
+
 					System.out.println("allList.size():" + allList.size());
 					System.out.println("allList2.size():" + allList2.size());
-		
+
 					System.out.println("StockCode2DB end -----------" + sdf1.format(new Date()));
 					loger.info("StockCode2DB end -----------" + sdf1.format(new Date()));
 				} catch (Exception e) {

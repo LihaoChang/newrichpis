@@ -56,14 +56,14 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 	}
 
 	public static void main(String[] args) {
-		// run();
+		run();
 		// getOptions();
 		// getWeeklyOptions();
 	}
 
 	public static void run() {
-		getOptions();
-		getWeeklyOptions();
+		// getOptions();
+		// getWeeklyOptions();
 
 		Date startDate = new Date();
 		// 進行轉換
@@ -194,13 +194,8 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 					// TODO Auto-generated catch block
 					loger.info("StockValue2DB StockCode " + thisStockCode + " ,error2:" + e.getMessage());
 					e.printStackTrace();
-				} finally {
-					// When HttpClient instance is no longer needed,
-					// shut down the connection manager to ensure
-					// immediate deallocation of all system resources
-					loger.info("StockValue2DB StockCode finally " + thisStockCode);
-					httpclient.getConnectionManager().shutdown();
 				}
+				httpclient.getConnectionManager().shutdown();
 			}
 		});
 	}
@@ -500,9 +495,11 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 			if (response.getStatusLine().getStatusCode() == 200)
 				is200 = true;
 		} catch (ClientProtocolException e) {
+			loger.info("StockValue2DB checkResponseCode url: " + url + " ,error1:" + e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			loger.info("StockValue2DB checkResponseCode url: " + url + " ,error2:" + e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

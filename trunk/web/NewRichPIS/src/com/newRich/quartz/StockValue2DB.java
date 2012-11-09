@@ -62,8 +62,8 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 	}
 
 	public static void run() {
-		// getOptions();
-		// getWeeklyOptions();
+		getOptions();
+		getWeeklyOptions();
 
 		Date startDate = new Date();
 		// 進行轉換

@@ -22,7 +22,7 @@ import com.newRich.model.Person;
 import com.newRich.util.SystemUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class LoginAction extends ActionSupport {
+public class LoginAction extends DefaultAction {
 
 	/**
 	 * 
@@ -111,8 +111,7 @@ public class LoginAction extends ActionSupport {
 		this.message = message;
 	}
 
-	@Override
-	public String execute() throws Exception {
+	public String login() throws Exception {
 		log.info("check login name :" + name);
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -141,7 +140,7 @@ public class LoginAction extends ActionSupport {
 			request.getSession(true).setAttribute("login_user_id", login_user_id);
 			request.getSession(true).setAttribute("login_user_name", name);
 			request.getSession(true).setAttribute("login_role", role);
-			// System.out.println("=-===========================role:" + role);
+			// intln("=-===========================role:" + role);
 
 			if (request.getSession(true).getAttribute("check_login") != null) {
 				this_check_login = request.getSession(true).getAttribute("check_login").toString();
@@ -161,8 +160,8 @@ public class LoginAction extends ActionSupport {
 			}
 
 			// menu.listMenuItem();
-			// System.out.println("gridModel : "+gridModel.size());
-			// System.out.println("gridModel : " + gridModel);
+			// intln("gridModel : "+gridModel.size());
+			// intln("gridModel : " + gridModel);
 			MenuRepository repository = new MenuRepository();
 			HttpSession httpsession = (HttpSession) request.getSession();
 			ServletContext application = (ServletContext) httpsession.getServletContext();
@@ -177,11 +176,11 @@ public class LoginAction extends ActionSupport {
 						String name = mi.getName();
 						mc.setName(name);
 						String parent = (String) mi.getParent_name();
-						// System.out.println(name + ", parent is: " + parent);
+						// intln(name + ", parent is: " + parent);
 						if (parent != null) {
 							MenuComponent parentMenu = repository.getMenu(parent);
 							if (parentMenu == null) {
-								// System.out.println("parentMenu '" + parent + "' doesn't exist!");
+								// intln("parentMenu '" + parent + "' doesn't exist!");
 								// create a temporary parentMenu
 								parentMenu = new MenuComponent();
 								parentMenu.setName(parent);
@@ -199,11 +198,11 @@ public class LoginAction extends ActionSupport {
 					String name = mi.getName();
 					mc.setName(name);
 					String parent = (String) mi.getParent_name();
-					// System.out.println(name + ", parent is: " + parent);
+					// intln(name + ", parent is: " + parent);
 					if (parent != null) {
 						MenuComponent parentMenu = repository.getMenu(parent);
 						if (parentMenu == null) {
-							// System.out.println("parentMenu '" + parent + "' doesn't exist!");
+							// intln("parentMenu '" + parent + "' doesn't exist!");
 							// create a temporary parentMenu
 							parentMenu = new MenuComponent();
 							parentMenu.setName(parent);
@@ -224,6 +223,84 @@ public class LoginAction extends ActionSupport {
 			log.info("check login success !!");
 			return SUCCESS;
 		}
+		return SUCCESS;
+	}
+
+	public String ssoGenerateMenu() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		String login_user_id = request.getSession().getAttribute("login_user_id").toString();
+		String role = request.getSession().getAttribute("login_role").toString();
+
+		try {
+			gridModel = menuItemDao.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Get Connection Error!", e);
+		}
+
+		// menu.listMenuItem();
+		// intln("gridModel : "+gridModel.size());
+		// intln("gridModel : " + gridModel);
+		MenuRepository repository = new MenuRepository();
+		HttpSession httpsession = (HttpSession) request.getSession();
+		ServletContext application = (ServletContext) httpsession.getServletContext();
+		MenuRepository defaultRepository = (MenuRepository) application.getAttribute(MenuRepository.MENU_REPOSITORY_KEY);
+		repository.setDisplayers(defaultRepository.getDisplayers());
+		for (int i = 0; i < gridModel.size(); i++) {
+			MenuComponent mc = new MenuComponent();
+			MenuItem mi = (MenuItem) gridModel.get(i);
+
+			if (!StringUtils.isBlank(mi.getTarget()) && mi.getTarget().equals(SystemUtil.ADMIN_ROLE)) {
+				if (!StringUtils.isBlank(role) && role.equals(SystemUtil.ADMIN_ROLE)) {
+					String name = mi.getName();
+					mc.setName(name);
+					String parent = (String) mi.getParent_name();
+					// intln(name + ", parent is: " + parent);
+					if (parent != null) {
+						MenuComponent parentMenu = repository.getMenu(parent);
+						if (parentMenu == null) {
+							// intln("parentMenu '" + parent + "' doesn't exist!");
+							// create a temporary parentMenu
+							parentMenu = new MenuComponent();
+							parentMenu.setName(parent);
+							repository.addMenu(parentMenu);
+						}
+						mc.setParent(parentMenu);
+					}
+					String title = (String) mi.getTitle();
+					mc.setTitle(getText(title));
+					String location = (String) mi.getLocation();
+					mc.setLocation(location);
+					repository.addMenu(mc);
+				}
+			} else {
+				String name = mi.getName();
+				mc.setName(name);
+				String parent = (String) mi.getParent_name();
+				// intln(name + ", parent is: " + parent);
+				if (parent != null) {
+					MenuComponent parentMenu = repository.getMenu(parent);
+					if (parentMenu == null) {
+						// intln("parentMenu '" + parent + "' doesn't exist!");
+						// create a temporary parentMenu
+						parentMenu = new MenuComponent();
+						parentMenu.setName(parent);
+						repository.addMenu(parentMenu);
+					}
+					mc.setParent(parentMenu);
+				}
+				String title = (String) mi.getTitle();
+				mc.setTitle(getText(title));
+				String location = (String) mi.getLocation();
+				mc.setLocation(location);
+				repository.addMenu(mc);
+			}
+		}
+		// request.setAttribute("repository", repository);
+		session.setAttribute("repository", repository);
+		session.setAttribute("gridModelMenu", gridModel);
+		log.info("check login success !!");
 		return SUCCESS;
 	}
 

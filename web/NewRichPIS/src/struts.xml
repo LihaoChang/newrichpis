@@ -27,13 +27,19 @@
 			<exception-mapping exception="java.lang.Exception"
 				result="error" />
 		</global-exception-mappings>
-		<action name="Login" class="com.newRich.action.LoginAction">
+		<action name="Login" class="com.newRich.action.LoginAction" method="login">
 			<result name="success">/login_ok.jsp</result>
 			<result name="error" type="dispatcher">/index.jsp</result>
 		</action>
-		<action name="home" class="com.newRich.action.HomeAction">
+
+		<action name="ssoGenerateMenu" class="com.newRich.action.LoginAction" method="ssoGenerateMenu">
 			<result name="success">/login_ok.jsp</result>
 			<result name="error" type="dispatcher">/index.jsp</result>
+		</action>
+		
+		<action name="home" class="com.newRich.action.HomeAction">
+			<result name="success">/login_ok.jsp</result>
+			<result name="error" type="dispatcher">/filter_error.jsp</result>
 		</action>
 		<!--com.newRich.action.StockAction start-->
 		<action name="findGood" class="com.newRich.action.StockAction"

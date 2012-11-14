@@ -54,11 +54,16 @@ public class SpmmAction extends DefaultAction {
 	private String roaType;
 	private String dividendType;
 	private String sharesTradedType;// 成交量
+
+	private String optionsStr;// 策略
 	private List<SelectVO> sectorList = new ArrayList<SelectVO>();// sector的下拉
+	private List<SelectVO> optionsList = new ArrayList<SelectVO>();// options的下拉
 	private List<SelectVO> typeList = new ArrayList<SelectVO>();// 大於小於的下拉
 	private List<SelectVO> strategyList = new ArrayList<SelectVO>();// 大於小於的下拉
 	private String exDividendDateStart;// 除權除息日 開始
 	private String exDividendDateEnd;// 除權除息日 結束
+	private String orderBy;
+	private String orderByType;
 
 	public String query() throws Exception {
 
@@ -96,10 +101,14 @@ public class SpmmAction extends DefaultAction {
 			// System.out.println("..strategyStr..[" + strategyStr + "]");
 			// System.out.println("..exDividendDateStart..[" + exDividendDateStart + "]");
 			// System.out.println("..exDividendDateEnd..[" + exDividendDateEnd + "]");
+			// System.out.println("..orderBy..[" + orderBy + "]");
+			// System.out.println("..orderByType..[" + orderByType + "]");
+			System.out.println("..optionsStr..[" + optionsStr + "]");
 			// add sector select
 			querySectorList();
 			queryTypeList();
 			queryStrategyList();
+			queryOptionsList();
 
 			// set查詢的參數
 			StockForm formVO = new StockForm();
@@ -125,6 +134,15 @@ public class SpmmAction extends DefaultAction {
 					formVO.setSharesTradedType(typeChange(sharesTradedType));
 					countSearchKey++;
 				}
+			}
+
+			if (null != optionsStr && !optionsStr.equals("") && !optionsStr.equals("null")) {
+				if (optionsStr.equals("O")) {
+					formVO.setOptions(optionsStr);
+				} else if (optionsStr.equals("W")) {
+					formVO.setWeeklyoptions(optionsStr);
+				}
+				countSearchKey++;
 			}
 
 			if (null != sectorStr && !sectorStr.equals("") && !sectorStr.equals("null")) {
@@ -233,6 +251,14 @@ public class SpmmAction extends DefaultAction {
 
 			// Count Stock
 			records = StockDao.findAllByForm(formVO).size();
+
+			if (!StringUtils.isBlank(orderBy) && !orderBy.equals("null")) {
+				if (!StringUtils.isBlank(orderByType) && !orderByType.equals("null")) {
+					formVO.setOrderBy(orderBy);
+					formVO.setOrderByType(orderByType);
+					countSearchKey++;
+				}
+			}
 
 			// Get Stock by Criteria
 			List<StockVO> gridModel0 = StockDao.findAllByPage(formVO, from, rows);
@@ -376,6 +402,31 @@ public class SpmmAction extends DefaultAction {
 		// System.out.println("action sectors.size():" + sectors.size());
 
 		return sectors;
+	}
+
+	/**
+	 * 產生『是否有選擇權』下拉
+	 * 
+	 * @return
+	 */
+	public List<SelectVO> queryOptionsList() {
+		List<SelectVO> optionsLists = new ArrayList<SelectVO>();
+		SelectVO selectVO_1 = new SelectVO();
+		selectVO_1.setString("");
+		selectVO_1.setValue("");
+		optionsLists.add(selectVO_1);
+		SelectVO selectVO_2 = new SelectVO();
+		selectVO_2.setString("O");
+		selectVO_2.setValue("O");
+		optionsLists.add(selectVO_2);
+		SelectVO selectVO_3 = new SelectVO();
+		selectVO_3.setString("W");
+		selectVO_3.setValue("W");
+		optionsLists.add(selectVO_3);
+		optionsList = optionsLists;
+		// System.out.println("action sectors.size():" + sectors.size());
+
+		return optionsLists;
 	}
 
 	/**
@@ -684,6 +735,38 @@ public class SpmmAction extends DefaultAction {
 
 	public void setExDividendDateEnd(String exDividendDateEnd) {
 		this.exDividendDateEnd = exDividendDateEnd;
+	}
+
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+
+	public String getOrderByType() {
+		return orderByType;
+	}
+
+	public void setOrderByType(String orderByType) {
+		this.orderByType = orderByType;
+	}
+
+	public List<SelectVO> getOptionsList() {
+		return optionsList;
+	}
+
+	public void setOptionsList(List<SelectVO> optionsList) {
+		this.optionsList = optionsList;
+	}
+
+	public String getOptionsStr() {
+		return optionsStr;
+	}
+
+	public void setOptionsStr(String optionsStr) {
+		this.optionsStr = optionsStr;
 	}
 
 }

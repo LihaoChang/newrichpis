@@ -72,6 +72,14 @@ public class StockDao extends BaseDao {
 				SELECT_SQL += " and sector like '%" + formVO.getSector() + "%' ";
 			}
 
+			if (StringUtils.isNotEmpty(formVO.getOptions())) {
+				SELECT_SQL += " and options = '" + formVO.getOptions() + "' ";
+			}
+
+			if (StringUtils.isNotEmpty(formVO.getWeeklyoptions())) {
+				SELECT_SQL += " and weeklyoptions = '" + formVO.getWeeklyoptions() + "' ";
+			}
+
 			if (StringUtils.isNotEmpty(formVO.getStrategy())) {
 				SELECT_SQL += " and strategy like '%" + formVO.getStrategy() + "%' ";
 			}
@@ -147,6 +155,14 @@ public class StockDao extends BaseDao {
 				SELECT_SQL += " and strategy like '%" + formVO.getStrategy() + "%' ";
 			}
 
+			if (StringUtils.isNotEmpty(formVO.getOptions())) {
+				SELECT_SQL += " and options = '" + formVO.getOptions() + "' ";
+			}
+
+			if (StringUtils.isNotEmpty(formVO.getWeeklyoptions())) {
+				SELECT_SQL += " and weeklyoptions = '" + formVO.getWeeklyoptions() + "' ";
+			}
+
 			if (null != formVO.getNetIncome()) {
 				SELECT_SQL += " and netIncome " + formVO.getNetIncomeType() + formVO.getNetIncome() + " ";
 			}
@@ -191,6 +207,10 @@ public class StockDao extends BaseDao {
 				SELECT_SQL += " and exDividendDate >= '" + formVO.getExDividendDateStart() + "' ";
 				SELECT_SQL += " and exDividendDate <= '" + formVO.getExDividendDateEnd() + "' ";
 				SELECT_SQL += " and exDividendDate is not null ";
+			}
+
+			if (null != formVO.getOrderBy() && null != formVO.getOrderByType()) {
+				SELECT_SQL += " order by " + formVO.getOrderBy() + " " + formVO.getOrderByType();
 			}
 
 			SELECT_SQL += " limit ?,? ";

@@ -10,10 +10,7 @@
 		defaultLoadingText="Please wait ..." />
 </s:if>
 <s:else>
-	<sj:head debug="true" compressed="false" jquerytheme="%{theme}"
-		loadFromGoogle="true" loadFromGoogle="%{google}"
-		ajaxhistory="%{ajaxhistory}" defaultIndicator="myDefaultIndicator"
-		defaultLoadingText="Please wait ..." />
+
 </s:else>
 
 <!-- This file includes necessary functions/topics for validation and all topic examples -->
@@ -48,6 +45,38 @@
 		document.updateForm.action = "spmm.action";
 		document.updateForm.submit(); //送出表單中的資料
 	}
+	
+	function orderByGoPage() {
+		if ((updateForm.exDividendDateStart.value) == "" && (updateForm.exDividendDateEnd.value) != "") {
+			window.alert('[<s:text name="findGood_exDividendDate" /> <s:text name="start_date" />]<s:text name="must_have_var" />');
+			return;
+		}
+		if ((updateForm.exDividendDateStart.value) != "" && (updateForm.exDividendDateEnd.value) == "") {
+			window.alert('[<s:text name="findGood_exDividendDate" /> <s:text name="end_date" />]<s:text name="must_have_var" />');
+			return;
+		}			
+		var orderByStr = document.updateForm.orderBy.value ;		
+		var orderByTypeStr = document.updateForm.orderByType.value;
+		if( orderByStr != null && orderByStr != "" ){			
+		  if(orderByTypeStr != null && orderByTypeStr != "" ){
+			if(orderByTypeStr =="asc"){
+				document.updateForm.orderByType.value = "desc";
+			}else if(orderByTypeStr =="desc"){
+				document.updateForm.orderByType.value = "asc";
+			}else{
+				document.updateForm.orderByType.value = "asc";
+			}
+		  }else{
+			  document.updateForm.orderByType.value = "asc";
+		  }
+		}else{
+			document.updateForm.orderBy.value = "exDividendDate";
+			document.updateForm.orderByType.value = "asc";
+		}
+		document.updateForm.action = "spmm.action";
+		document.updateForm.submit(); //送出表單中的資料
+	}	
+	
 	function openwin(stockCode) {
 		//window.open("http://stockcharts.com/h-sc/ui?symbol="+stockCode);
 		window.open("http://www.finviz.com/quote.ashx?t="+stockCode.toLowerCase()+"&ty=c&ta=1&p=d&b=1", 'Joseph');
@@ -141,6 +170,33 @@
 											
 						</td>
 					</tr>
+					<tr>
+						<th width="15%" align="left"><s:text name="findGood_sector" />:
+						</th>
+						<td width="18%">
+							<select name="sectorStr" size="1">
+								<s:iterator value="sectorList" status="status">
+									<option value="<s:property value="value" />" <s:if test='sectorStr==value'> selected="selected"</s:if>>
+									<s:property value="string" /></option>
+								</s:iterator>
+							</select>
+							
+						</td>
+						<th width="15%" align="left"><s:text name="findGood_options" />:
+						</th>
+						<td width="18%">
+							<select name="optionsStr" size="1">
+								<s:iterator value="optionsList" status="status">
+									<option value="<s:property value="value" />" <s:if test='optionsStr==value'> selected="selected"</s:if>>
+									<s:property value="string" /></option>
+								</s:iterator>
+							</select>						
+						</td>
+						<th width="15%" align="left">
+						</th>
+						<td width="18%">
+                        </td>
+					</tr>					
 					
 					<tr>
 						<th width="15%" align="left"><s:text name="findGood_exDividendDate" />:
@@ -166,8 +222,11 @@
 
 				</table>
 				<input type="hidden" id="id" name="id"
-					value='<s:property value="id" />'> <input type="hidden"
-					id="page" name="page" value='0'></form>
+					value='<s:property value="id" />'> 
+					<input type="hidden" id="page" name="page" value='0'>
+					<input type="hidden" id="orderBy" name="orderBy" value='<s:property value="orderBy" />'>
+					<input type="hidden" id="orderByType" name="orderByType" value='<s:property value="orderByType" />'>
+				</form>
 				<%@ include file="/jsp/include/spmm_yellow_tag_end.jsp"%>
 				</td>
 			</tr>
@@ -180,11 +239,24 @@
 
 					<tr>
 						<th width="2%"></th>
-						<th width="19%" align="center"><s:text name="findGood_stockCode" /></th>
-						<th width="19%" align="center"><s:text name="findGood_nowPrice" /></th>
+						<th width="15%" align="center"><s:text name="findGood_stockCode" /></th>
+						<th width="15%" align="center"><s:text name="findGood_nowPrice" /></th>
+						<th width="8%" align="center"><s:text name="findGood_sector" /></th>
 						<th width="19%" align="center"><s:text name="findGood_sharesTraded" /></th>
 						<th width="19%" align="center"><s:text name="findGood_dividend" /></th>
-						<th width="19%" align="center"><s:text name="findGood_exDividendDate" /></th>
+						<th width="19%" align="center">
+						<a href='#' onclick="orderByGoPage()">
+						<strong><s:text name="findGood_exDividendDate" /></strong>
+							<s:if test="orderByType != null && orderByType != ''">								
+								<s:if test="orderByType == 'asc'">
+									<img src='<%=request.getContextPath()%>/images/Upp.gif' border="0" >
+								</s:if>		
+								<s:if test="orderByType == 'desc'">
+									<img src='<%=request.getContextPath()%>/images/Darrow.gif' border="0" >
+								</s:if>									
+							</s:if>	
+						</a>
+						</th>
 					</tr>
 					<s:iterator value="gridModel" status="status">
 						<s:if test="#status.even == true">
@@ -208,6 +280,7 @@
 						</a>
 						</td>
 						<td align="right"><s:property value="nowPrice" /></td>
+						<td align="center"><s:property value="sector" /></td>
 						<td align="right"><s:property value="sharesTraded" /></td>
 						<td align="right"><s:property value="dividend" /></td>
 						<td align="center"><s:property value="exDividendDate" /></td>

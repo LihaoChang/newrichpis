@@ -318,7 +318,7 @@
 						</s:if>							
 						</a>
 						</td>
-						<td align="center"><s:property value="sector" /></td><!--  -->
+						<td align="center"><s:property value="sector" /></td
 						<td align="right"><s:property value="sharesTraded" /></td>
 						<td align="right"><s:property value="netIncome" /></td>
 						<td align="right"><s:property value="netIncomeGrowth" /></td>

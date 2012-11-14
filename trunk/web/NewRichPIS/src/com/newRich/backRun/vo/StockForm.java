@@ -56,6 +56,9 @@ public class StockForm {
 	private String exDividendDateStart;// 除權除息日 開始
 	private String exDividendDateEnd;// 除權除息日 結束
 
+	private String orderBy;
+	private String orderByType;
+
 	public StockForm() {
 
 	}
@@ -354,6 +357,22 @@ public class StockForm {
 
 	public void setExDividendDateEnd(String exDividendDateEnd) {
 		this.exDividendDateEnd = exDividendDateEnd;
+	}
+
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+
+	public String getOrderByType() {
+		return orderByType;
+	}
+
+	public void setOrderByType(String orderByType) {
+		this.orderByType = orderByType;
 	}
 
 }

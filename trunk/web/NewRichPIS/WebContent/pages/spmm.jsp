@@ -249,10 +249,10 @@
 						<strong><s:text name="findGood_exDividendDate" /></strong>
 							<s:if test="orderByType != null && orderByType != ''">								
 								<s:if test="orderByType == 'asc'">
-									<img src='<%=request.getContextPath()%>/images/Upp.gif' border="0" >
+									<img src='<%=request.getContextPath()%>/images/Darrow.gif' border="0" >
 								</s:if>		
 								<s:if test="orderByType == 'desc'">
-									<img src='<%=request.getContextPath()%>/images/Darrow.gif' border="0" >
+									<img src='<%=request.getContextPath()%>/images/Upp.gif' border="0" >
 								</s:if>									
 							</s:if>	
 						</a>

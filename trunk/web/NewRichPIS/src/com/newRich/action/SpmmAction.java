@@ -103,7 +103,7 @@ public class SpmmAction extends DefaultAction {
 			// System.out.println("..exDividendDateEnd..[" + exDividendDateEnd + "]");
 			// System.out.println("..orderBy..[" + orderBy + "]");
 			// System.out.println("..orderByType..[" + orderByType + "]");
-			System.out.println("..optionsStr..[" + optionsStr + "]");
+			// System.out.println("..optionsStr..[" + optionsStr + "]");
 			// add sector select
 			querySectorList();
 			queryTypeList();

@@ -58,7 +58,8 @@ public class StockForm {
 
 	private String orderBy;
 	private String orderByType;
-
+	
+	private String isSp500;
 	public StockForm() {
 
 	}
@@ -373,6 +374,14 @@ public class StockForm {
 
 	public void setOrderByType(String orderByType) {
 		this.orderByType = orderByType;
+	}
+
+	public String getIsSp500() {
+		return isSp500;
+	}
+
+	public void setIsSp500(String isSp500) {
+		this.isSp500 = isSp500;
 	}
 
 }

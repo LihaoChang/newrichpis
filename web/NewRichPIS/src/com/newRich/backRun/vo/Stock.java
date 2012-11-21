@@ -55,6 +55,8 @@ public class Stock implements Serializable {
 	public String exDividendDate;// 除權除息日
 	public String options;// 有無選擇權
 	public String weeklyoptions;// 有無weekly選擇權
+	
+	private String isSp500;
 
 	public Stock() {
 	}
@@ -298,7 +300,16 @@ public class Stock implements Serializable {
 	public void setWeeklyoptions(String weeklyoptions) {
 		this.weeklyoptions = weeklyoptions;
 	}
+	
+	@Column(name = "ISSP500", length = 1)
+	public String getIsSp500() {
+		return isSp500;
+	}
 
+	public void setIsSp500(String isSp500) {
+		this.isSp500 = isSp500;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -347,9 +358,12 @@ public class Stock implements Serializable {
 		builder.append(options);
 		builder.append(", weeklyoptions=");
 		builder.append(weeklyoptions);
+		builder.append(", isSp500=");
+		builder.append(isSp500);
 
 		builder.append("]");
 
 		return builder.toString();
 	}
+
 }

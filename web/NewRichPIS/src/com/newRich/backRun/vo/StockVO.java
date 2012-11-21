@@ -41,6 +41,8 @@ public class StockVO {
 	public String exDividendDate;// 除權除息日
 	public String options;// 有無選擇權
 	public String weeklyoptions;// 有無weekly選擇權
+	
+	private String isSp500;
 
 	public StockVO() {
 
@@ -229,4 +231,13 @@ public class StockVO {
 	public void setWeeklyoptions(String weeklyoptions) {
 		this.weeklyoptions = weeklyoptions;
 	}
+
+	public String getIsSp500() {
+		return isSp500;
+	}
+
+	public void setIsSp500(String isSp500) {
+		this.isSp500 = isSp500;
+	}
+	
 }

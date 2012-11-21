@@ -119,7 +119,7 @@
 								<option value="B">B</option>
 							</s:else>
 						</select>
-						</td>						
+						</td>
 					</tr>
 					
 					
@@ -256,12 +256,16 @@
 							<input type="text" name="strategyStr" size="12" maxlength="10" value='<s:property value="strategyStr" />'>
 							 -->							
 						</td>
-						<td width="15%" align="left">
-						</td>
+						<th width="15%" align="left">SP500:</th>
 						<td width="18%">
+							<select name="isSp500" size="1">
+								<s:iterator value="isSP500TypeList" status="status">
+									<option value="<s:property value="value" />" <s:if test='isSp500 == value'> selected="selected"</s:if>>
+									<s:property value="string" /></option>
+								</s:iterator>	
+							</select>
 						</td>
-						<td width="15%" align="left">
-						</td>
+						<td width="15%" align="left"> </td>
 						<td width="18%" align="right"><input type="button" value="<s:text name="action_search" />"
 							onclick="searchGo();" />
 						</td>

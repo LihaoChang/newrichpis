@@ -1,6 +1,8 @@
 package com.newRich.action;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -28,7 +30,8 @@ public class MemberAction extends DefaultAction {
 	
 	private String modify_id;
 	
-	private List<SelectVO> scaleTypeList = new ArrayList<SelectVO>();// 大於小於的下拉
+	private List<SelectVO> scaleTypeList = new ArrayList<SelectVO>();//下拉option
+	final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	
 	public String query() throws Exception {
 		log.debug("Page " + getPage() + " Rows " + getRows() + " Sorting Order " + getSord() + " Index Row :" + getSidx());
@@ -57,7 +60,6 @@ public class MemberAction extends DefaultAction {
 			RtMember formVO = new RtMember();
 			if (null != memberId && !memberId.equals("") && !memberId.equals("null")) {
 				// criteria.add(checkSQL("eq", "item_type", (new String(item_type.getBytes("ISO8859_1"), "UTF-8"))));
-				System.out.println("====memberId:"+memberId);
 				formVO.setMemberId(memberId);
 				countSearchKey++;
 			}
@@ -104,8 +106,12 @@ public class MemberAction extends DefaultAction {
 	}
 	
 	public String save() throws Exception {
+		Date updDate = new Date();
+		// 取得時間
+		String updDateString = sdf1.format(updDate);
+		
 		try {
-			System.out.println("====memberIdHidden:"+memberIdHidden);
+			//System.out.println("====memberIdHidden:"+memberIdHidden);
 			if (null == memberIdHidden || memberIdHidden.equals("")) {
 				log.debug("Add member");
 				RtMember formVO = new RtMember();
@@ -122,16 +128,22 @@ public class MemberAction extends DefaultAction {
 					formVO.setEmail(email);
 				}
 				if (null != scale && !scale.equals("") && !scale.equals("null")) {
-					if("Y".equals(formVO.getScale())){
-						scale = "2";
-					}
-					if("N".equals(formVO.getScale())){
-						scale = "1";
-					}
 					formVO.setScale(scale);
 				}
-				// PersonDao.save(Person);
+				formVO.setUpdateDate(updDateString);
 				memberDao.insert(formVO);
+			}else{
+				log.debug("Update member");
+				RtMember memberVO = memberDao.findById(memberId);
+				
+				memberVO.setMemberId(memberId);
+				memberVO.setNickname(nickname);
+				memberVO.setRealname(realname);
+				memberVO.setEmail(email);
+				memberVO.setScale(scale);
+				memberVO.setUpdateDate(updDateString);
+				
+				memberDao.update(memberVO);
 			}
 
 		} catch (Exception e) {
@@ -163,7 +175,7 @@ public class MemberAction extends DefaultAction {
 		// System.out.println("..modify.." + modify_id);
 		RtMember member;
 		if (null != modify_id) {
-			log.debug("Delete Person " + modify_id);
+			log.debug("modify member " + modify_id);
 			member = memberDao.findById(modify_id);
 			if (null != member) {
 				memberId = member.getMemberId();
@@ -187,9 +199,9 @@ public class MemberAction extends DefaultAction {
 		List<SelectVO> types = new ArrayList<SelectVO>();
 
 		SelectVO selectVO1 = new SelectVO();
-		selectVO1.setString("...");
-		selectVO1.setValue("");
-		types.add(selectVO1);
+//		selectVO1.setString("...");
+//		selectVO1.setValue("");
+//		types.add(selectVO1);
 
 		SelectVO selectVO2 = new SelectVO();
 		selectVO2.setString("Y");

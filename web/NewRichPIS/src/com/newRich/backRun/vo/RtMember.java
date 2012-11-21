@@ -1,4 +1,4 @@
-package com.newRich.util;
+package com.newRich.backRun.vo;
 
 public class RtMember implements java.io.Serializable {
 

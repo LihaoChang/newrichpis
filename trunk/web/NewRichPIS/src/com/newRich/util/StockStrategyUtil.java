@@ -21,6 +21,7 @@ public class StockStrategyUtil {
 	public static String STRATEGY_TYPE_PB = "PB";
 	public static String STRATEGY_TYPE_PC = "PC";
 	
+	
 	//各種佈局策略的url -- start
 	private static String PB_STRATEGY_URL = "http://finviz.com/screener.ashx?v=111&f=ta_candlestick_mw,ta_highlow20d_nh,ta_highlow50d_nh,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=3";
 	private static String PC_STRATEGY_URL = "http://finviz.com/screener.ashx?v=111&f=ta_highlow20d_nh,ta_sma20_pa,ta_sma200_pb,ta_sma50_pa&ft=3";
@@ -35,6 +36,11 @@ public class StockStrategyUtil {
 	private static String pbPageUrl = "&r=";
 	//拆解網頁資料用end
 
+	//取得SP500成本個股
+	public static String TYPE_SP500 = "SP500";
+	private static String SP500_URL = "http://finviz.com/screener.ashx?v=111&f=idx_sp500";
+	
+	
 	private static String pbByStockCodeUrl = "http://finviz.com/screener.ashx?v=111&f=ta_candlestick_mw,ta_highlow20d_nh,ta_highlow50d_nh,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=3&t=";
 	static String testUtl = "http://finviz.com/screener.ashx?v=111&f=ta_change_u2,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=3";
 	
@@ -60,6 +66,8 @@ public class StockStrategyUtil {
 				//url = testUtl;
 			}else if (STRATEGY_TYPE_PC.equals(strategyType)){
 				url = PC_STRATEGY_URL;
+			}else if (TYPE_SP500.equals(strategyType)){
+				url = SP500_URL;
 			}
 			if(checkResponseCode(url)){//判斷網站是否正常
 				httpget = new HttpGet(url);

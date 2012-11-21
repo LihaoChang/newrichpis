@@ -3,7 +3,7 @@
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
 <%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
 <%@ include file="/jsp/include/re.jsp"%>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type='text/javascript'>
 <!--
 	function check_up() {
@@ -66,7 +66,7 @@
 				<td><%@ include file="/jsp/include/query_tag_start_p1.jsp"%>
 				<div class="mainSubTitle"><s:text name="Member" />
 				<%@ include file="/jsp/include/query_tag_start_p2.jsp"%>
-				<form name="updateForm" action="memberSave.action">
+				<form name="updateForm" action="memberSave.action" METHOD="post">
 				<table width="100%" border="0">
 
 					<tr>

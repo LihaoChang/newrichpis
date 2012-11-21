@@ -53,9 +53,11 @@ public class StockAction extends DefaultAction {
 	private String roaType;
 	private String dividendType;
 	private String sharesTradedType;// 成交量
+	private String isSp500;
 	private List<SelectVO> sectorList = new ArrayList<SelectVO>();// sector的下拉
 	private List<SelectVO> typeList = new ArrayList<SelectVO>();// 大於小於的下拉
 	private List<SelectVO> strategyList = new ArrayList<SelectVO>();// 大於小於的下拉
+	private List<SelectVO> isSP500TypeList = new ArrayList<SelectVO>();//下拉option
 
 	public String query() throws Exception {
 
@@ -95,6 +97,7 @@ public class StockAction extends DefaultAction {
 			querySectorList();
 			queryTypeList();
 			queryStrategyList();
+			queryIsSP500TypeList();
 
 			// set查詢的參數
 			StockForm formVO = new StockForm();
@@ -215,7 +218,12 @@ public class StockAction extends DefaultAction {
 					countSearchKey++;
 				}
 			}
-
+			
+			if (null != isSp500 && !isSp500.equals("") && !isSp500.equals("null")) {
+				formVO.setIsSp500(isSp500);
+				countSearchKey++;
+			}
+			
 			// Count Stock
 			records = StockDao.findAllByForm(formVO).size();
 
@@ -397,7 +405,7 @@ public class StockAction extends DefaultAction {
 	public void queryStrategyList() {
 		List<SelectVO> strategys = new ArrayList<SelectVO>();
 		SelectVO selectVO1 = new SelectVO();
-		selectVO1.setString("");
+		selectVO1.setString("...");
 		selectVO1.setValue("");
 		strategys.add(selectVO1);
 		String strategy[] = StockStrategyUtil.STRATEGY_TYPE;
@@ -431,6 +439,35 @@ public class StockAction extends DefaultAction {
 		return gridModel;
 	}
 
+	
+	/**
+	 * 產生『』下拉
+	 * 
+	 * @return
+	 */
+	public List<SelectVO> queryIsSP500TypeList() {
+		List<SelectVO> types = new ArrayList<SelectVO>();
+
+		SelectVO selectVO1 = new SelectVO();
+		selectVO1.setString("...");
+		selectVO1.setValue("");
+		types.add(selectVO1);
+
+		SelectVO selectVO2 = new SelectVO();
+		selectVO2.setString("Y");
+		selectVO2.setValue("Y");
+		types.add(selectVO2);
+
+		SelectVO selectVO3 = new SelectVO();
+		selectVO3.setString("N");
+		selectVO3.setValue("N");
+		types.add(selectVO3);
+
+		// System.out.println("typeList :" + typeList);
+		isSP500TypeList = types;
+		return types;
+	}
+	
 	/**
 	 * @param gridModel
 	 *            an collection that contains the actual data
@@ -655,4 +692,21 @@ public class StockAction extends DefaultAction {
 		this.strategyList = strategyList;
 	}
 
+	public String getIsSp500() {
+		return isSp500;
+	}
+
+	public void setIsSp500(String isSp500) {
+		this.isSp500 = isSp500;
+	}
+
+	public List<SelectVO> getIsSP500TypeList() {
+		return isSP500TypeList;
+	}
+
+	public void setIsSP500TypeList(List<SelectVO> isSP500TypeList) {
+		this.isSP500TypeList = isSP500TypeList;
+	}
+	
+	
 }

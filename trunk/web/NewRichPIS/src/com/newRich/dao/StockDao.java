@@ -129,6 +129,10 @@ public class StockDao extends BaseDao {
 				SELECT_SQL += " and exDividendDate <= '" + formVO.getExDividendDateEnd() + "' ";
 				SELECT_SQL += " and exDividendDate is not null ";
 			}
+			
+			if (null != formVO.getIsSp500() && "Y".equals(formVO.getIsSp500())) {
+				SELECT_SQL += " and isSp500 = '" + formVO.getIsSp500() + "' ";
+			}
 		}
 		return (List) jdbcTemplate.query(SELECT_SQL, new RowMapperResultSetExtractor(new StockMapper()));
 	}
@@ -211,6 +215,9 @@ public class StockDao extends BaseDao {
 
 			if (null != formVO.getOrderBy() && null != formVO.getOrderByType()) {
 				SELECT_SQL += " order by " + formVO.getOrderBy() + " " + formVO.getOrderByType();
+			}
+			if (null != formVO.getIsSp500() && "Y".equals(formVO.getIsSp500())) {
+				SELECT_SQL += " and isSp500 = '" + formVO.getIsSp500() + "' ";
 			}
 
 			SELECT_SQL += " limit ?,? ";
@@ -331,14 +338,14 @@ public class StockDao extends BaseDao {
 	 */
 	private static final String INSERT_stock_SQL = " INSERT INTO stock " + " (stockCode, title, nowPrice, url, sharesTraded, "
 			+ "prefixedTicker, netIncome, netIncomeGrowth, netMargin, debtEquity, " + "bookValuePerShare, cashPerShare, roe, roa, dividend, "
-			+ "reScheduleDate, createDate, updateDate, sector, strategy, exDividendDate, options, weeklyoptions) " + " VALUES " + " (?, ?, ?, ?, ?,"
-			+ "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?, ?, ?, ? ) ";
+			+ "reScheduleDate, createDate, updateDate, sector, strategy, exDividendDate, options, weeklyoptions, isSp500) " + " VALUES " + " (?, ?, ?, ?, ?,"
+			+ "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?," + "  ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
 
 	public int insert(Stock vo) {
 		final Object[] params = new Object[] { vo.getStockCode(), vo.getTitle(), vo.getNowPrice(), vo.getUrl(), vo.getSharesTraded(),
 				vo.getPrefixedTicker(), vo.getNetIncome(), vo.getNetIncomeGrowth(), vo.getNetMargin(), vo.getDebtEquity(), vo.getBookValuePerShare(),
 				vo.getCashPerShare(), vo.getRoe(), vo.getRoa(), vo.getDividend(), vo.getReScheduleDate(), vo.getCreateDate(), vo.getUpdateDate(),
-				vo.getSector(), vo.getStrategy(), vo.getExDividendDate(), vo.getOptions(), vo.getWeeklyoptions() };
+				vo.getSector(), vo.getStrategy(), vo.getExDividendDate(), vo.getOptions(), vo.getWeeklyoptions(), vo.getIsSp500() };
 		return jdbcTemplate.update(INSERT_stock_SQL, params);
 	}
 
@@ -426,6 +433,10 @@ public class StockDao extends BaseDao {
 		final Object[] params = new Object[] { vo.getWeeklyoptions(), vo.getUpdateDate(), vo.getStockCode() };
 		return jdbcTemplate.update(UPDATE_SQL, params);
 	}
+	public int updateIsSP500(String sp500String) {
+		String UPDATE_StockIsSP5002DB_SQL = " UPDATE stock SET isSp500 = 'Y' where stockCode in ('"+sp500String+"') ";
+		return jdbcTemplate.update(UPDATE_StockIsSP5002DB_SQL);
+	}
 
 	/**
 	 * 將strategy欄位的值清除
@@ -434,6 +445,15 @@ public class StockDao extends BaseDao {
 
 	public int clearStrategy() {
 		return jdbcTemplate.update(UPDATE_CLEAR_STRATEGY_SQL);
+	}
+	
+	/**
+	 * 將ISSP500欄位的值清除
+	 */
+	private static final String UPDATE_CLEAR_ISSP500_SQL = " UPDATE stock SET isSp500 = '' ";
+
+	public int clearIsSP500() {
+		return jdbcTemplate.update(UPDATE_CLEAR_ISSP500_SQL);
 	}
 
 	/**
@@ -465,6 +485,8 @@ public class StockDao extends BaseDao {
 			vo.setExDividendDate(rs.getString("exDividendDate"));
 			vo.setOptions(rs.getString("options"));
 			vo.setWeeklyoptions(rs.getString("weeklyoptions"));
+			vo.setIsSp500(rs.getString("isSp500"));
+			
 			return vo;
 		}
 	}
@@ -510,7 +532,8 @@ public class StockDao extends BaseDao {
 			vo.setExDividendDate(rs.getString("exDividendDate"));
 			vo.setOptions(rs.getString("options"));
 			vo.setWeeklyoptions(rs.getString("weeklyoptions"));
-
+			vo.setIsSp500(rs.getString("isSp500"));
+			
 			return vo;
 		}
 	}

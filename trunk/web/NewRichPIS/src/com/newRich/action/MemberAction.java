@@ -6,9 +6,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.newRich.backRun.vo.RtMember;
 import com.newRich.backRun.vo.SelectVO;
 import com.newRich.dao.MemberDao;
-import com.newRich.util.RtMember;
 
 public class MemberAction extends DefaultAction {
 

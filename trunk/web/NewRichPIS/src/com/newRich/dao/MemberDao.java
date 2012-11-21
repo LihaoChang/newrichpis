@@ -11,8 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 
-import com.newRich.model.Person;
-import com.newRich.util.RtMember;
+import com.newRich.backRun.vo.RtMember;
 
 public class MemberDao extends BaseDao {
 
@@ -57,7 +56,7 @@ public class MemberDao extends BaseDao {
 	 * 
 	 * @return List
 	 */
-	public List<Person> findAllByForm(RtMember formVO) {
+	public List<RtMember> findAllByForm(RtMember formVO) {
 		String SELECT_MEMBER_SQL = "SELECT * FROM rt_member where 1=1 ";
 		if (StringUtils.isNotBlank(formVO.getMemberId())) {
 			SELECT_MEMBER_SQL += "and memberId like '%" + formVO.getMemberId() + "%' ";

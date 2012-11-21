@@ -95,7 +95,7 @@
 								</s:iterator>	
 							</select>
 						</td>
-						<th></th>
+						<td></td>
 						<td></td>
 						<td>
 							<input type="button" name="button" value="Save" onclick="check_up()" /> 

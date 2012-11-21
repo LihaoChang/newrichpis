@@ -3,9 +3,12 @@ package com.newRich.util;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -16,6 +19,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import sun.misc.BASE64Encoder;
 
 import com.newRich.backRun.vo.SelectVO;
 
@@ -246,5 +251,37 @@ public class SystemUtil implements java.io.Serializable {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * 產生MD5編碼的byte[]
+	 * @param str
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 * php MD5加密非常简单直接这样就可以了：md5($str)
+	 */
+	public static String paserMd5(String str) {
+		MessageDigest md5;
+		String newstr = "";
+		try {
+			md5 = MessageDigest.getInstance("MD5");
+
+			BASE64Encoder base64en = new BASE64Encoder();
+			// 加密后的字符串
+			newstr = base64en.encode(md5.digest(str.getBytes("utf-8")));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return newstr.trim();
+	}
+	
+	
+	public static void main(String arg[]){
+		String str = "12345678";
+		System.out.println(paserMd5(str));
 	}
 }

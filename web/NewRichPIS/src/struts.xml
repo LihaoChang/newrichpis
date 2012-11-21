@@ -114,7 +114,29 @@
 			<result name="success">/pages/spmm.jsp</result>
 			<result name="error" type="dispatcher">/index.jsp</result>
 		</action>
- 		<!--com.newRich.action.SpmmAction end-->		
+ 		<!--com.newRich.action.SpmmAction end-->	
+ 		<!--RT會員管理 start-->
+ 		<action name="queryMember" class="com.newRich.action.MemberAction"
+			method="query">
+			<result name="success">/pages/rtMember.jsp</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="memberSave" class="com.newRich.action.MemberAction"
+			method="save">
+			<result name="success" type="redirect">queryMember.action</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="memberDelete" class="com.newRich.action.MemberAction"
+			method="delete">
+			<result name="success" type="redirect">queryMember.action</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<action name="memberModify" class="com.newRich.action.MemberAction"
+			method="modify">
+			<result name="success">/pages/rtMember.jsp</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<!--RT會員管理 end-->
 	</package>
 
 

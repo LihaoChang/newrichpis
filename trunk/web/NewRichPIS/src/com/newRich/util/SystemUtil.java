@@ -40,6 +40,7 @@ public class SystemUtil implements java.io.Serializable {
 	public static String QUARTZ_CLASS_NAME_StockStrategy2DB = "StockStrategy2DB";
 	public static String QUARTZ_CLASS_NAME_StockSector2DB = "StockSector2DB";
 	public static String QUARTZ_CLASS_NAME_StockValue2DB = "StockValue2DB";
+	public static String QUARTZ_CLASS_NAME_StockIsSP5002DB = "StockIsSP5002DB";
 
 	public static String ADMIN_ROLE = "A";
 

@@ -10,6 +10,7 @@ import com.newRich.quartz.JobDemo;
 import com.newRich.quartz.StockCode2DB;
 import com.newRich.quartz.StockFindGood2DB;
 import com.newRich.quartz.StockIchart2DB;
+import com.newRich.quartz.StockIsSP5002DB;
 import com.newRich.quartz.StockSector2DB;
 import com.newRich.quartz.StockStrategy2DB;
 import com.newRich.quartz.StockValue2DB;
@@ -53,6 +54,11 @@ public class  QuartzService implements Serializable{
 	public synchronized void StockValue2DB(String triggerName, String group){
 		logger.info("QuartzService StockValue2DB():"+triggerName+"=="+group+"=Running!!=");
 		StockValue2DB.run();
+	}
+	
+	public synchronized void StockIsSP5002DB(String triggerName, String group){
+		logger.info("QuartzService StockIsSP5002DB():"+triggerName+"=="+group+"=Running!!=");
+		StockIsSP5002DB.run();
 	}
 	
 	public synchronized void testMethod2( String triggerName,String group){

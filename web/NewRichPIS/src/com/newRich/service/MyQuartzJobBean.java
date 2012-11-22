@@ -32,11 +32,6 @@ public class MyQuartzJobBean extends QuartzJobBean{
 		String triggerName = trigger.getName();
 		String group = trigger.getGroup();
 		
-//		if (counter > 0){
-//			System.out.println("Job Dauble!!");
-//			return;
-//		}
-//		counter++;
 		//根據Trigger組別調用不同的應用邏輯方法QUARTZ_CLASS_NAME_xxxx
 //		if (StringUtils.equals(group, Scheduler.DEFAULT_GROUP)) {
 //			simpleService.testMethod2(triggerName, group);
@@ -62,6 +57,9 @@ public class MyQuartzJobBean extends QuartzJobBean{
 		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockValue2DB)) {
 			logger.info("executeInternal QUARTZ_CLASS_NAME_StockValue2DB().");
 			quartzService.StockValue2DB(triggerName, group);
+		} else if (StringUtils.equals(group, SystemUtil.QUARTZ_CLASS_NAME_StockIsSP5002DB)) {
+			logger.info("executeInternal QUARTZ_CLASS_NAME_StockIsSP5002DB().");
+			quartzService.StockIsSP5002DB(triggerName, group);
 		}
 	}
 

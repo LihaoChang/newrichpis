@@ -20,7 +20,6 @@ import com.newRich.dao.PersonDao;
 import com.newRich.model.MenuItem;
 import com.newRich.model.Person;
 import com.newRich.util.SystemUtil;
-import com.opensymphony.xwork2.ActionSupport;
 
 public class LoginAction extends DefaultAction {
 

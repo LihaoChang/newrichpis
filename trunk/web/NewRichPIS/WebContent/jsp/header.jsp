@@ -66,7 +66,7 @@
 					<td align="left"><img
 						src='<%=request.getContextPath()%>/images/logo.gif' width="176"
 						height="83" alt=''></td>
-					<td style="vertical-align: bottom" align="right" width="100"><s:text
+					<td style="vertical-align: bottom" align="right" width="250"><s:text
 							name="Hello" /> <%=login_user_name%></td>
 					<td style="vertical-align: bottom" align="right" width="50">
 					     <s:set name="SESSION_LOCALE" value="#session['WW_TRANS_I18N_LOCALE']" />

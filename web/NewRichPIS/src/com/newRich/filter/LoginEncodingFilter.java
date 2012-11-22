@@ -13,7 +13,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 
 import net.sf.navigator.menu.MenuRepository;
 
@@ -21,8 +20,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.newRich.dao.PersonDao;
-import com.newRich.model.Person;
+import com.newRich.backRun.vo.RtMember;
+import com.newRich.dao.MemberDao;
 
 public class LoginEncodingFilter extends HttpServlet implements Filter {
 	/**
@@ -50,7 +49,7 @@ public class LoginEncodingFilter extends HttpServlet implements Filter {
 
 			request.setCharacterEncoding("UTF-8");
 
-			// http://localhost:8080/NewRichPIS/filter_check.jsp?id=11&checkKey=1352711478182
+			// http://localhost:8080/NewRichPIS/filter_check.jsp?id=11&ticket=1352711478182
 			String requestedPage = null;
 			if (httpRequest.getRequestURL() != null) {
 				int hit = httpRequest.getRequestURL().lastIndexOf("/");
@@ -69,14 +68,14 @@ public class LoginEncodingFilter extends HttpServlet implements Filter {
 					id = request.getParameter("id");
 				}
 
-				String checkKey = "";
-				if (null != request.getParameter("checkKey")) {
-					checkKey = request.getParameter("checkKey");
+				String ticket = "";
+				if (null != request.getParameter("ticket")) {
+					ticket = request.getParameter("ticket");
 				}
 				// log.info("--------11111111111--requestedPage------------- " + requestedPage);
 				if (hasSessionUser(id, httpRequest, httpResponse)) {
 					// do nothing, get access to the system
-					log.info("Session user found, get access to the system.");
+					// log.info("Session user found, get access to the system.");
 					if (null == httpRequest.getSession().getAttribute("repository")) {
 						httpRequest.getSession().setAttribute("check_login", "logoutsuccess");
 						httpRequest.getSession().invalidate();
@@ -106,20 +105,20 @@ public class LoginEncodingFilter extends HttpServlet implements Filter {
 					// TODO: check ticket
 
 					log.info("----------id:" + id);
-					log.info("----------checkKey:" + checkKey);
-					if (!StringUtils.isBlank(id) && !StringUtils.isBlank(checkKey)) {
+					log.info("----------ticket:" + ticket);
+					if (!StringUtils.isBlank(id) && !StringUtils.isBlank(ticket)) {
 
 						try {
-							long checkKeyLong = Long.parseLong(checkKey);
+							long ticketLong = Long.parseLong(ticket);
 							try {
-								Date checkDate = new Date(checkKeyLong);
+								Date checkDate = new Date(ticketLong);
 							} catch (Exception ex) {
 								log.error(String.format("Login fail: %s", ex.getMessage()), ex);
 								httpResponse.sendRedirect(httpRequest.getContextPath() + "/filter_error.jsp");
 								return;
 							}
 							Date nowDate = new Date();
-							long theday = (nowDate.getTime() - checkKeyLong) / (1000 * 60 * 5);
+							long theday = (nowDate.getTime() - ticketLong) / (1000 * 60 * 5);
 							// 超過5分鐘，就不能連線
 							if (theday >= 1) {
 								httpResponse.sendRedirect(httpRequest.getContextPath() + "/filter_error.jsp");
@@ -147,36 +146,40 @@ public class LoginEncodingFilter extends HttpServlet implements Filter {
 	}
 
 	private boolean hasSessionUser(String id, HttpServletRequest req, HttpServletResponse resp) {
-		log.info("---req.getSession().getAttribute(login_user_id): [" + req.getSession().getAttribute("login_user_id") + "]");
 		if (null == req.getSession().getAttribute("login_user_id")) {
+			log.info("hasSessionUser login_user_id: [" + req.getSession().getAttribute("login_user_id")
+					+ "] , false");
 			return false;
 		} else {
 			String userId = req.getSession().getAttribute("login_user_id").toString();
 			if (!StringUtils.isBlank(id)) {
 				if (!userId.equals(id)) {
+					log.info("--hasSessionUser-req.getSession().getAttribute(login_user_id): [" + req.getSession().getAttribute("login_user_id")
+							+ "] , false");
 					return false;
 				}
 			} else {
 
 			}
 		}
+		log.info("--hasSessionUser-req.getSession().getAttribute(login_user_id): [" + req.getSession().getAttribute("login_user_id") + "] , true");
 		return true;
 	}
 
 	public void login(String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String login_user_id = "loginerror";
 		String role = "";
-		PersonDao personDao = new PersonDao();
-		Person person = personDao.findById(id);
-		if (null == person) {
+		MemberDao MemberDao = new MemberDao();
+		RtMember rtMember = MemberDao.findById(id);
+		if (null == rtMember) {
 			response.sendRedirect(request.getContextPath() + "/filter_error.jsp");
 		} else {
-			login_user_id = person.getId();
-			role = person.getRole();
+			login_user_id = rtMember.getMemberId();
+			role = "";
 			if (!login_user_id.equals("loginerror")) {
 				request.getSession(true).setAttribute("check_login", "loginsuccess");
 				request.getSession(true).setAttribute("login_user_id", login_user_id);
-				request.getSession(true).setAttribute("login_user_name", person.getName());
+				request.getSession(true).setAttribute("login_user_name", rtMember.getEmail());
 				request.getSession(true).setAttribute("login_role", role);
 				// intln("=-===========================role:" + role);
 
@@ -193,7 +196,7 @@ public class LoginEncodingFilter extends HttpServlet implements Filter {
 			}
 
 			// log login action
-			log.info("Login username: " + person.getName() + " ,IP: " + request.getRemoteAddr() + " ,Session Id: " + request.getSession().getId()
+			log.info("Login username: " + rtMember.getEmail() + " ,IP: " + request.getRemoteAddr() + " ,Session Id: " + request.getSession().getId()
 					+ " ,Login time: " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 			response.sendRedirect(request.getContextPath() + "/ssoGenerateMenu.action");
 

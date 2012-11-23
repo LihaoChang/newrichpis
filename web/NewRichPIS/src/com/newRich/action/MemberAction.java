@@ -30,6 +30,8 @@ public class MemberAction extends DefaultAction {
 	
 	private String modify_id;
 	
+	private String modifyType;
+	
 	private List<SelectVO> scaleTypeList = new ArrayList<SelectVO>();//下拉option
 	final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	
@@ -53,7 +55,6 @@ public class MemberAction extends DefaultAction {
 			queryScaleTypeList();
 			// Handle Search
 			int countSearchKey = 0;
-
 			// System.out.println("..name..[" + name + "]");
 			// System.out.println("..password..[" + password + "]");
 
@@ -145,7 +146,6 @@ public class MemberAction extends DefaultAction {
 				
 				memberDao.update(memberVO);
 			}
-
 		} catch (Exception e) {
 			addActionError("ERROR : " + e.getLocalizedMessage());
 			addActionError("Is Database in read/write modus?");
@@ -184,7 +184,9 @@ public class MemberAction extends DefaultAction {
 				email = member.getEmail();
 				scale = member.getScale();
 				//updateDate = member.getUpdateDate();
+				modifyType = "M";
 			}
+			
 		}
 		query();
 		return SUCCESS;
@@ -289,6 +291,14 @@ public class MemberAction extends DefaultAction {
 
 	public void setMemberIdHidden(String memberIdHidden) {
 		this.memberIdHidden = memberIdHidden;
+	}
+
+	public String getModifyType() {
+		return modifyType;
+	}
+
+	public void setModifyType(String modifyType) {
+		this.modifyType = modifyType;
 	}
 
 }

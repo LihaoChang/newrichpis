@@ -72,7 +72,8 @@
 					<tr>
 						<th><s:text name="RtMember_memberId" />:</th>
 						<td><input type="text" id="memberId" name="memberId"
-							value='<s:property value="memberId" />'></td>
+							value='<s:property value="memberId" />' <s:if test='modifyType == "M"'>disabled="disabled"</s:if>></td>
+						
 						<th><s:text name="RtMember_nickname" />:</th>
 						<td><input type="text" id="nickname" name="nickname"
 							value='<s:property value="nickname" />'></td>

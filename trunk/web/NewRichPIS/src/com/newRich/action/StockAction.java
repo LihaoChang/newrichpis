@@ -57,7 +57,7 @@ public class StockAction extends DefaultAction {
 	private List<SelectVO> sectorList = new ArrayList<SelectVO>();// sector的下拉
 	private List<SelectVO> typeList = new ArrayList<SelectVO>();// 大於小於的下拉
 	private List<SelectVO> strategyList = new ArrayList<SelectVO>();// 大於小於的下拉
-	private List<SelectVO> isSP500TypeList = new ArrayList<SelectVO>();//下拉option
+	private List<SelectVO> isSP500TypeList = new ArrayList<SelectVO>();// 下拉option
 
 	public String query() throws Exception {
 
@@ -218,12 +218,12 @@ public class StockAction extends DefaultAction {
 					countSearchKey++;
 				}
 			}
-			
+
 			if (null != isSp500 && !isSp500.equals("") && !isSp500.equals("null")) {
 				formVO.setIsSp500(isSp500);
 				countSearchKey++;
 			}
-			
+
 			// Count Stock
 			records = StockDao.findAllByForm(formVO).size();
 
@@ -365,6 +365,38 @@ public class StockAction extends DefaultAction {
 	public List<SelectVO> querySectorList() {
 		List<SelectVO> sectors = new ArrayList<SelectVO>();
 		sectors = StockDao.querySectorList();
+		if (null != sectors) {
+			for (SelectVO selectVO : sectors) {
+
+				if (selectVO.getString().equals("Basic Materials")) {
+					selectVO.setString(selectVO.getString() + "(" + this.getText("sector_BasicMaterials") + ")");
+				}
+				if (selectVO.getString().equals("Conglomerates")) {
+					selectVO.setString(selectVO.getString() + "(" + this.getText("sector_Conglomerates") + ")");
+				}
+				if (selectVO.getString().equals("Consumer Goods")) {
+					selectVO.setString(selectVO.getString() + "(" + this.getText("sector_ConsumerGoods") + ")");
+				}
+				if (selectVO.getString().equals("Financial")) {
+					selectVO.setString(selectVO.getString() + "(" + this.getText("sector_Financial") + ")");
+				}
+				if (selectVO.getString().equals("Healthcare")) {
+					selectVO.setString(selectVO.getString() + "(" + this.getText("sector_Healthcare") + ")");
+				}
+				if (selectVO.getString().equals("Industrial Goods")) {
+					selectVO.setString(selectVO.getString() + "(" + this.getText("sector_IndustrialGoods") + ")");
+				}
+				if (selectVO.getString().equals("Services")) {
+					selectVO.setString(selectVO.getString() + "(" + this.getText("sector_Services") + ")");
+				}
+				if (selectVO.getString().equals("Technology")) {
+					selectVO.setString(selectVO.getString() + "(" + this.getText("sector_Technology") + ")");
+				}
+				if (selectVO.getString().equals("Utilities")) {
+					selectVO.setString(selectVO.getString() + "(" + this.getText("sector_Utilities") + ")");
+				}
+			}
+		}
 		sectorList = sectors;
 		// System.out.println("action sectors.size():" + sectors.size());
 
@@ -405,7 +437,7 @@ public class StockAction extends DefaultAction {
 	public void queryStrategyList() {
 		List<SelectVO> strategys = new ArrayList<SelectVO>();
 		SelectVO selectVO1 = new SelectVO();
-		selectVO1.setString("...");
+		selectVO1.setString("All");
 		selectVO1.setValue("");
 		strategys.add(selectVO1);
 		String strategy[] = StockStrategyUtil.STRATEGY_TYPE;
@@ -439,7 +471,6 @@ public class StockAction extends DefaultAction {
 		return gridModel;
 	}
 
-	
 	/**
 	 * 產生『』下拉
 	 * 
@@ -449,7 +480,7 @@ public class StockAction extends DefaultAction {
 		List<SelectVO> types = new ArrayList<SelectVO>();
 
 		SelectVO selectVO1 = new SelectVO();
-		selectVO1.setString("...");
+		selectVO1.setString("All");
 		selectVO1.setValue("");
 		types.add(selectVO1);
 
@@ -467,7 +498,7 @@ public class StockAction extends DefaultAction {
 		isSP500TypeList = types;
 		return types;
 	}
-	
+
 	/**
 	 * @param gridModel
 	 *            an collection that contains the actual data
@@ -707,6 +738,5 @@ public class StockAction extends DefaultAction {
 	public void setIsSP500TypeList(List<SelectVO> isSP500TypeList) {
 		this.isSP500TypeList = isSP500TypeList;
 	}
-	
-	
+
 }

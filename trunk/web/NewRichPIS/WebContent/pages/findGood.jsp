@@ -243,6 +243,8 @@
 					</tr>
 					
 					<tr>
+	
+						<s:if test='#session.login_role == "P" || #session.login_role == "A"'>							
 						<th width="15%" align="left"><s:text name="findGood_strategy" />:
 						</th>
 						<td width="18%">
@@ -265,6 +267,15 @@
 								</s:iterator>	
 							</select>
 						</td>
+													
+						</s:if>
+						<s:else>	
+						<td width="15%" align="left"> </td>
+						<td width="18%" align="right"> </td>		
+						<td width="15%" align="left"> </td>
+						<td width="18%" align="right"> </td>
+					  </s:else>
+														
 						<td width="15%" align="left"> </td>
 						<td width="18%" align="right"><input type="button" value="<s:text name="action_search" />"
 							onclick="searchGo();" />
@@ -314,12 +325,15 @@
 						<td align="center">
 						<a href='#' onclick="openwin('<s:property value="stockCode" />')">
 						<s:property value="stockCode" />
+							
+						<s:if test='#session.login_role == "P" || #session.login_role == "A"'>	
 						<s:if test="options != null && options != ''">
 						<font color="red">(<s:property value="options" />)</font>
 						</s:if>
 						<s:if test="weeklyoptions != null && weeklyoptions != ''">
 						<font color="red">(<s:property value="weeklyoptions" />)</font>
-						</s:if>							
+						</s:if>	
+						</s:if>						
 						</a>
 						</td>
 						<td align="center"><s:property value="sector" /></td>

@@ -170,8 +170,33 @@ public class LoginAction extends DefaultAction {
 				MenuComponent mc = new MenuComponent();
 				MenuItem mi = (MenuItem) gridModel.get(i);
 
-				if (!StringUtils.isBlank(mi.getTarget()) && mi.getTarget().equals(SystemUtil.ADMIN_ROLE)) {
-					if (!StringUtils.isBlank(role) && role.equals(SystemUtil.ADMIN_ROLE)) {
+				if (!StringUtils.isBlank(mi.getTarget())
+						&& (mi.getTarget().equals(SystemUtil.ADMIN_ROLE) || mi.getTarget().equals(SystemUtil.PAY_ROLE))) {
+					if (!StringUtils.isBlank(role) && role.equals(SystemUtil.ADMIN_ROLE)
+							&& (mi.getTarget().equals(SystemUtil.ADMIN_ROLE) || mi.getTarget().equals(SystemUtil.PAY_ROLE))) {
+						String name = mi.getName();
+						mc.setName(name);
+						String parent = (String) mi.getParent_name();
+						// intln(name + ", parent is: " + parent);
+						if (parent != null) {
+							MenuComponent parentMenu = repository.getMenu(parent);
+							if (parentMenu == null) {
+								// intln("parentMenu '" + parent + "' doesn't exist!");
+								// create a temporary parentMenu
+								parentMenu = new MenuComponent();
+								parentMenu.setName(parent);
+								repository.addMenu(parentMenu);
+							}
+							mc.setParent(parentMenu);
+						}
+						String title = (String) mi.getTitle();
+						mc.setTitle(getText(title));
+						String location = (String) mi.getLocation();
+						mc.setLocation(location);
+						repository.addMenu(mc);
+					}
+
+					if (!StringUtils.isBlank(role) && role.equals(SystemUtil.PAY_ROLE) && mi.getTarget().equals(SystemUtil.PAY_ROLE)) {
 						String name = mi.getName();
 						mc.setName(name);
 						String parent = (String) mi.getParent_name();
@@ -250,8 +275,9 @@ public class LoginAction extends DefaultAction {
 			MenuComponent mc = new MenuComponent();
 			MenuItem mi = (MenuItem) gridModel.get(i);
 
-			if (!StringUtils.isBlank(mi.getTarget()) && mi.getTarget().equals(SystemUtil.ADMIN_ROLE)) {
-				if (!StringUtils.isBlank(role) && role.equals(SystemUtil.ADMIN_ROLE)) {
+			if (!StringUtils.isBlank(mi.getTarget()) && (mi.getTarget().equals(SystemUtil.ADMIN_ROLE) || mi.getTarget().equals(SystemUtil.PAY_ROLE))) {
+				if (!StringUtils.isBlank(role) && role.equals(SystemUtil.ADMIN_ROLE)
+						&& (mi.getTarget().equals(SystemUtil.ADMIN_ROLE) || mi.getTarget().equals(SystemUtil.PAY_ROLE))) {
 					String name = mi.getName();
 					mc.setName(name);
 					String parent = (String) mi.getParent_name();
@@ -273,6 +299,30 @@ public class LoginAction extends DefaultAction {
 					mc.setLocation(location);
 					repository.addMenu(mc);
 				}
+
+				if (!StringUtils.isBlank(role) && role.equals(SystemUtil.PAY_ROLE) && mi.getTarget().equals(SystemUtil.PAY_ROLE)) {
+					String name = mi.getName();
+					mc.setName(name);
+					String parent = (String) mi.getParent_name();
+					// intln(name + ", parent is: " + parent);
+					if (parent != null) {
+						MenuComponent parentMenu = repository.getMenu(parent);
+						if (parentMenu == null) {
+							// intln("parentMenu '" + parent + "' doesn't exist!");
+							// create a temporary parentMenu
+							parentMenu = new MenuComponent();
+							parentMenu.setName(parent);
+							repository.addMenu(parentMenu);
+						}
+						mc.setParent(parentMenu);
+					}
+					String title = (String) mi.getTitle();
+					mc.setTitle(getText(title));
+					String location = (String) mi.getLocation();
+					mc.setLocation(location);
+					repository.addMenu(mc);
+				}
+
 			} else {
 				String name = mi.getName();
 				mc.setName(name);

@@ -43,6 +43,7 @@ public class SystemUtil implements java.io.Serializable {
 	public static String QUARTZ_CLASS_NAME_StockIsSP5002DB = "StockIsSP5002DB";
 
 	public static String ADMIN_ROLE = "A";
+	public static String PAY_ROLE = "P";// 付錢的會員
 
 	public String moneyFormat(String str) {
 		String check_str = str.substring(0, 1);
@@ -253,13 +254,14 @@ public class SystemUtil implements java.io.Serializable {
 			}
 		}
 	}
-	
+
 	/**
 	 * 產生MD5編碼的byte[]
+	 * 
 	 * @param str
 	 * @return
 	 * @throws NoSuchAlgorithmException
-	 * php MD5加密非常简单直接这样就可以了：md5($str)
+	 *             php MD5加密非常简单直接这样就可以了：md5($str)
 	 */
 	public static String paserMd5(String str) {
 		MessageDigest md5;
@@ -279,9 +281,8 @@ public class SystemUtil implements java.io.Serializable {
 		}
 		return newstr.trim();
 	}
-	
-	
-	public static void main(String arg[]){
+
+	public static void main(String arg[]) {
 		String str = "12345678";
 		System.out.println(paserMd5(str));
 	}

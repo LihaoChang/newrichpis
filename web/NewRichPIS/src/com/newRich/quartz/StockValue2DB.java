@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -97,92 +98,96 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 						Stock vo = stockList.get(i);
 						thisStockCode = vo.getStockCode();
 						financeUrl = "";
-						financeUrl = "http://finance.yahoo.com/q?s=" + vo.getStockCode() + "&ql=1";
-						// financeUrl = "http://finance.yahoo.com/q?s=FAZ&ql=1";
-						httpget = new HttpGet(financeUrl);
+						if (!StringUtils.isBlank(vo.getStockCode())) {
+							if (!vo.getStockCode().trim().equals("")) {
+								financeUrl = "http://finance.yahoo.com/q?s=" + vo.getStockCode() + "&ql=1";
+								// financeUrl = "http://finance.yahoo.com/q?s=FAZ&ql=1";
+								httpget = new HttpGet(financeUrl);
 
-						if (checkResponseCode(financeUrl)) {
-							ResponseHandler<String> responseHandler = new BasicResponseHandler();
-							String responseBody = httpclient.execute(httpget, responseHandler);
+								if (checkResponseCode(financeUrl)) {
+									ResponseHandler<String> responseHandler = new BasicResponseHandler();
+									String responseBody = httpclient.execute(httpget, responseHandler);
 
-							String updDateString = sdf1.format(new Date());
-							vo.setUpdateDate(updDateString);
-							// loger.info(responseBody);
-							// Return=> Sector:</th><td nowrap class="yfnc_tabledata1"><a
-							// href="http://biz.yahoo.com/p/8conameu.html">Technology</a>
+									String updDateString = sdf1.format(new Date());
+									vo.setUpdateDate(updDateString);
+									// loger.info(responseBody);
+									// Return=> Sector:</th><td nowrap class="yfnc_tabledata1"><a
+									// href="http://biz.yahoo.com/p/8conameu.html">Technology</a>
 
-							// if (responseBody.indexOf("Volume:") > -1) {
-							if (responseBody.indexOf("Avg Vol <span class=\"small\">(3m)</span>:") > -1) {
-								valueStr = "";
-								// String firstString =
-								// responseBody.substring(responseBody.indexOf("Volume:"));
-								String firstString = responseBody.substring(responseBody.indexOf("Avg Vol <span class=\"small\">(3m)</span>:"));
-								String secendString = firstString.substring(0, firstString.indexOf("</td>"));
-								secendString = secendString.replaceAll("</span>", "");
-								valueStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
-								valueStr = valueStr.replaceAll(",", "");
-								vo.setSharesTraded(!"N/A".equals(valueStr) ? Integer.parseInt(valueStr) : 0);
+									// if (responseBody.indexOf("Volume:") > -1) {
+									if (responseBody.indexOf("Avg Vol <span class=\"small\">(3m)</span>:") > -1) {
+										valueStr = "";
+										// String firstString =
+										// responseBody.substring(responseBody.indexOf("Volume:"));
+										String firstString = responseBody.substring(responseBody.indexOf("Avg Vol <span class=\"small\">(3m)</span>:"));
+										String secendString = firstString.substring(0, firstString.indexOf("</td>"));
+										secendString = secendString.replaceAll("</span>", "");
+										valueStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
+										valueStr = valueStr.replaceAll(",", "");
+										vo.setSharesTraded(!"N/A".equals(valueStr) ? Integer.parseInt(valueStr) : 0);
 
-							} else {
-								vo.setSharesTraded(0);
-							}
-							if (responseBody.indexOf("Prev Close:") > -1) {
-								nowPriceStr = "";
-								String firstString = responseBody.substring(responseBody.indexOf("Prev Close:"));
-								String secendString = firstString.substring(0, firstString.indexOf("</td>"));
-								nowPriceStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
-								nowPriceStr = nowPriceStr.replaceAll(",", "");
+									} else {
+										vo.setSharesTraded(0);
+									}
+									if (responseBody.indexOf("Prev Close:") > -1) {
+										nowPriceStr = "";
+										String firstString = responseBody.substring(responseBody.indexOf("Prev Close:"));
+										String secendString = firstString.substring(0, firstString.indexOf("</td>"));
+										nowPriceStr = secendString.substring(secendString.lastIndexOf(">") + 1, secendString.length());
+										nowPriceStr = nowPriceStr.replaceAll(",", "");
 
-								if (!nowPriceStr.equals("N/A")) {
-									Double thisValue = new Double(0);
-									try {
-										thisValue = Double.parseDouble(nowPriceStr);
-										vo.setNowPrice(thisValue);
-									} catch (Exception e) {
-										loger.info("StockValue2DB StockCode " + thisStockCode + " ,error0:" + e.getMessage());
-										vo.setNowPrice(new Double(0));
+										if (!nowPriceStr.equals("N/A")) {
+											Double thisValue = new Double(0);
+											try {
+												thisValue = Double.parseDouble(nowPriceStr);
+												vo.setNowPrice(thisValue);
+											} catch (Exception e) {
+												loger.info("StockValue2DB StockCode " + thisStockCode + " ,error0:" + e.getMessage());
+												vo.setNowPrice(new Double(0));
+											}
+
+										} else {
+											vo.setNowPrice(new Double(0));
+										}
 									}
 
-								} else {
-									vo.setNowPrice(new Double(0));
-								}
-							}
+									if (responseBody.indexOf("Ex-Dividend Date:") > -1) {
+										// Ex-Dividend Date:</th><td class="yfnc_tabledata1">03-Oct-12</td>
+										exDividendDate = "";
+										String firstString = responseBody.substring(responseBody.indexOf("Ex-Dividend Date:"));
+										String secendString = firstString.substring(0, firstString.indexOf("</td>"));
+										secendString = secendString.replaceAll("Ex-Dividend Date:", "");
+										exDividendDate = secendString.replaceAll("</th>", "");
+										exDividendDate = exDividendDate.replaceAll("<td class=\"yfnc_tabledata1\">", "");
+										exDividendDate = exDividendDate.replaceAll("</td>", "");
+										if (exDividendDate.length() > 7) {
+											// Jan 1,Feb 2,Mar 3,Apr 4,May 5,Jun 6
+											// Jul 7,Aug 8,Sep 9,Oct 10,Nov 11,Dec 12
 
-							if (responseBody.indexOf("Ex-Dividend Date:") > -1) {
-								// Ex-Dividend Date:</th><td class="yfnc_tabledata1">03-Oct-12</td>
-								exDividendDate = "";
-								String firstString = responseBody.substring(responseBody.indexOf("Ex-Dividend Date:"));
-								String secendString = firstString.substring(0, firstString.indexOf("</td>"));
-								secendString = secendString.replaceAll("Ex-Dividend Date:", "");
-								exDividendDate = secendString.replaceAll("</th>", "");
-								exDividendDate = exDividendDate.replaceAll("<td class=\"yfnc_tabledata1\">", "");
-								exDividendDate = exDividendDate.replaceAll("</td>", "");
-								if (exDividendDate.length() > 7) {
-									// Jan 1,Feb 2,Mar 3,Apr 4,May 5,Jun 6
-									// Jul 7,Aug 8,Sep 9,Oct 10,Nov 11,Dec 12
-
-									try {
-										if (exDividendDate.split("-").length == 3) {
-											Date thisExDividendDate = exDividendDateSdf.parse(exDividendDate);
-											exDividendDate = new SimpleDateFormat("yyyy/MM/dd").format(thisExDividendDate);
-											vo.setExDividendDate(exDividendDate);
+											try {
+												if (exDividendDate.split("-").length == 3) {
+													Date thisExDividendDate = exDividendDateSdf.parse(exDividendDate);
+													exDividendDate = new SimpleDateFormat("yyyy/MM/dd").format(thisExDividendDate);
+													vo.setExDividendDate(exDividendDate);
+												} else {
+													vo.setExDividendDate(null);
+												}
+											} catch (Exception e) {
+												// TODO Auto-generated catch block
+												vo.setExDividendDate(null);
+												loger.info("StockValue2DB StockCode " + thisStockCode + " ,error00:" + e.getMessage());
+												e.printStackTrace();
+											}
 										} else {
 											vo.setExDividendDate(null);
 										}
-									} catch (Exception e) {
-										// TODO Auto-generated catch block
-										vo.setExDividendDate(null);
-										loger.info("StockValue2DB StockCode " + thisStockCode + " ,error00:" + e.getMessage());
-										e.printStackTrace();
 									}
-								} else {
-									vo.setExDividendDate(null);
+									dao.update(vo);
+									totalStock++;
 								}
 							}
-							dao.update(vo);
-							totalStock++;
 						}
-					}
+					}// end for
 
 					loger.info("StockValue2DB totalStock:" + totalStock);
 					loger.info("StockValue2DB end -----------" + sdf1.format(new Date()));
@@ -308,63 +313,67 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 					continue;
 				String str0 = PoiUtil.getCellString(r.getCell(0));
 				String stockCode = PoiUtil.getCellString(r.getCell(1));
-				System.out.println("Options  stock :" + stockCode);
-				if (row == 250) {
-					// System.out.println("Options  row :" + row);
-					Thread.sleep(30000);
-				}
-				if (row == 500) {
-					// System.out.println("Options  row :" + row);
-					Thread.sleep(30000);
-				}
-				if (row == 750) {
-					// System.out.println("Options  row :" + row);
-					Thread.sleep(30000);
-				}
-				if (row == 1000) {
-					// System.out.println("Options  row :" + row);
-					Thread.sleep(60000);
-				}
-				if (row == 1500) {
-					// System.out.println("Options  row :" + row);
-					Thread.sleep(30000);
-				}
-				if (row == 1750) {
-					// System.out.println("Options  row :" + row);
-					Thread.sleep(30000);
-				}
-				if (row == 2000) {
-					// System.out.println("Options  row :" + row);
-					Thread.sleep(60000);
-				}
-				if (row == 2500) {
-					// System.out.println("Options  row :" + row);
-					Thread.sleep(30000);
-				}
-				Stock findStock = dao.findByStockCodeToStock(stockCode);
-				if (null == findStock) {
-					Stock newStock = new Stock();
-					newStock.setStockCode(stockCode);
-					newStock.setUpdateDate(updDateString);
-					newStock.setTitle(str0);
-					dao.insert(newStock);
-					// System.out.println("Options insert stock :" + stockCode);
-				}
+				if (!StringUtils.isBlank(stockCode)) {
+					if (!stockCode.trim().equals("")) {
+						System.out.println("Options  stock :" + stockCode);
+						if (row == 250) {
+							// System.out.println("Options  row :" + row);
+							Thread.sleep(30000);
+						}
+						if (row == 500) {
+							// System.out.println("Options  row :" + row);
+							Thread.sleep(30000);
+						}
+						if (row == 750) {
+							// System.out.println("Options  row :" + row);
+							Thread.sleep(30000);
+						}
+						if (row == 1000) {
+							// System.out.println("Options  row :" + row);
+							Thread.sleep(60000);
+						}
+						if (row == 1500) {
+							// System.out.println("Options  row :" + row);
+							Thread.sleep(30000);
+						}
+						if (row == 1750) {
+							// System.out.println("Options  row :" + row);
+							Thread.sleep(30000);
+						}
+						if (row == 2000) {
+							// System.out.println("Options  row :" + row);
+							Thread.sleep(60000);
+						}
+						if (row == 2500) {
+							// System.out.println("Options  row :" + row);
+							Thread.sleep(30000);
+						}
+						Stock findStock = dao.findByStockCodeToStock(stockCode);
+						if (null == findStock) {
+							Stock newStock = new Stock();
+							newStock.setStockCode(stockCode);
+							newStock.setUpdateDate(updDateString);
+							newStock.setTitle(str0);
+							dao.insert(newStock);
+							// System.out.println("Options insert stock :" + stockCode);
+						}
 
-				Stock thisStock = new Stock();
-				thisStock.setStockCode(stockCode);
-				thisStock.setUpdateDate(updDateString);
-				thisStock.setOptions("O");
-				dao.updateOptions(thisStock);
-				// String str2 = PoiUtil.getCellString(r.getCell(2));
-				// String str3 = PoiUtil.getCellString(r.getCell(3));
-				// String str4 = PoiUtil.getCellString(r.getCell(4));
-				// String str5 = PoiUtil.getCellString(r.getCell(5));
-				// String str6 = PoiUtil.getCellString(r.getCell(6));
-				// String str7 = PoiUtil.getCellString(r.getCell(7));
-				// String str8 = PoiUtil.getCellString(r.getCell(8));
-				// System.out.println("stockCode:" + stockCode);
-			}
+						Stock thisStock = new Stock();
+						thisStock.setStockCode(stockCode);
+						thisStock.setUpdateDate(updDateString);
+						thisStock.setOptions("O");
+						dao.updateOptions(thisStock);
+						// String str2 = PoiUtil.getCellString(r.getCell(2));
+						// String str3 = PoiUtil.getCellString(r.getCell(3));
+						// String str4 = PoiUtil.getCellString(r.getCell(4));
+						// String str5 = PoiUtil.getCellString(r.getCell(5));
+						// String str6 = PoiUtil.getCellString(r.getCell(6));
+						// String str7 = PoiUtil.getCellString(r.getCell(7));
+						// String str8 = PoiUtil.getCellString(r.getCell(8));
+						// System.out.println("stockCode:" + stockCode);
+					}
+				}
+			}// end for
 			fileIn.close();
 		} catch (Exception e) {
 			loger.info("StockValue2DB getOptions error4: " + e.getMessage());
@@ -431,43 +440,46 @@ public class StockValue2DB extends QuartzBaseDao implements Job {
 				if (PoiUtil.isRowBlank(r))
 					continue;
 				String stockCode = PoiUtil.getCellString(r.getCell(0));
-				if (row == 100) {
-					Thread.sleep(30000);
-				}
-				if (row == 200) {
-					Thread.sleep(30000);
-				}
-				if (row == 300) {
-					Thread.sleep(30000);
-				}
+				if (!StringUtils.isBlank(stockCode)) {
+					if (!stockCode.trim().equals("")) {
+						if (row == 100) {
+							Thread.sleep(30000);
+						}
+						if (row == 200) {
+							Thread.sleep(30000);
+						}
+						if (row == 300) {
+							Thread.sleep(30000);
+						}
 
-				// String str1 = PoiUtil.getCellString(r.getCell(1));
-				// String str2 = PoiUtil.getCellString(r.getCell(2));
-				// String str3 = PoiUtil.getCellString(r.getCell(3));
-				// String str4 = PoiUtil.getCellString(r.getCell(4));
-				// String str5 = PoiUtil.getCellString(r.getCell(5));
-				// String str6 = PoiUtil.getCellString(r.getCell(6));
-				// String str7 = PoiUtil.getCellString(r.getCell(7));
-				// String str8 = PoiUtil.getCellString(r.getCell(8));
-				if (stockCode.length() < 6) {
-					stockCode = stockCode.replaceAll("\\*", "");
-					System.out.println("stockCode:" + stockCode);
-					if (null == dao.findByStockCodeToStock(stockCode)) {
-						Stock newStock = new Stock();
-						newStock.setStockCode(stockCode);
-						newStock.setUpdateDate(updDateString);
-						dao.insert(newStock);
-						System.out.println("Weeklyoptions insert stock :" + stockCode);
+						// String str1 = PoiUtil.getCellString(r.getCell(1));
+						// String str2 = PoiUtil.getCellString(r.getCell(2));
+						// String str3 = PoiUtil.getCellString(r.getCell(3));
+						// String str4 = PoiUtil.getCellString(r.getCell(4));
+						// String str5 = PoiUtil.getCellString(r.getCell(5));
+						// String str6 = PoiUtil.getCellString(r.getCell(6));
+						// String str7 = PoiUtil.getCellString(r.getCell(7));
+						// String str8 = PoiUtil.getCellString(r.getCell(8));
+						if (stockCode.length() < 6) {
+							stockCode = stockCode.replaceAll("\\*", "");
+							System.out.println("stockCode:" + stockCode);
+							if (null == dao.findByStockCodeToStock(stockCode)) {
+								Stock newStock = new Stock();
+								newStock.setStockCode(stockCode);
+								newStock.setUpdateDate(updDateString);
+								dao.insert(newStock);
+								System.out.println("Weeklyoptions insert stock :" + stockCode);
+							}
+
+							Stock thisStock = new Stock();
+							thisStock.setStockCode(stockCode);
+							thisStock.setUpdateDate(updDateString);
+							thisStock.setWeeklyoptions("W");
+							dao.updateWeeklyoptions(thisStock);
+						}
 					}
-
-					Stock thisStock = new Stock();
-					thisStock.setStockCode(stockCode);
-					thisStock.setUpdateDate(updDateString);
-					thisStock.setWeeklyoptions("W");
-					dao.updateWeeklyoptions(thisStock);
 				}
-
-			}
+			}// end for
 			fileIn.close();
 		} catch (Exception e) {
 			loger.info("StockValue2DB getWeeklyOptions error2: " + e.getMessage());

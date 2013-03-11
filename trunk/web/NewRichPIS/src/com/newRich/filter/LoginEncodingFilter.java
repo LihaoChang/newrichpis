@@ -20,7 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.newRich.backRun.vo.CountLogin;
 import com.newRich.backRun.vo.RtMember;
+import com.newRich.dao.CountLoginDao;
 import com.newRich.dao.MemberDao;
 
 public class LoginEncodingFilter extends HttpServlet implements Filter {
@@ -159,7 +161,46 @@ public class LoginEncodingFilter extends HttpServlet implements Filter {
 					return false;
 				}
 			} else {
-
+				//寫入db記錄該使用者，登入時間
+				try{
+					
+				SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				Date updDate = new Date();
+				String updDateString = sdf1.format(updDate);
+				
+				MemberDao mdao = new MemberDao();
+				String realName = "";
+				RtMember mvo = mdao.findById(id);
+				if(null != mvo){
+					realName = null == mvo.getRealname() ? "" : mvo.getRealname();
+				}
+				
+				//若是使用登入頁的，就不會記錄，原則上以導過來的計數
+				//但for test，先抓登入頁的登入userName
+				if(StringUtils.isBlank(id)){
+					String login_user_id = (String) req.getSession().getAttribute("login_user_id");
+					id = login_user_id;
+				}
+				
+				CountLoginDao cdao = new CountLoginDao();
+				CountLogin vo = new CountLogin();
+				vo.setMemberId(id);
+				vo.setRealName(realName);
+				vo.setUpdateDate(updDateString);
+				//id不為空值才新增
+				if(StringUtils.isNotBlank(id)){
+					//當日登入只記錄一次就好
+					CountLogin cvo = cdao.findById(id);
+					if(null == cvo){
+						cdao.insert(vo);
+					}else{
+						//System.out.println("[hasSessionUser] Table : CountLogin already has record！！");
+					}
+				}
+				
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		log.info("--hasSessionUser-req.getSession().getAttribute(login_user_id): [" + req.getSession().getAttribute("login_user_id") + "] , true");

@@ -137,6 +137,13 @@
 			<result name="error">/pages/messages.jsp</result>
 		</action>
 		<!--RT會員管理 end-->
+		<!--登入總計管理 start-->
+		<action name="loginCount" class="com.newRich.action.LoginCountAction"
+			method="query">
+			<result name="success">/pages/loginManager.jsp</result>
+			<result name="error">/pages/messages.jsp</result>
+		</action>
+		<!--登入總計管理 end-->
 	</package>
 
 

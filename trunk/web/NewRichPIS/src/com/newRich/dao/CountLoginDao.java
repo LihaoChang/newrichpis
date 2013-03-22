@@ -162,7 +162,7 @@ public class CountLoginDao extends BaseDao {
 	 * @return int
 	 * 
 	 */
-	public int memberUpdateDate(CountLogin vo) {
+	public int CountLoginUpdateDate(CountLogin vo) {
 		String UPDATE_SQL = " UPDATE countLogin SET updateDate = ? where memberId = ? ";
 		final Object[] params = new Object[] { vo.getUpdateDate(), vo.getMemberId() };
 		return jdbcTemplate.update(UPDATE_SQL, params);
@@ -177,7 +177,9 @@ public class CountLoginDao extends BaseDao {
 			vo.setMemberId(rs.getString("memberId"));
 			vo.setRealName(rs.getString("realName"));
 			vo.setUpdateDate(rs.getString("updateDate"));
-
+//			System.out.println("CountLoginMap vo.getMemberId():"+vo.getMemberId());
+//			System.out.println("CountLoginMap vo.getRealName():"+vo.getRealName());
+//			System.out.println("CountLoginMap vo.getUpdateDate():"+vo.getUpdateDate());
 			return vo;
 		}
 	}

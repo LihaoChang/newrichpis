@@ -28,7 +28,7 @@
 				result="error" />
 		</global-exception-mappings>
 		<action name="Login" class="com.newRich.action.LoginAction" method="login">
-			<result name="success">/login_ok.jsp</result>
+			<result name="success">/pages/findGood.jsp</result>
 			<result name="error" type="dispatcher">/index.jsp</result>
 		</action>
 
